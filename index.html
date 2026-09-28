@@ -1,0 +1,1755 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Мизан — курс арабской морфологии (сарф) по учебнику «التصريف»: уроки, упражнения, карточки и спрягатель.">
+<meta name="theme-color" content="#16557A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%2316557A'/%3E%3Cg fill='none' stroke='%23D4AF63' stroke-width='1.5' stroke-linejoin='round'%3E%3Crect x='6.5' y='6.5' width='11' height='11'/%3E%3Crect x='6.5' y='6.5' width='11' height='11' transform='rotate(45 12 12)'/%3E%3C/g%3E%3C/svg%3E">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Мизан</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600&family=Onest:wght@400;500;600;700&family=Scheherazade+New:wght@400;700&display=swap">
+<style>
+/* ============ TOKENS: лазурь + изразец ============ */
+:root{
+  --bg:#F3F6F6; --surface:#FFFFFF; --surface-2:#E9EFF0; --ink:#0F1E26; --muted:#5A6B73; --line:#DCE4E6;
+  --accent:#16557A; --accent-ink:#FFFFFF; --accent-soft:#E2EDF2; --gold:#B08637;
+  --hero-a:#1D3F85; --hero-b:#0F6570; --hero-ink:#F4F8FA; --hero-sub:#C9DCE6;
+  --r1:#CF650C; --r2:#1C8A55; --r3:#6446D6; --r4:#C2338A;
+  --ok:#2A9656; --ok-soft:#E3F3E8; --bad:#D4433B; --bad-soft:#FBE7E5;
+  --shadow:0 1px 2px rgba(15,30,38,.04),0 8px 24px -16px rgba(15,30,38,.22);
+  --font-ui:'Onest',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-d:'Literata',Georgia,'Times New Roman',serif;
+  --font-ar:'Scheherazade New','Amiri','Noto Naskh Arabic','Geeza Pro','Traditional Arabic',serif;
+  --ar-scale:1; --top-h:60px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0B1418; --surface:#121E23; --surface-2:#19292F; --ink:#E6EEF1; --muted:#93A5AC; --line:#233439;
+    --accent:#78BFDA; --accent-ink:#0B1418; --accent-soft:#15313B; --gold:#D4AF63;
+    --hero-a:#1A3466; --hero-b:#0E4A51; --hero-ink:#EEF5F8; --hero-sub:#A9C4CF;
+    --r1:#F39A45; --r2:#4FC98A; --r3:#A594FF; --r4:#F06BB5;
+    --ok:#4CC37F; --ok-soft:#132A1D; --bad:#F06B63; --bad-soft:#2E1715;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 28px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B1418; --surface:#121E23; --surface-2:#19292F; --ink:#E6EEF1; --muted:#93A5AC; --line:#233439;
+  --accent:#78BFDA; --accent-ink:#0B1418; --accent-soft:#15313B; --gold:#D4AF63;
+  --hero-a:#1A3466; --hero-b:#0E4A51; --hero-ink:#EEF5F8; --hero-sub:#A9C4CF;
+  --r1:#F39A45; --r2:#4FC98A; --r3:#A594FF; --r4:#F06BB5;
+  --ok:#4CC37F; --ok-soft:#132A1D; --bad:#F06B63; --bad-soft:#2E1715;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 28px -16px rgba(0,0,0,.7);
+}
+
+/* ============ BASE ============ */
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-ui);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+.app{max-width:600px;margin-inline:auto;padding-inline:16px;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.app.focus{padding-bottom:40px}
+.view{animation:rise .3s ease both;display:grid;gap:14px}
+@keyframes rise{from{opacity:.5;transform:translateY(5px)}to{opacity:1;transform:none}}
+.w{font-family:var(--font-ar);unicode-bidi:isolate}
+.inl{font-size:1.3em;line-height:1}
+.ar{font-family:var(--font-ar);direction:rtl;unicode-bidi:isolate}
+.r1{color:var(--r1)} .r2{color:var(--r2)} .r3{color:var(--r3)} .r4{color:var(--r4)}
+
+/* ============ HEADER / TABS ============ */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:12px;
+  margin-inline:-16px;padding:12px 16px;background:color-mix(in srgb,var(--bg) 86%,transparent);
+  -webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px)}
+.brand{display:flex;align-items:center;gap:9px;font:600 21px/1 var(--font-d);letter-spacing:-.01em}
+.brand svg{width:24px;height:24px;color:var(--gold)}
+.hd-t{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.hd-t b{font:600 16px var(--font-ui)}
+.hd-t small{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{width:40px;height:40px;flex:none;border-radius:12px;border:0;background:transparent;display:grid;place-items:center;color:var(--muted)}
+.icon-btn:hover{background:var(--surface-2)}
+.icon-btn svg{width:21px;height:21px}
+.push{margin-left:auto}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;border-top:1px solid var(--line);
+  background:color-mix(in srgb,var(--surface) 88%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs-in{max-width:600px;margin-inline:auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.tab{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px 10px;border:0;background:none;color:var(--muted);font:500 11.5px var(--font-ui)}
+.tab svg{width:23px;height:23px}
+.tab.on{color:var(--accent)}
+.badge{position:absolute;top:5px;left:calc(50% + 6px);min-width:18px;height:18px;padding-inline:5px;border-radius:9px;background:var(--accent);color:var(--accent-ink);font:600 11px/18px var(--font-ui);font-variant-numeric:tabular-nums}
+
+/* ============ COMMON ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding-inline:20px;border:0;border-radius:14px;background:var(--accent);color:var(--accent-ink);font:600 15.5px var(--font-ui);transition:transform .15s}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:var(--surface-2);color:var(--ink)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;cursor:default}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.lbl{font:600 11.5px var(--font-ui);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.note{font-size:14px;color:var(--muted);line-height:1.5}
+.h2{font:600 22px/1.25 var(--font-d);letter-spacing:-.01em;margin-top:10px}
+.h1{font:600 28px/1.2 var(--font-d);letter-spacing:-.015em;margin-top:6px}
+.seg{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:14px}
+.seg button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding-inline:8px;border:0;background:transparent;border-radius:10px;font:500 14px var(--font-ui);color:var(--muted)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.bar{flex:1;height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:inherit;background:var(--accent);transition:width .4s}
+.tag-x{display:inline-block;font:600 10.5px/1 var(--font-ui);letter-spacing:.07em;text-transform:uppercase;color:var(--gold);border:1px solid currentColor;border-radius:6px;padding:4px 6px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:9px;height:9px;border-radius:50%}
+.c1{background:var(--r1)} .c2{background:var(--r2)} .c3{background:var(--r3)} .c0{background:var(--ink)}
+.hscroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-18px;padding-inline:18px;padding-block:2px}
+.hscroll::-webkit-scrollbar{display:none}
+
+/* ============ HERO (арка) ============ */
+.hero{position:relative;overflow:hidden;isolation:isolate;display:grid;gap:8px;margin-top:4px;
+  background:linear-gradient(160deg,var(--hero-a),var(--hero-b));color:var(--hero-ink);
+  border-radius:50% 50% 22px 22px / 76px 76px 22px 22px;padding:58px 22px 22px}
+.hero::before{content:"";position:absolute;inset:7px;pointer-events:none;
+  border:1px solid color-mix(in srgb,var(--gold) 70%,transparent);border-radius:50% 50% 16px 16px / 70px 70px 16px 16px}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--hero-ink);opacity:.07;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='black' stroke-width='1'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate(45 28 28)'/%3E%3Cpath d='M0 0L11 11M56 0L45 11M0 56L11 45M56 56L45 45M28 0V11M28 45V56M0 28H11M45 28H56'/%3E%3C/g%3E%3C/svg%3E") 0 0/56px 56px repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='black' stroke-width='1'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate(45 28 28)'/%3E%3Cpath d='M0 0L11 11M56 0L45 11M0 56L11 45M56 56L45 45M28 0V11M28 45V56M0 28H11M45 28H56'/%3E%3C/g%3E%3C/svg%3E") 0 0/56px 56px repeat}
+.eyebrow{font:600 12px var(--font-ui);letter-spacing:.07em;text-transform:uppercase;color:var(--hero-sub);text-align:center}
+.hero-t{font-family:var(--font-ar);direction:rtl;text-align:center;font-size:calc(2.1rem*var(--ar-scale));line-height:1.6;font-weight:700}
+.hero-sub{color:var(--hero-sub);text-align:center;font-size:15.5px}
+.hero-row{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--hero-sub);font-variant-numeric:tabular-nums;margin-top:4px}
+.hero .bar{background:color-mix(in srgb,var(--hero-ink) 16%,transparent)}
+.hero .bar i{background:var(--hero-ink)}
+.hero .btn{background:var(--hero-ink);color:var(--hero-a);margin-top:6px}
+
+/* ============ HOME ============ */
+.row{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:18px}
+.row .n{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font:700 16px var(--font-ui);font-variant-numeric:tabular-nums}
+.row .tx{display:grid;gap:1px;min-width:0}
+.row .tx b{font-weight:600}
+.row .tx small{color:var(--muted);font-size:13.5px}
+.row > svg{width:18px;height:18px;margin-left:auto;color:var(--muted);flex:none}
+.list{display:grid;border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
+.li{display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:12px;padding:12px 16px;border:0;background:none;text-align:left;width:100%}
+.li + .li{border-top:1px solid var(--line)}
+.li .num{font:600 15px var(--font-ui);color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}
+.li .tx{display:grid;min-width:0}
+.li .tx b{font-weight:600;font-size:15px}
+.li .tx .w{font-size:calc(1.1rem*var(--ar-scale));color:var(--muted);text-align:left;line-height:1.7}
+.li .st{font-size:12.5px;color:var(--muted)}
+.li .st.ok{color:var(--ok)}
+.li.soon{color:var(--muted);cursor:default}
+.li.soon .tx b{font-weight:500}
+.sec-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:10px}
+.sec-row .h2{margin:0}
+
+/* ============ LESSON ============ */
+.stepper{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--top-h));z-index:20;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+  margin-inline:-16px;padding:2px 16px 12px;background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.st{display:grid;gap:6px;border:0;background:none;padding:6px 0 0;text-align:left;font:500 12.5px var(--font-ui);color:var(--muted)}
+.st i{display:block;height:4px;border-radius:2px;background:var(--line)}
+.st.seen i{background:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.st.on{color:var(--ink);font-weight:600}
+.st.on i{background:var(--accent)}
+.intro{display:grid;gap:4px}
+.demo{font-size:13px;color:var(--muted);padding:10px 12px;border-radius:12px;border:1px dashed var(--line)}
+.para{display:grid;gap:12px;padding:20px 18px 14px}
+.src{font-size:calc(1.6rem*var(--ar-scale));line-height:2.1;text-align:right}
+.term{border-bottom:2px dotted color-mix(in srgb,var(--accent) 70%,transparent);cursor:pointer}
+.term:hover{background:var(--accent-soft)}
+.disc{justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:34px;padding-inline:10px 12px;border:0;border-radius:10px;background:transparent;color:var(--accent);font:600 14px var(--font-ui);margin-inline:-10px}
+.disc svg{width:16px;height:16px;transition:transform .2s}
+.disc[aria-expanded="true"] svg{transform:rotate(90deg)}
+.pane{display:grid;gap:12px;padding-top:12px;border-top:1px solid var(--line)}
+.gl{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;align-items:baseline;font-size:14px;color:var(--muted)}
+.gl .w{font-size:calc(1.25rem*var(--ar-scale));text-align:right;color:var(--ink);line-height:1.7}
+.lead{font-size:17px;line-height:1.6}
+.fam{display:grid;gap:16px}
+.core{display:flex;justify-content:center;gap:10px;direction:rtl}
+.core div{display:grid;justify-items:center;gap:2px}
+.core span{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font:700 calc(32px*var(--ar-scale))/1 var(--font-ar)}
+.core small{font:500 calc(16px*var(--ar-scale)) var(--font-ar);color:var(--muted)}
+.fc1{background:color-mix(in srgb,var(--r1) 13%,transparent);color:var(--r1)}
+.fc2{background:color-mix(in srgb,var(--r2) 13%,transparent);color:var(--r2)}
+.fc3{background:color-mix(in srgb,var(--r3) 13%,transparent);color:var(--r3)}
+.forms{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.form{padding:6px 6px 10px;border-radius:12px;background:var(--surface-2);text-align:center;display:grid}
+.form .w{font-size:calc(1.6rem*var(--ar-scale));line-height:1.75}
+.form small{font-size:12.5px;color:var(--muted);line-height:1.3}
+.q3{display:grid;gap:18px}
+.q-h{display:flex;gap:10px;align-items:baseline;font-weight:600}
+.qn{flex:none;font:600 15px var(--font-d);color:var(--gold)}
+.q-a{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.pill{padding:8px 12px 10px;border-radius:12px;background:var(--surface-2);display:grid;gap:0}
+.pill small{font-size:12.5px;color:var(--muted)}
+.pill b{font:700 calc(1.3rem*var(--ar-scale))/1.6 var(--font-ar);direction:rtl;text-align:right}
+.pill .w{direction:rtl;text-align:right;font-size:calc(1.15rem*var(--ar-scale));line-height:1.5}
+.passport{padding:14px;border-radius:14px;background:var(--accent-soft);text-align:center;display:grid;gap:2px}
+.passport .ar{font-size:calc(1.5rem*var(--ar-scale));color:var(--accent);font-weight:700;line-height:1.7}
+.passport small{color:var(--muted);font-size:13.5px}
+details.extra{border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));border-radius:18px;padding:0 18px}
+details.extra summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:56px;cursor:pointer;font-weight:600}
+details.extra summary::-webkit-details-marker{display:none}
+details.extra summary svg{width:16px;height:16px;margin-left:auto;color:var(--muted);transition:transform .2s;flex:none}
+details.extra[open] summary svg{transform:rotate(90deg)}
+.extra-b{display:grid;gap:12px;padding-bottom:18px}
+.mz-row{display:grid;grid-template-columns:1fr 28px 1fr;align-items:center;direction:rtl;text-align:center;border-bottom:1px solid var(--line)}
+.mz-row:last-child{border-bottom:0}
+.mz-row .w{font-size:calc(1.5rem*var(--ar-scale));line-height:1.7}
+.mz-row em{font-style:normal;color:var(--muted)}
+.lnav{display:flex;gap:8px;margin-top:10px}
+.lnav .btn:last-child{flex:1}
+
+/* worked */
+.wk{display:grid;gap:14px}
+.wk-word{text-align:center;font-size:calc(2.8rem*var(--ar-scale));line-height:1.5}
+.wk-ru{text-align:center;color:var(--muted);margin-top:-12px}
+.wk-steps{display:grid;gap:6px}
+.wk-step{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;padding:11px 14px;border-radius:12px;background:var(--surface-2)}
+.wk-step .q{font-weight:600;font-size:14.5px}
+.wk-step .a{grid-column:1;color:var(--muted);font-size:14px}
+.wk-step .tg{grid-row:1/3;grid-column:2;font:700 calc(1.3rem*var(--ar-scale))/1.4 var(--font-ar);color:var(--accent)}
+.wk-step.pending{opacity:.45}
+.wk-step.ok{background:var(--ok-soft)} .wk-step.bad{background:var(--bad-soft)}
+.wk-opts{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chipb{min-height:36px;padding-inline:14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font:500 14px var(--font-ui)}
+.wk-res{text-align:center;padding:10px;border-radius:12px;background:var(--accent-soft);color:var(--accent);font-size:calc(1.45rem*var(--ar-scale));font-weight:700;line-height:1.7}
+
+/* practice */
+.px{display:grid;gap:14px}
+.px-head{display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.px-q{font:600 17px/1.45 var(--font-ui)}
+.px-word{text-align:center;font-size:calc(2.6rem*var(--ar-scale));line-height:1.5}
+.px-word + small{display:block;text-align:center;color:var(--muted);margin-top:-12px}
+.opts{display:grid;gap:8px}
+.opt{min-height:50px;padding:10px 14px;text-align:left;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font:500 15px/1.4 var(--font-ui)}
+.opt.arx{text-align:center;font-family:var(--font-ar);font-size:calc(1.4rem*var(--ar-scale));line-height:1.5}
+.opt:not([disabled]):hover{border-color:var(--accent)}
+.opt[disabled]{cursor:default}
+.opt.ok{border-color:var(--ok);background:var(--ok-soft)}
+.opt.bad{border-color:var(--bad);background:var(--bad-soft)}
+.two{grid-template-columns:1fr 1fr}
+.fb{padding:12px 14px;border-radius:12px;font-size:14.5px}
+.fb.ok{background:var(--ok-soft)} .fb.bad{background:var(--bad-soft)}
+.fb b{font-weight:700}
+.fb.ok b{color:var(--ok)} .fb.bad b{color:var(--bad)}
+.dots{display:flex;gap:5px;justify-content:center}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.dots i.ok{background:var(--ok)} .dots i.bad{background:var(--bad)} .dots i.cur{background:var(--accent)}
+.letters{display:flex;justify-content:center;gap:8px;direction:rtl;flex-wrap:wrap}
+.lt{width:56px;height:62px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font:700 calc(28px*var(--ar-scale))/1 var(--font-ar)}
+.lt.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.lt.ok{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.lt.bad{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.lt.miss{border-style:dashed;border-color:var(--ok)}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.match > div{display:grid;gap:8px;align-content:start}
+.mi{min-height:52px;padding:8px 10px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font:500 14px/1.3 var(--font-ui)}
+.mi.arx{font:700 calc(1.25rem*var(--ar-scale))/1.4 var(--font-ar)}
+.mi.sel{border-color:var(--accent);background:var(--accent-soft)}
+.mi.done{border-color:var(--ok);background:var(--ok-soft);opacity:.65;cursor:default}
+.mi.shake{animation:shake .35s;border-color:var(--bad)}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.px-res{text-align:center;display:grid;gap:10px;justify-items:center;padding-block:8px}
+.px-res .big{font:600 46px/1 var(--font-d);font-variant-numeric:tabular-nums}
+.row2{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+
+/* review */
+.rv-top{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.fcard{width:100%;min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;color:var(--ink)}
+.fc-l{font:600 11.5px var(--font-ui);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.fc-ar{font-size:calc(2.4rem*var(--ar-scale));line-height:1.6}
+.fc-ru{font:600 21px/1.35 var(--font-ui);max-width:24ch}
+.fc-q{color:var(--muted);font-size:14.5px}
+.fc-sep{width:40px;height:1px;background:var(--gold);opacity:.6;margin-block:4px}
+.fc-d{color:var(--muted);font-size:14.5px;max-width:38ch}
+.fc-ex{font-size:calc(1.5rem*var(--ar-scale))}
+.fc-hint{color:var(--muted);font-size:13.5px;margin-top:8px}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.grade button{min-height:60px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:600 14.5px var(--font-ui)}
+.grade small{font:500 12px var(--font-ui);color:var(--muted)}
+.grade .g0{border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
+.grade .g2{border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.rv-done{text-align:center;display:grid;gap:10px;justify-items:center;padding-block:40px 20px}
+.rv-done .mark{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;background:var(--ok-soft);color:var(--ok)}
+.rv-done .mark svg{width:30px;height:30px}
+.linkbtn{border:0;background:none;color:var(--muted);font-size:13.5px;text-decoration:underline;text-underline-offset:3px;padding:6px}
+
+/* conjugator */
+.ctrl{display:grid;gap:10px}
+.rchip{flex:none;min-height:42px;padding:0 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font:700 calc(1.25rem*var(--ar-scale))/1 var(--font-ar)}
+.rchip.ru{font:500 14px var(--font-ui);color:var(--muted)}
+.rchip.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.inrow{display:flex;gap:8px}
+.inrow input{flex:1;min-width:0;min-height:48px;padding-inline:14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:500 calc(20px*var(--ar-scale)) var(--font-ar);direction:rtl}
+.inrow input::placeholder{font:400 14px var(--font-ui);color:var(--muted)}
+.err{font-size:13.5px;color:var(--bad)}
+.cj-hero{text-align:center;display:grid;gap:0;margin-top:6px}
+.cj-big{font-size:calc(2.3rem*var(--ar-scale));line-height:1.6}
+.cj-big .dash{color:var(--muted);margin-inline:10px}
+.cj-meta{font-size:13.5px;color:var(--muted)}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);direction:rtl;text-align:center;font-size:11.5px;color:var(--muted);gap:6px}
+.cols span b{display:block;font:700 calc(1rem*var(--ar-scale))/1.5 var(--font-ar);color:var(--ink)}
+.cg-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:6px}
+.cg-h .w{font-size:calc(1.2rem*var(--ar-scale));font-weight:700}
+.cg-h small{color:var(--muted);font-size:12.5px}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;direction:rtl}
+.cell{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 4px 8px;text-align:center;display:flex;flex-direction:column;min-width:0}
+.cell > .w{font-size:calc(1.45rem*var(--ar-scale));line-height:1.75;overflow-wrap:anywhere}
+.cell small{font-size:11.5px;color:var(--muted);direction:ltr;line-height:1.3}
+.cell small .w{font-size:1.2em}
+.cell.span2{grid-column:span 2}
+
+/* reference tables */
+.tbl-wrap{overflow-x:auto}
+.rtable{width:100%;border-collapse:collapse;direction:rtl;font-size:14px}
+.rtable th{font:600 11.5px var(--font-ui);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
+.rtable td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.rtable tr:last-child td{border-bottom:0}
+.rtable .w{font-size:calc(1.35rem*var(--ar-scale));line-height:1.7;white-space:nowrap}
+.rtable td.ru{direction:ltr;text-align:left;color:var(--muted);font-size:13.5px}
+.rtable td.n{color:var(--muted);font-variant-numeric:tabular-nums;width:1%}
+
+/* sheet */
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(8,14,18,.42);animation:fade .2s}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:51;max-width:600px;margin-inline:auto;max-height:86vh;overflow:auto;
+  background:var(--surface);color:var(--ink);border-radius:24px 24px 0 0;padding:8px 18px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.2);animation:up .25s ease;display:grid;gap:14px}
+@keyframes up{from{transform:translateY(24px);opacity:.6}}
+@keyframes fade{from{opacity:0}}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:4px auto 2px}
+.sheet h3{font:600 20px var(--font-d)}
+.arsize{display:flex;align-items:center;gap:12px}
+.arsize input{flex:1;accent-color:var(--accent)}
+.sample{font-size:calc(1.5rem*var(--ar-scale));text-align:center;padding:10px;border-radius:12px;background:var(--surface-2);line-height:1.9}
+.term-sh{display:grid;gap:6px;text-align:center;padding-block:6px}
+.term-sh .ar{font-size:calc(2.3rem*var(--ar-scale));line-height:1.6}
+.term-sh .ru{font:600 18px var(--font-ui)}
+.term-sh p{color:var(--muted);max-width:44ch;margin-inline:auto}
+
+/* explanation blocks */
+.xcard{display:grid;gap:14px}
+.sub{font:600 15px var(--font-ui)}
+.rules{display:grid;gap:14px}
+.rule{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start}
+.rule > .qn{padding-top:1px}
+.rule p + p,.rule p + .flow,.rule .flow + p{margin-top:6px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 10px;direction:rtl;font-size:calc(1.45rem*var(--ar-scale));line-height:1.8}
+.flow i{font-style:normal;color:var(--muted);font-size:15px}
+.flow.sm{font-size:calc(1.25rem*var(--ar-scale));justify-content:flex-start}
+.callout{padding:12px 14px;border-radius:14px;background:var(--surface-2);font-size:15px;display:grid;gap:6px}
+.callout b{font-weight:600}
+.pfx{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;direction:rtl}
+.pfx div{padding:8px 6px 10px;border-radius:12px;background:var(--surface-2);text-align:center;display:grid;gap:2px}
+.pfx .w{font-size:calc(1.9rem*var(--ar-scale));line-height:1.4;color:var(--accent);font-weight:700}
+.pfx small{font-size:12px;color:var(--muted);line-height:1.3}
+.gut{display:flex;justify-content:center;gap:6px;direction:rtl;flex-wrap:wrap}
+.gut span{width:44px;height:48px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font:700 calc(24px*var(--ar-scale))/1 var(--font-ar)}
+.st3 td .w{font-size:calc(1.2rem*var(--ar-scale))}
+.mz-t td small{display:block;color:var(--muted);font-size:12.5px;line-height:1.3}
+.mz-t td .w + small{margin-top:-2px}
+.mz-t tr.grp td{padding-top:14px;font:600 11.5px var(--font-ui);letter-spacing:.06em;text-transform:uppercase;color:var(--gold);direction:ltr;text-align:left;border-bottom:1px solid var(--line)}
+.wk-wr{text-align:center;font:600 22px/1.3 var(--font-ui);padding-block:10px}
+.px-t{text-align:center;font:600 21px/1.35 var(--font-ui);padding-block:14px}
+.miss-note{font-size:13.5px;color:var(--muted);padding:10px 12px;border-radius:12px;border:1px dashed color-mix(in srgb,var(--gold) 55%,var(--line))}
+.src .br{color:var(--muted);font-size:.85em}
+.para-h{font:700 calc(1.15rem*var(--ar-scale))/1.6 var(--font-ar);color:var(--gold);direction:rtl;text-align:right}
+.li.next .num{color:var(--accent)}
+.cj-part{color:var(--muted);font-size:.8em;margin-left:6px}
+
+@media (min-width:540px){ .hero{padding:64px 30px 26px} }
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<div class="app" id="app">
+  <header class="top" id="top"></header>
+  <main id="view"></main>
+</div>
+<nav class="tabs" id="tabs" aria-label="Разделы"></nav>
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Панель" hidden></div>
+
+<script>
+/* ============ HELPERS ============ */
+const $ = (s, el = document) => el.querySelector(s);
+const col = s => s.replace(/\[([1-4])([^\]]+)\]/g, '<span class="r$1">$2</span>');
+const ar = (s, cls = '') => `<span class="w ${cls}" dir="rtl" lang="ar">${col(s)}</span>`;
+const a = s => ar(s, 'inl');
+const T = (k, s) => `<span class="term" data-term="${k}" role="button" tabindex="0">${s}</span>`;
+const BR = s => `<span class="br">${s}</span>`;
+const shuffle = arr => { const r = arr.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
+const plural = (n, f) => { const m10 = n % 10, m100 = n % 100; return f[(m10 === 1 && m100 !== 11) ? 0 : (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) ? 1 : 2]; };
+const hasAr = s => /[؀-ۿ]/.test(s);
+const mix = s => s.includes('<') ? s : s.replace(/[؀-ۿ](?:[؀-ۿ\s]*[؀-ۿ])?/g, m => a(m));
+
+const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="5.5" y="5.5" width="13" height="13"/><rect x="5.5" y="5.5" width="13" height="13" transform="rotate(45 12 12)"/><circle cx="12" cy="12" r="2.6"/></g></svg>';
+const ic = d => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const I = {
+  course: ic('<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v14H6.5A1.5 1.5 0 0 0 5 18.5zM5 18.5A1.5 1.5 0 0 0 6.5 20H19"/>'),
+  review: ic('<path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 4v4h4M4 13a8 8 0 0 0 14.3 4.9L20 16M20 20v-4h-4"/>'),
+  ref: ic('<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M10 9.5v10"/>'),
+  sliders: ic('<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>'),
+  back: ic('<path d="M15 5l-7 7 7 7"/>'),
+  chev: ic('<path d="M9 5l7 7-7 7"/>'),
+  check: ic('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+};
+
+/* building blocks for explanations */
+const tb = (head, rows, cls = '') => `<div class="tbl-wrap"><table class="rtable ${cls}"><thead><tr>${head.map((h, i) => `<th${rows[0][i] && (rows[0][i].startsWith('!') || !hasAr(rows[0][i])) ? ' style="text-align:left"' : ''}><bdi dir="ltr">${h}</bdi></th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => c.startsWith('!') ? `<td class="ru">${c.slice(1)}</td>` : hasAr(c) ? `<td>${ar(c)}</td>` : `<td class="ru">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const flow = (items, cls = '') => `<div class="flow ${cls}">${items.map(x => ar(x)).join('<i>←</i>')}</div>`;
+const rules = list => `<div class="rules">${list.map((r, i) => `<div class="rule"><span class="qn">${i + 1}</span><div>${r}</div></div>`).join('')}</div>`;
+const legend = () => `<div class="legend"><span><i class="c1"></i>1-я корневая (ف)</span><span><i class="c2"></i>2-я (ع)</span><span><i class="c3"></i>3-я (ل)</span><span><i class="c0"></i>добавочные</span></div>`;
+
+/* ============ STATE ============ */
+const LS = 'mizan.v3';
+const load = () => { try { return JSON.parse(localStorage.getItem(LS)) || {}; } catch (e) { return {}; } };
+const S = Object.assign({ theme: 'auto', ar: 1, at: {}, max: {}, cards: {}, done: {}, last: 1 }, load());
+const persist = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
+const hostTheme = document.documentElement.getAttribute('data-theme');
+function applyLook() {
+  const r = document.documentElement;
+  if (S.theme === 'auto') { hostTheme ? r.setAttribute('data-theme', hostTheme) : r.removeAttribute('data-theme'); }
+  else r.setAttribute('data-theme', S.theme);
+  r.style.setProperty('--ar-scale', S.ar);
+}
+
+/* ============ CONJUGATION ENGINE ============ */
+const V = { a: 'َ', u: 'ُ', i: 'ِ', o: 'ْ' };
+const BABS = [
+  { id: 'nasara', m: 'a', u: 'u', ex: 'نصر', ru: 'помогать' },
+  { id: 'daraba', m: 'a', u: 'i', ex: 'ضرب', ru: 'бить' },
+  { id: 'fataha', m: 'a', u: 'a', ex: 'فتح', ru: 'открывать' },
+  { id: 'samia', m: 'i', u: 'a', ex: 'سمع', ru: 'слышать' },
+  { id: 'hasiba', m: 'i', u: 'i', ex: 'حسب', ru: 'считать, полагать' },
+  { id: 'karuma', m: 'u', u: 'u', ex: 'كرم', ru: 'быть щедрым' },
+];
+const M_END = [['a', ''], ['a', 'ا'], ['u', 'وا'], ['a', 'تْ'], ['a', 'تَا'], ['o', 'نَ'], ['o', 'تَ'], ['o', 'تُمَا'], ['o', 'تُمْ'], ['o', 'تِ'], ['o', 'تُمَا'], ['o', 'تُنَّ'], ['o', 'تُ'], ['o', 'نَا']];
+const U_PRE = ['يَ', 'يَ', 'يَ', 'تَ', 'تَ', 'يَ', 'تَ', 'تَ', 'تَ', 'تَ', 'تَ', 'تَ', 'أَ', 'نَ'];
+const U_END = [['u', ''], ['a', 'انِ'], ['u', 'ونَ'], ['u', ''], ['a', 'انِ'], ['o', 'نَ'], ['u', ''], ['a', 'انِ'], ['u', 'ونَ'], ['i', 'ينَ'], ['a', 'انِ'], ['o', 'نَ'], ['u', ''], ['u', '']];
+const N_END = [['a', ''], ['a', 'ا'], ['u', 'وا'], ['a', ''], ['a', 'ا'], ['o', 'نَ'], ['a', ''], ['a', 'ا'], ['u', 'وا'], ['i', 'ي'], ['a', 'ا'], ['o', 'نَ'], ['a', ''], ['a', '']];
+const J_END = N_END.map((e, k) => [0, 3, 6, 12, 13].includes(k) ? ['o', ''] : e);
+const PRON = [['هُوَ', 'он'], ['هُمَا', 'они двое'], ['هُمْ', 'они'], ['هِيَ', 'она'], ['هُمَا', 'они две'], ['هُنَّ', 'они (ж.)'], ['أَنْتَ', 'ты'], ['أَنْتُمَا', 'вы двое'], ['أَنْتُمْ', 'вы'], ['أَنْتِ', 'ты (ж.)'], ['أَنْتُمَا', 'вы две'], ['أَنْتُنَّ', 'вы (ж.)'], ['أَنَا', 'я'], ['نَحْنُ', 'мы']];
+const GROUPS = [
+  { h: 'الْغَائِبُ', ru: '3-е лицо', rows: [[0, 1, 2], [3, 4, 5]] },
+  { h: 'الْمُخَاطَبُ', ru: '2-е лицо', rows: [[6, 7, 8], [9, 10, 11]] },
+  { h: 'الْمُتَكَلِّمُ', ru: '1-е лицо', rows: [[12, 13]] },
+];
+const G2 = [GROUPS[1]];
+/* t: m прошедшее, u мудари‘, n после لَنْ, j после لَمْ, a повеление; pv: страдательный */
+function form(root, bab, t, k, pv) {
+  const [f, c, l] = root;
+  if (t === 'm') { const [e, s] = M_END[k]; return pv ? `[1${f}ُ][2${c}ِ][3${l}${V[e]}]${s}` : `[1${f}َ][2${c}${V[bab.m]}][3${l}${V[e]}]${s}`; }
+  const [e, s] = (t === 'u' ? U_END : t === 'n' ? N_END : J_END)[k];
+  const cv = pv ? 'a' : bab.u;
+  if (t === 'a') return k >= 6 && k <= 11 ? `${bab.u === 'u' ? 'اُ' : 'اِ'}[1${f}ْ][2${c}${V[cv]}][3${l}${V[e]}]${s}` : 'لِ' + form(root, bab, 'j', k, pv);
+  const pre = pv ? U_PRE[k].replace('َ', 'ُ') : U_PRE[k];
+  return `${pre}[1${f}ْ][2${c}${V[cv]}][3${l}${V[e]}]${s}`;
+}
+const MZ = ['ف', 'ع', 'ل'];
+const NSR = ['ن', 'ص', 'ر'];
+const babById = id => BABS.find(b => b.id === id);
+function paradigm(fn, groups = GROUPS) {
+  const cells = (row, last) => row.map((k, j) => `<div class="cell ${last && j === 1 ? 'span2' : ''}">${ar(fn(k))}<small>${ar(PRON[k][0])} · ${PRON[k][1]}</small></div>`).join('');
+  return `<div class="cols"><span><b>مُفْرَدٌ</b><bdi dir="ltr">ед. ч.</bdi></span><span><b>مُثَنًّى</b><bdi dir="ltr">дв. ч.</bdi></span><span><b>جَمْعٌ</b><bdi dir="ltr">мн. ч.</bdi></span></div>
+  ${groups.map(g => `<div class="cg-h">${ar(g.h)}<small>${g.ru}</small></div>${g.rows.map(r => `<div class="cgrid">${cells(r, r.length === 2)}</div>`).join('')}`).join('')}`;
+}
+
+/* ============ REFERENCE TABLES (used in lessons too) ============ */
+const BOOK_BABS = [
+  ['[1خَ][2رَ][3جَ] – يَ[1خْ][2رُ][3جُ]', '[1خُ][2رُ]و[3جٌ]', 'выходить'],
+  ['[1ضَ][2رَ][3بَ] – يَ[1ضْ][2رِ][3بُ]', '[1ضَ][2رْ][3بٌ]', 'бить'],
+  ['[1سَ][2أَ][3لَ] – يَ[1سْ][2أَ][3لُ]', '[1سُ][2ؤَ]ا[3لٌ]', 'спрашивать'],
+  ['[1عَ][2لِ][3مَ] – يَ[1عْ][2لَ][3مُ]', '[1عِ][2لْ][3مٌ]', 'знать'],
+  ['[1حَ][2سِ][3بَ] – يَ[1حْ][2سِ][3بُ]', '[1حِ][2سَ]ا[3بٌ]', 'считать, полагать'],
+  ['[1حَ][2سُ][3نَ] – يَ[1حْ][2سُ][3نُ]', '[1حُ][2سْ][3نٌ]', 'быть красивым'],
+];
+const tblBabs = () => `<div class="tbl-wrap"><table class="rtable mz-t"><thead><tr><th>№</th><th>Вес</th><th>Пример и масдар</th></tr></thead><tbody>${BABS.map((b, i) => `<tr><td class="n">${i + 1}</td><td>${ar(form(MZ, b, 'm', 0) + ' – ' + form(MZ, b, 'u', 0))}</td><td>${ar(BOOK_BABS[i][0])}<small>${ar(BOOK_BABS[i][1])} · ${BOOK_BABS[i][2]}</small></td></tr>`).join('')}</tbody></table></div>`;
+
+const MAZID = [
+  ['Трёхбуквенный +1 буква: 4 буквы в прошедшем'],
+  ['أَفْعَلَ', 'أَ[1كْ][2رَ][3مَ]', 'إِ[1كْ][2رَ]ا[3مٌ]', 'почтить', `${a('أَ')} в начале`],
+  ['فَعَّلَ', '[1فَ][2رَّ][3حَ]', 'تَ[1فْ][2رِ]ي[3حٌ]', 'обрадовать', 'удвоение ع'],
+  ['فَاعَلَ', '[1قَ]ا[2تَ][3لَ]', 'مُ[1قَ]ا[2تَ][3لَ]ةٌ، [1قِ][2تَ]ا[3لٌ]', 'сражаться', `${a('ا')} после ف`],
+  ['Трёхбуквенный +2: 5 букв'],
+  ['تَفَعَّلَ', 'تَ[1كَ][2سَّ][3رَ]', 'تَ[1كَ][2سُّ][3رٌ]', 'разбиться', `${a('تَ')} + удвоение ع`],
+  ['تَفَاعَلَ', 'تَ[1بَ]ا[2عَ][3دَ]', 'تَ[1بَ]ا[2عُ][3دٌ]', 'отдалиться', `${a('تَ')} + ${a('ا')}`],
+  ['اِنْفَعَلَ', 'اِنْ[1قَ][2طَ][3عَ]', 'اِنْ[1قِ][2طَ]ا[3عٌ]', 'прерваться', `${a('اِ')} + ${a('نْ')}`],
+  ['اِفْتَعَلَ', 'اِ[1جْ]تَ[2مَ][3عَ]', 'اِ[1جْ]تِ[2مَ]ا[3عٌ]', 'собраться', `${a('اِ')} + ${a('تَ')} после ف`],
+  ['اِفْعَلَّ', 'اِ[1حْ][2مَ][3رَّ]', 'اِ[1حْ][2مِ][3رَ]ا[3رٌ]', 'покраснеть', `${a('اِ')} + удвоение ل`],
+  ['Трёхбуквенный +3: 6 букв'],
+  ['اِسْتَفْعَلَ', 'اِسْتَ[1خْ][2رَ][3جَ]', 'اِسْتِ[1خْ][2رَ]ا[3جٌ]', 'извлечь', `${a('اِ')} + ${a('سْ')} + ${a('تَ')}`],
+  ['اِفْعَالَّ', 'اِ[1حْ][2مَ]ا[3رَّ]', 'اِ[1حْ][2مِ]ي[3رَ]ا[3رٌ]', 'сильно покраснеть', `${a('اِ')} + ${a('ا')} + удвоение ل`],
+  ['اِفْعَوْعَلَ', 'اِ[1عْ][2شَ]وْشَ[3بَ]', 'اِ[1عْ][2شِ]ي[2شَ]ا[3بٌ]', 'густо зарасти травой', `${a('اِ')} + ${a('وْ')} + повтор ع`],
+  ['اِفْعَنْلَلَ', 'اِ[1قْ][2عَ]نْ[3سَ]سَ', 'اِ[1قْ][2عِ]نْ[3سَ]ا[3سٌ]', 'отпрянуть, упереться', `${a('اِ')} + ${a('نْ')} + повтор ل`],
+  ['اِفْعَنْلَى', 'اِ[1سْ][2لَ]نْ[3قَ]ى', 'اِ[1سْ][2لِ]نْ[3قَ]اءٌ', 'лечь на спину', `${a('اِ')} + ${a('نْ')} + ${a('ى')}`],
+  ['Четырёхбуквенный с добавками'],
+  ['تَفَعْلَلَ', 'تَ[1دَ][2حْ][3رَ][4جَ]', 'تَ[1دَ][2حْ][3رُ][4جٌ]', 'скатиться', `${a('تَ')}`],
+  ['اِفْعَنْلَلَ', 'اِ[1حْ][2رَ]نْ[3جَ][4مَ]', 'اِ[1حْ][2رِ]نْ[3جَ]ا[4مٌ]', 'столпиться', `${a('اِ')} + ${a('نْ')}`],
+  ['اِفْعَلَلَّ', 'اِ[1قْ][2شَ][3عَ][4رَّ]', 'اِ[1قْ][2شِ][3عْ][4رَ]ا[4رٌ]', 'содрогнуться', `${a('اِ')} + удвоение последней`],
+];
+const tblMazid = () => `<div class="tbl-wrap"><table class="rtable mz-t"><thead><tr><th>Вес</th><th>Пример и масдар</th><th style="text-align:left">Что добавлено</th></tr></thead><tbody>${MAZID.map(r => r.length === 1
+  ? `<tr class="grp"><td colspan="3">${r[0]}</td></tr>`
+  : `<tr><td>${ar(r[0])}</td><td>${ar(r[1])}<small>${ar(r[2])}</small></td><td class="ru">${r[4]}<small>${r[3]}</small></td></tr>`).join('')}</tbody></table></div>`;
+
+const tblMizan = () => tb(['Слово', 'Вес', 'Что это'], [
+  ['[1كَ][2تَ][3بَ]', '[1فَ][2عَ][3لَ]', 'прошедшее время'],
+  ['يَ[1كْ][2تُ][3بُ]', 'يَ[1فْ][2عُ][3لُ]', 'мудари‘'],
+  ['[1كَ]ا[2تِ][3بٌ]', '[1فَ]ا[2عِ][3لٌ]', 'действительное причастие'],
+  ['مَ[1كْ][2تُ]و[3بٌ]', 'مَ[1فْ][2عُ]و[3لٌ]', 'страдательное причастие'],
+  ['[1دَ][2حْ][3رَ][4جَ]', '[1فَ][2عْ][3لَ][4لَ]', 'четырёхбуквенный'],
+]);
+
+const tblParticles = () => tb(['Частица', 'Пример', 'Значение'], [
+  ['!<b>Насб</b>: дамма → фатха, нуны выпадают', '', ''],
+  ['أَنْ', 'أَنْ يَنْصُرَ', 'что / чтобы помог'],
+  ['لَنْ', 'لَنْ يَنْصُرَ', 'никогда не поможет'],
+  ['كَيْ', 'كَيْ يَنْصُرَ', 'чтобы помог'],
+  ['إِذَنْ', 'إِذَنْ يَنْصُرَ', 'тогда поможет'],
+  ['!<b>Джазм</b>: дамма → сукун, нуны выпадают', '', ''],
+  ['لَمْ', 'لَمْ يَنْصُرْ', 'не помог'],
+  ['لَمَّا', 'لَمَّا يَنْصُرْ', 'ещё не помог'],
+  ['لِـ', 'لِيَنْصُرْ', 'пусть поможет'],
+  ['لَا', 'لَا تَنْصُرْ', 'не помогай'],
+]);
+
+/* ============ TERMS ============ */
+const TERMS = {
+  tasrif: ['التَّصْرِيفُ', 'тасриф (сарф)', 'Раздел грамматики о строении слова: как из корня получаются глаголы, масдары, причастия. Синоним — الصَّرْفُ.'],
+  lugha: ['فِي اللُّغَةِ', 'в языке', 'Словарное значение слова (مَعْنًى لُغَوِيٌّ). Часто пишут одним словом: لُغَةً.'],
+  sinaa: ['فِي الصِّنَاعَةِ', 'в науке, как термин', 'Значение, которое вкладывают учёные этой науки (مَعْنًى اِصْطِلَاحِيٌّ). Чаще говорят اِصْطِلَاحًا.'],
+  asl: ['الْأَصْلُ الْوَاحِدُ', 'одна основа', 'Исходная форма, от которой строятся остальные. У басрийцев это масдар (نَصْرٌ), у куфийцев — прошедшее время (نَصَرَ).'],
+  amthila: ['أَمْثِلَةٌ', 'формы', 'Разные формы слова: прошедшее, мудари‘, повеление, запрет и т. д.'],
+  thulathi: ['ثُلَاثِيٌّ', 'трёхбуквенный', 'Глагол с тремя корневыми буквами: كَتَبَ، ضَرَبَ، عَلِمَ.'],
+  rubai: ['رُبَاعِيٌّ', 'четырёхбуквенный', 'Глагол с четырьмя корневыми буквами: دَحْرَجَ «катить», زَلْزَلَ «сотрясать».'],
+  mujarrad: ['مُجَرَّدٌ', '«голый», без добавок', 'Все буквы глагола корневые: كَتَبَ، دَحْرَجَ.'],
+  mazid: ['مَزِيدٌ فِيهِ', 'с добавочными буквами', 'К корню добавлена одна или несколько букв из десяти: سَأَلْتُمُونِيهَا. Например, أَخْرَجَ от خَرَجَ.'],
+  salim: ['سَالِمٌ', '«здоровый»', 'В корне нет слабых букв, хамзы и удвоения: نَصَرَ، خَرَجَ.'],
+  ghayr: ['غَيْرُ سَالِمٍ', '«нездоровый»', 'Бывает трёх видов: مُعْتَلٌّ (слабая буква: وَرَدَ، رَمَى), مَهْمُوزٌ (хамза: سَأَلَ، أَكَلَ), مُضَاعَفٌ (удвоение: رَدَّ، زَلْزَلَ).'],
+  illa: ['حُرُوفُ الْعِلَّةِ', 'слабые буквы', 'Буквы و، ي، ا.'],
+  tadif: ['التَّضْعِيفُ', 'удвоение', 'Повтор одной и той же коренной буквы: مَدَّ (из مَدَدَ), زَلْزَلَ.'],
+  fal: ['الْفَاءُ وَالْعَيْنُ وَاللَّامُ', 'ф, ع, ل', 'Буквы слова فَعَلَ, которыми «взвешивают» глаголы: 1-я корневая — ف (فَاءُ الْفِعْلِ), 2-я — ع (عَيْنُ الْفِعْلِ), 3-я — ل (لَامُ الْفِعْلِ).'],
+  wazn: ['وَزْنٌ', 'вес, баб', 'Шаблон формы из букв ف ع ل. Синонимы: بَابٌ، بِنَاءٌ «порода».'],
+  halq: ['حُرُوفُ الْحَلْقِ', 'гортанные буквы', 'Шесть букв: ء ه ع ح غ خ.'],
+  shadh: ['شَاذٌّ', 'исключение', 'То, что не подчиняется общему правилу.'],
+  mutaaddi: ['مُتَعَدٍّ', 'переходный', 'Глагол, действие которого переходит на объект: ضَرَبْتُ زَيْدًا.'],
+  lazim: ['لَازِمٌ', 'непереходный', 'Глагол, которому объект не нужен: حَسُنَ زَيْدٌ. Ещё его называют قَاصِرٌ.'],
+  fail: ['الْفَاعِلُ', 'деятель', 'Тот, кто совершает действие (подлежащее).'],
+  mafulbihi: ['الْمَفْعُولُ بِهِ', 'прямое дополнение', 'Тот, на кого направлено действие: ضَرَبْتُ زَيْدًا.'],
+  jarr: ['حَرْفُ الْجَرِّ', 'предлог', 'Например بِـ، مِنْ، إِلَى.'],
+  madi: ['الْمَاضِي', 'прошедшее время', 'Глагол о действии, совершившемся в прошлом.'],
+  mfail: ['الْمَبْنِيُّ لِلْفَاعِلِ', 'действительный залог', 'Форма, в которой назван деятель. Её называют مَعْلُومٌ.'],
+  mmaful: ['الْمَبْنِيُّ لِلْمَفْعُولِ', 'страдательный залог', 'Форма, в которой деятель не назван (لَمْ يُسَمَّ فَاعِلُهُ). Её называют مَجْهُولٌ.'],
+  wasl: ['هَمْزَةُ الْوَصْلِ', 'соединительная хамза', 'Произносится только в начале речи, в потоке речи выпадает: اِسْتَخْرَجَ، اِجْتَمَعَ. Противоположность — هَمْزَةُ الْقَطْعِ, которая читается всегда: أَكْرَمَ.'],
+  darj: ['الدَّرْجُ', 'связная речь', 'Когда слово стоит не в начале, а внутри речи.'],
+  mudari: ['الْمُضَارِعُ', 'мудари‘', 'Глагол настоящего-будущего времени: يَعْلَمُ، يَجْتَهِدُ.'],
+  zawaid: ['الزَّوَائِدُ الْأَرْبَعُ', 'четыре добавочные буквы', 'Буквы мудари‘: ء ن ت ي. Их собирает слово أَنَيْتَ.'],
+  hal: ['الْحَالُ', 'настоящее время', 'Также الْحَاضِرُ.'],
+  mustaqbal: ['الْمُسْتَقْبَلُ', 'будущее время', 'Мудари‘ указывает на будущее с سَـ، سَوْفَ или словами вроде غَدًا «завтра».'],
+  hmud: ['حَرْفُ الْمُضَارَعَةِ', 'буква мудари‘', 'Одна из букв أ ن ت ي в начале мудари‘.'],
+  nafiya: ['النَّافِيَةُ', 'отрицательная', 'Частица отрицания. مَا и لَا перед мудари‘ не меняют его форму.'],
+  jazim: ['الْجَازِمُ', 'частица джазма', 'Ставит глагол в усечённую форму: لَمْ، لَمَّا، لَامُ الْأَمْرِ، لَا النَّاهِيَةُ.'],
+  nasib: ['النَّاصِبُ', 'частица насба', 'Меняет дамму на фатху: أَنْ، لَنْ، كَيْ، إِذَنْ.'],
+  lamamr: ['لَامُ الْأَمْرِ', 'лям повеления', 'لِـ перед мудари‘ в джазме: لِيَكْتُبْ «пусть напишет».'],
+  nahiya: ['لَا النَّاهِيَةُ', 'запретительное ля', 'لَا перед мудари‘ в джазме: لَا تَكْتُبْ «не пиши».'],
+  amrhadir: ['أَمْرُ الْحَاضِرِ', 'повеление собеседнику', 'Особая форма повеления для 2-го лица: اُكْتُبْ «пиши!».'],
+  marfud: ['الْأَصْلُ الْمَرْفُوضُ', 'исходная форма, вышедшая из употребления', 'Для أَكْرَمَ это تُؤَكْرِمُ: хамзу в мудари‘ опускают, но в повелении أَكْرِمْ она «вспоминается».'],
+  tanzil: ['التَّنْزِيلُ', 'Коран', 'Буквально «ниспосланное».'],
+  mutasarrif: ['مُتَصَرِّفَاتٌ', 'производные формы', 'Прошедшее, мудари‘, причастия, повеление, запрет и т. д.'],
+  tawkid: ['نُونُ التَّأْكِيدِ', 'нун усиления', 'Добавляется к глаголу для усиления: اُكْتُبَنَّ «непременно пиши!».'],
+  khafifa: ['خَفِيفَةٌ', 'лёгкая', 'Нун усиления с сукуном: اُكْتُبَنْ.'],
+  thaqila: ['ثَقِيلَةٌ', 'тяжёлая', 'Нун усиления с шаддой: اُكْتُبَنَّ.'],
+  iltiqa: ['الْتِقَاءُ السَّاكِنَيْنِ', 'встреча двух сукунов', 'Две буквы без огласовки подряд. Допустима, только если первая — буква протяжения, а вторая слита с шаддой: دَابَّةٌ.'],
+  madd: ['حَرْفُ مَدٍّ', 'буква протяжения', 'ا всегда; و после даммы; ي после касры.'],
+  mudgham: ['مُدْغَمٌ', 'слитый', 'Буква, слитая с такой же в одну с шаддой.'],
+};
+
+/* ============ LESSONS ============ */
+const LESSONS = [
+/* ---------- 1 ---------- */
+{ n: 1, ar: 'تَعْرِيفُ عِلْمِ الصَّرْفِ وَأَقْسَامُ الْفِعْلِ', ru: 'Что такое сарф. Виды глагола', short: 'Сарф и виды глагола', min: 15,
+  text: [
+    { h: 'أ – تَعْرِيفُ عِلْمِ الصَّرْفِ',
+      src: `اِعْلَمْ أَنَّ ${T('tasrif', 'التَّصْرِيفَ')} ${T('lugha', 'فِي اللُّغَةِ')}: التَّغْيِيرُ وَ${T('sinaa', 'فِي الصِّنَاعَةِ')}: تَحْوِيلُ ${T('asl', 'الْأَصْلِ الْوَاحِدِ')} إِلَى ${T('amthila', 'أَمْثِلَةٍ')} مُخْتَلِفَةٍ لِمَعَانٍ مَقْصُودَةٍ لَا تَحْصُلُ إِلَّا بِهَا.`,
+      tr: 'Знай, что «тасриф» в языке означает «изменение», а в науке — превращение одной основы в разные формы ради нужных значений, которые без этих форм не получить.',
+      gl: [['عِلْمُ الصَّرْفِ', 'наука о словообразовании, морфология'], ['تَعْرِيفٌ', 'определение'], ['تَحْوِيلٌ = تَغْيِيرٌ', 'изменение, превращение'], ['مَعْنًى لُغَوِيٌّ', 'словарное значение'], ['مَعْنًى اِصْطِلَاحِيٌّ', 'значение термина'], ['مَقْصُودٌ', 'задуманный, нужный'], ['لَا تَحْصُلُ إِلَّا بِهَا', 'получаются только через них']] },
+    { h: 'ب – أَقْسَامُ الْفِعْلِ',
+      src: `ثُمَّ الْفِعْلُ إِمَّا ${T('thulathi', 'ثُلَاثِيٌّ')}، وَإِمَّا ${T('rubai', 'رُبَاعِيٌّ')}، وَكُلُّ وَاحِدٍ مِنْهُمَا إِمَّا ${T('mujarrad', 'مُجَرَّدٌ')}، أَوْ ${T('mazid', 'مَزِيدٌ فِيهِ')}، وَكُلُّ وَاحِدٍ مِنْهَا إِمَّا ${T('salim', 'سَالِمٌ')} أَوْ ${T('ghayr', 'غَيْرُ سَالِمٍ')}.`,
+      tr: 'Далее, глагол бывает либо трёхбуквенным, либо четырёхбуквенным. Каждый из них бывает либо «голым», либо с добавочными буквами. И каждый из этих видов бывает либо «здоровым», либо «нездоровым».',
+      gl: [['ثُمَّ', 'затем, далее'], ['إِمَّا … وَإِمَّا', 'либо … либо'], ['كُلُّ وَاحِدٍ مِنْهُمَا', 'каждый из двух'], ['مِنْهَا', 'из них']] },
+    { src: `وَنَعْنِي بِالسَّالِمِ مَا سَلِمَتْ حُرُوفُهُ الْأَصْلِيَّةُ الَّتِي تُقَابَلُ ${T('fal', 'بِالْفَاءِ وَالْعَيْنِ وَاللَّامِ')} مِنْ ${T('illa', 'حُرُوفِ الْعِلَّةِ')} وَالْهَمْزَةِ وَ${T('tadif', 'التَّضْعِيفِ')}.`,
+      tr: '«Здоровым» мы называем глагол, у которого коренные буквы (те, что сопоставляются с ф, ع и ل) свободны от слабых букв, хамзы и удвоения.',
+      gl: [['نَعْنِي', 'мы имеем в виду'], ['سَلِمَ مِنْ', 'быть свободным от'], ['حُرُوفٌ أَصْلِيَّةٌ', 'коренные буквы'], ['تُقَابَلُ بِـ', 'сопоставляются с']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Простыми словами</h2>
+  <p class="lead">Сарф изучает, как из одного корня строятся разные слова. Меняется форма, и вместе с ней меняется смысл. Из трёх букв ${a('ن ص ر')} получается целая семья:</p>
+  <div class="card fam">
+    <div class="core" lang="ar"><div><span class="fc1">ن</span><small>ف</small></div><div><span class="fc2">ص</span><small>ع</small></div><div><span class="fc3">ر</span><small>ل</small></div></div>
+    <div class="forms">${[['[1نَ][2صْ][3رٌ]', 'помощь'], ['[1نَ][2صَ][3رَ]', 'помог'], ['يَ[1نْ][2صُ][3رُ]', 'помогает'], ['اُ[1نْ][2صُ][3رْ]', 'помоги!'], ['[1نَ]ا[2صِ][3رٌ]', 'помогающий'], ['مَ[1نْ][2صُ]و[3رٌ]', 'тот, кому помогли']].map(([w, r]) => `<div class="form">${ar(w)}<small>${r}</small></div>`).join('')}</div>
+    ${legend()}
+  </div>
+  <p>Коренные буквы называют по слову ${a('[1فَ][2عَ][3لَ]')} «сделал»: первая — ${a('فَاءُ الْفِعْلِ')}, вторая — ${a('عَيْنُ الْفِعْلِ')}, третья — ${a('لَامُ الْفِعْلِ')}. В ${a('[1كَ][2تَ][3بَ]')} буква ${a('[1ك]')} — это «фа», ${a('[2ت]')} — «айн», ${a('[3ب]')} — «лям». Цвета в курсе всегда такие же.</p>
+
+  <h2 class="h2">Три вопроса к любому глаголу</h2>
+  <div class="card q3">
+    ${[
+      ['Сколько корневых букв?', ['3 буквы', 'ثُلَاثِيٌّ', '[1كَ][2تَ][3بَ]'], ['4 буквы', 'رُبَاعِيٌّ', '[1دَ][2حْ][3رَ][4جَ]']],
+      ['Есть добавочные буквы?', ['нет', 'مُجَرَّدٌ', '[1نَ][2صَ][3رَ]'], ['есть', 'مَزِيدٌ فِيهِ', 'أَ[1خْ][2رَ][3جَ]']],
+      ['В корне есть слабая буква, хамза или удвоение?', ['нет', 'سَالِمٌ', '[1ضَ][2رَ][3بَ]'], ['есть', 'غَيْرُ سَالِمٍ', '[1قَ][2ا][3لَ]']],
+    ].map(([q, x, y], i) => `<div><div class="q-h"><span class="qn">${i + 1}</span>${q}</div>
+      <div class="q-a">${[x, y].map(([k, t, e]) => `<div class="pill"><small>${k}</small><b lang="ar">${t}</b>${ar(e)}</div>`).join('')}</div></div>`).join('')}
+    <div class="passport"><small>Три ответа вместе описывают глагол. Например, ${a('[1كَ][2تَ][3بَ]')}:</small><span class="ar" lang="ar">فِعْلٌ ثُلَاثِيٌّ مُجَرَّدٌ سَالِمٌ</span></div>
+  </div>
+
+  <h2 class="h2">«Нездоровый» глагол бывает трёх видов</h2>
+  <div class="card">${tb(['Вид', 'Что в корне', 'Примеры'], [
+    ['مُعْتَلٌّ', '!слабая буква ' + a('و، ي، ا'), 'وَرَدَ، يَسَرَ، رَمَى'],
+    ['مَهْمُوزٌ', 'хамза', 'سَأَلَ، أَكَلَ، قَرَأَ'],
+    ['مُضَاعَفٌ', 'удвоение', 'رَدَّ (رَدَدَ)، زَلْزَلَ'],
+  ])}</div>
+  <div class="callout"><b>Десять добавочных букв</b><span>Добавочными могут быть только буквы из слова ${a('سَأَلْتُمُونِيهَا')} «вы спросили меня о ней»: ${a('س ء ل ت م و ن ي ه ا')}. Например, ${a('أَ[1خْ][2رَ][3جَ]')} от ${a('[1خَ][2رَ][3جَ]')}, ${a('اِسْتَ[1عْ][2مَ][3لَ]')} от ${a('[1عَ][2مِ][3لَ]')}.</span></div>`,
+  wk: [
+    { w: '[1كَ][2تَ][3بَ]', ru: 'написал', res: 'فِعْلٌ ثُلَاثِيٌّ مُجَرَّدٌ سَالِمٌ', steps: [
+      { q: 'Сколько корневых букв?', a: 'Три: ك ت ب', tg: 'ثُلَاثِيٌّ' },
+      { q: 'Есть добавочные буквы?', a: 'Нет, все буквы корневые', tg: 'مُجَرَّدٌ' },
+      { q: 'Есть слабая буква, хамза или удвоение?', a: 'Нет', tg: 'سَالِمٌ' }] },
+    { w: 'أَ[1كْ][2رَ][3مَ]', ru: 'почтил', res: 'فِعْلٌ ثُلَاثِيٌّ مَزِيدٌ فِيهِ سَالِمٌ', steps: [
+      { q: 'Сколько корневых букв?', a: 'Три: ك ر م (сравните كَرُمَ «был щедрым»)', tg: 'ثُلَاثِيٌّ' },
+      { q: 'Есть добавочные буквы?', a: 'Да: أ в начале', tg: 'مَزِيدٌ فِيهِ' },
+      { q: 'Есть слабая буква, хамза или удвоение?', a: 'Нет. Хамза أ добавочная, в корне её нет', tg: 'سَالِمٌ' }] },
+    { w: '[1قَ][2ا][3لَ]', ru: 'сказал', self: true, res: 'فِعْلٌ ثُلَاثِيٌّ مُجَرَّدٌ مُعْتَلٌّ', steps: [
+      { q: 'Сколько корневых букв?', o: ['Три', 'Четыре'], ans: 0, a: 'Три: ق و ل. Алиф стоит на месте و, сравните قَوْلٌ «слово».', tg: 'ثُلَاثِيٌّ' },
+      { q: 'Есть добавочные буквы?', o: ['Нет', 'Да, алиф'], ans: 0, a: 'Нет. Алиф здесь не добавка, а изменённая корневая و.', tg: 'مُجَرَّدٌ' },
+      { q: 'Какой это вид?', o: ['سَالِمٌ', 'مُعْتَلٌّ', 'مَهْمُوزٌ'], ans: 1, a: 'В корне слабая буква و, значит глагол مُعْتَلٌّ, «нездоровый».', tg: 'مُعْتَلٌّ' }] },
+  ],
+  px: [
+    { t: 'mc', k: 'Определение', q: `Что значит слово ${a('التَّصْرِيفُ')} в языке?`, o: ['Спряжение глагола', 'Изменение', 'Корень слова', 'Правило чтения'], ans: 1,
+      why: `Словарное значение — ${a('التَّغْيِيرُ')}, «изменение». Научное шире: превращение одной основы в разные формы.` },
+    { t: 'mc', k: 'Определение', q: 'Какое определение сарфа как науки верное?', o: ['Наука об окончаниях слов в предложении', 'Превращение одной основы в разные формы ради разных значений', 'Правила произношения букв', 'Перевод слов с арабского'], ans: 1,
+      why: `Окончания слов в предложении изучает нахв (${a('النَّحْوُ')}). Сарф изучает строение самих слов.` },
+    { t: 'bin', k: 'Классификация', q: 'Трёхбуквенный или четырёхбуквенный?', o: ['ثُلَاثِيٌّ', 'رُبَاعِيٌّ'], items: [
+      { w: '[1جَ][2لَ][3سَ]', ans: 0, why: 'ج ل س — три корневые буквы.' },
+      { w: '[1دَ][2حْ][3رَ][4جَ]', ans: 1, why: 'د ح ر ج — четыре.' },
+      { w: '[1زَ][2لْ][3زَ][4لَ]', ans: 1, why: 'ز ل ز ل — четыре, хотя буквы и повторяются.' },
+      { w: '[1فَ][2تَ][3حَ]', ans: 0, why: 'ف ت ح — три.' }] },
+    { t: 'root', k: 'Корень', q: 'Отметьте корневые буквы', w: 'مَكْتُوبٌ', ru: 'написанный', L: [['م', 0], ['ك', 1], ['ت', 1], ['و', 0], ['ب', 1]],
+      why: `Корень — ك ت ب. Буквы م и و добавлены по шаблону ${a('مَفْعُولٌ')}.` },
+    { t: 'bin', k: 'Классификация', q: '«Голый» или с добавками?', o: ['مُجَرَّدٌ', 'مَزِيدٌ فِيهِ'], items: [
+      { w: '[1عَ][2لِ][3مَ]', ans: 0, why: 'Все три буквы корневые.' },
+      { w: 'أَ[1كْ][2رَ][3مَ]', ans: 1, why: 'Добавлена أ в начале.' },
+      { w: 'اِسْتَ[1غْ][2فَ][3رَ]', ans: 1, why: 'Добавлены ا س ت. Корень — غ ف ر.' },
+      { w: '[1دَ][2حْ][3رَ][4جَ]', ans: 0, why: 'Четыре корневые буквы, добавочных нет.' }] },
+    { t: 'mc', k: 'Вид глагола', q: `К какому виду относится ${a('سَأَلَ')}?`, arOpts: true, o: ['مَهْمُوزٌ', 'مُعْتَلٌّ', 'مُضَاعَفٌ', 'سَالِمٌ'], ans: 0,
+      why: `В корне ${a('س ء ل')} есть хамза, поэтому глагол ${a('مَهْمُوزٌ')}.` },
+    { t: 'match', k: 'Термины', q: 'Соедините термин и значение', P: [['ثُلَاثِيٌّ', '3 корневые буквы'], ['رُبَاعِيٌّ', '4 корневые буквы'], ['مُجَرَّدٌ', 'только корневые буквы'], ['مَزِيدٌ فِيهِ', 'есть добавочные буквы']] },
+    { t: 'mc', k: 'Мизан', q: `Какая буква — ${a('عَيْنُ الْفِعْلِ')} в ${a('جَلَسَ')}?`, arOpts: true, o: ['ل', 'ج', 'س', 'ع'], ans: 0,
+      why: `${a('[1جَ][2لَ][3سَ]')}: ج — фа, ل — айн, س — лям.` },
+    { t: 'root', k: 'Корень', q: 'Отметьте корневые буквы', w: 'نَاصِرٌ', ru: 'помогающий', L: [['ن', 1], ['ا', 0], ['ص', 1], ['ر', 1]],
+      why: `Корень — ن ص ر. Алиф добавлен по шаблону ${a('فَاعِلٌ')}.` },
+  ],
+  cards: [
+    { k: 'термин', f: 'التَّصْرِيفُ لُغَةً', b: 'изменение', d: `Словарное значение — ${a('التَّغْيِيرُ')}.` },
+    { k: 'термин', f: 'التَّصْرِيفُ اصْطِلَاحًا', b: 'превращение одной основы в разные формы', d: 'Ради значений, которые без этих форм не получить.', ex: '[1نَ][2صَ][3رَ] · يَ[1نْ][2صُ][3رُ] · [1نَ]ا[2صِ][3رٌ]' },
+    { k: 'термин', f: 'ثُلَاثِيٌّ', b: 'трёхбуквенный глагол', d: 'В корне три буквы.', ex: '[1كَ][2تَ][3بَ]' },
+    { k: 'термин', f: 'رُبَاعِيٌّ', b: 'четырёхбуквенный глагол', d: 'В корне четыре буквы.', ex: '[1دَ][2حْ][3رَ][4جَ]' },
+    { k: 'термин', f: 'مُجَرَّدٌ', b: 'без добавочных букв', d: 'Все буквы корневые.', ex: '[1نَ][2صَ][3رَ]' },
+    { k: 'термин', f: 'مَزِيدٌ فِيهِ', b: 'с добавочными буквами', d: 'К корню добавлены буквы.', ex: 'أَ[1كْ][2رَ][3مَ]' },
+    { k: 'термин', f: 'سَالِمٌ', b: '«здоровый» глагол', d: 'В корне нет слабых букв, хамзы и удвоения.', ex: '[1ضَ][2رَ][3بَ]' },
+    { k: 'термин', f: 'مُعْتَلٌّ · مَهْمُوزٌ · مُضَاعَفٌ', b: 'три вида «нездорового» глагола', d: 'Со слабой буквой, с хамзой, с удвоением.', ex: 'رَمَى · سَأَلَ · رَدَّ' },
+    { k: 'правило', ru: true, f: 'Слово, которое собирает 10 добавочных букв', bAr: true, b: 'سَأَلْتُمُونِيهَا', d: 'س ء ل ت م و ن ي ه ا' },
+    { k: 'мизан', ru: true, f: 'Как называются 1-я, 2-я и 3-я корневые буквы?', bAr: true, b: 'فَاءٌ · عَيْنٌ · لَامٌ', d: 'По буквам слова فَعَلَ.', ex: '[1كَ][2تَ][3بَ] = [1فَ][2عَ][3لَ]' },
+    { k: 'разбор', fw: '[1دَ][2حْ][3رَ][4جَ]', q: 'Опишите глагол тремя признаками', bAr: true, b: 'رُبَاعِيٌّ مُجَرَّدٌ سَالِمٌ', d: '4 корневые буквы, добавок нет, трудных букв нет.' },
+  ] },
+
+/* ---------- 2 ---------- */
+{ n: 2, ar: 'أَوْزَانُ الْأَفْعَالِ الْمُجَرَّدَةِ', ru: 'Шесть бабов «голого» глагола', short: 'Шесть бабов', min: 15,
+  text: [
+    { h: 'أ – الثُّلَاثِيُّ الْمُجَرَّدُ',
+      src: `أَمَّا الثُّلَاثِيُّ الْمُجَرَّدُ، فَإِنْ كَانَ مَاضِيهِ عَلَى ${T('wazn', 'وَزْنِ')} فَعَلَ مَفْتُوحَ الْعَيْنِ، فَمُضَارِعُهُ يَفْعُلُ أَوْ يَفْعِلُ بِضَمِّ الْعَيْنِ أَوْ كَسْرِهَا نَحْوُ: نَصَرَ يَنْصُرُ، وَضَرَبَ يَضْرِبُ،`,
+      tr: 'Что касается трёхбуквенного голого глагола: если его прошедшее на весе فَعَلَ, с фатхой на ع, то его мудари‘ — يَفْعُلُ или يَفْعِلُ, с даммой или касрой на ع. Например: نَصَرَ يَنْصُرُ «помогать» и ضَرَبَ يَضْرِبُ «бить».',
+      gl: [['وَزْنٌ، بَابٌ، بِنَاءٌ', '«порода», баб (синонимы)'], ['مَاضٍ', 'прошедшее время'], ['مُضَارِعٌ', 'настоящее-будущее время'], ['مَفْتُوحُ الْعَيْنِ', 'с фатхой на ع'], ['ضَمٌّ · كَسْرٌ · فَتْحٌ', 'дамма · касра · фатха']] },
+    { src: `وَيَجِيءُ عَلَى وَزْنِ يَفْعَلُ بِفَتْحِ الْعَيْنِ إِذَا كَانَ عَيْنُ فِعْلِهِ أَوْ لَامُهُ حَرْفًا مِنْ ${T('halq', 'حُرُوفِ الْحَلْقِ')} وَهِيَ: الْهَمْزَةُ وَالْهَاءُ وَالْعَيْنُ وَالْحَاءُ وَالْغَيْنُ وَالْخَاءُ نَحْوُ: سَأَلَ يَسْأَلُ وَمَنَعَ يَمْنَعُ وَأَبَى يَأْبَى ${T('shadh', 'شَاذٌّ')}.`,
+      tr: 'А на весе يَفْعَلُ, с фатхой на ع, он бывает, если его ع или ل — гортанная буква: хамза, ха, айн, ха, гайн, ха (ء ه ع ح غ خ). Например: سَأَلَ يَسْأَلُ «спрашивать», مَنَعَ يَمْنَعُ «запрещать». А أَبَى يَأْبَى «отказываться» — исключение.',
+      gl: [['يَجِيءُ', 'бывает, встречается'], ['حُرُوفُ الْحَلْقِ', 'гортанные буквы'], ['شَاذٌّ', 'исключение']] },
+    { src: `وَإِنْ كَانَ مَاضِيهِ عَلَى وَزْنِ فَعِلَ مَكْسُورَ الْعَيْنِ فَمُضَارِعُهُ يَفْعَلُ بِفَتْحِ الْعَيْنِ نَحْوُ: عَلِمَ يَعْلَمُ إِلَّا مَا شَذَّ مِنْ نَحْوِ حَسِبَ يَحْسِبُ وَأَخَوَاتِهِ. وَإِنْ كَانَ عَلَى وَزْنِ فَعُلَ مَضْمُومَ الْعَيْنِ فَمُضَارِعُهُ يَفْعُلُ بِضَمِّ الْعَيْنِ نَحْوُ: حَسُنَ يَحْسُنُ.`,
+      tr: 'Если прошедшее на весе فَعِلَ, с касрой на ع, то мудари‘ — يَفْعَلُ с фатхой: عَلِمَ يَعْلَمُ «знать». Исключения — حَسِبَ يَحْسِبُ «полагать» и подобные ему. Если прошедшее на весе فَعُلَ, с даммой на ع, то мудари‘ — يَفْعُلُ с даммой: حَسُنَ يَحْسُنُ «быть красивым».',
+      gl: [['مَكْسُورُ الْعَيْنِ', 'с касрой на ع'], ['مَضْمُومُ الْعَيْنِ', 'с даммой на ع'], ['إِلَّا مَا شَذَّ', 'кроме исключений'], ['أَخَوَاتُهُ', '«его сёстры», подобные ему']] },
+    { h: 'ب – الرُّبَاعِيُّ الْمُجَرَّدُ',
+      src: 'وَأَمَّا الرُّبَاعِيُّ الْمُجَرَّدُ فَهُوَ فَعْلَلَ كَدَحْرَجَ دَحْرَجَةً وَدِحْرَاجًا.',
+      tr: 'А у четырёхбуквенного голого глагола один вес — فَعْلَلَ, например دَحْرَجَ «катить», масдар دَحْرَجَةً и دِحْرَاجًا.',
+      gl: [['دَحْرَجَ', 'катить'], ['مَصْدَرٌ', 'масдар, отглагольное имя']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Простыми словами</h2>
+  <p class="lead">У «голого» трёхбуквенного глагола прошедшее и мудари‘ различаются огласовкой второй коренной буквы (ع). Пара огласовок называется бабом (${a('بَابٌ')}). Бабов шесть, и каждый глагол относится к одному из них.</p>
+  <div class="card">${tblBabs()}</div>
+  <p class="note">Масдары трёхбуквенного глагола не подчиняются общему правилу (${a('سَمَاعِيٌّ')}): их запоминают вместе с глаголом.</p>
+
+  <h2 class="h2">Как узнать огласовку мудари‘</h2>
+  <div class="card">${rules([
+    `<p><b>В прошедшем фатха</b> (${a('فَعَلَ')}) → в мудари‘ ${a('يَفْعُلُ')} или ${a('يَفْعِلُ')}, это узнают по словарю.</p><p>Если ع или ل — гортанная буква, часто ${a('يَفْعَلُ')}: ${a('[1فَ][2تَ][3حَ] – يَ[1فْ][2تَ][3حُ]')}.</p>`,
+    `<p><b>В прошедшем касра</b> (${a('فَعِلَ')}) → ${a('يَفْعَلُ')}: ${a('[1عَ][2لِ][3مَ] – يَ[1عْ][2لَ][3مُ]')}. Исключения с ${a('يَفْعِلُ')}: ${a('حَسِبَ، نَعِمَ، بَئِسَ، يَئِسَ')}.</p>`,
+    `<p><b>В прошедшем дамма</b> (${a('فَعُلَ')}) → только ${a('يَفْعُلُ')}: ${a('[1حَ][2سُ][3نَ] – يَ[1حْ][2سُ][3نُ]')}. Такие глаголы обычно обозначают качество.</p>`,
+  ])}</div>
+  <div class="callout"><b>Шесть гортанных букв</b><div class="gut" lang="ar">${['ء', 'ه', 'ع', 'ح', 'غ', 'خ'].map(x => `<span>${x}</span>`).join('')}</div><span class="note">Гортанная буква допускает фатху, но не требует её: ${a('دَخَلَ – يَدْخُلُ')}, ${a('نَكَحَ – يَنْكِحُ')}. А в ${a('أَبَى – يَأْبَى')} гортанной нет, и всё же фатха: это исключение (${a('شَاذٌّ')}).</span></div>
+
+  <h2 class="h2">Четырёхбуквенный глагол</h2>
+  <div class="card xcard">
+    <p>У «голого» четырёхбуквенного глагола только один вес.</p>
+    ${tb(['Прошедшее', 'Мудари‘', 'Масдар'], [['[1فَ][2عْ][3لَ][4لَ]', 'يُ[1فَ][2عْ][3لِ][4لُ]', '[1فَ][2عْ][3لَ][4لَ]ةٌ، [1فِ][2عْ][3لَ]ا[4لٌ]'], ['[1دَ][2حْ][3رَ][4جَ]', 'يُ[1دَ][2حْ][3رِ][4جُ]', '[1دَ][2حْ][3رَ][4جَ]ةٌ، [1دِ][2حْ][3رَ]ا[4جٌ]']])}
+    <p class="note">Масдар на ${a('فَعْلَلَةٌ')} образуют по правилу, а на ${a('فِعْلَالٌ')} — только у тех глаголов, у которых он встречается.</p>
+  </div>`,
+  wk: [
+    { w: '[1كَ][2تَ][3بَ] – يَ[1كْ][2تُ][3بُ]', ru: 'писать', res: 'مِنْ بَابِ نَصَرَ يَنْصُرُ', steps: [
+      { q: 'Огласовка ع в прошедшем?', a: 'Фатха: كَتَبَ', tg: 'فَعَلَ' },
+      { q: 'Огласовка ع в мудари‘?', a: 'Дамма: يَكْتُبُ', tg: 'يَفْعُلُ' },
+      { q: 'Какой это баб?', a: 'Первый, как نَصَرَ يَنْصُرُ', tg: '١' }] },
+    { w: '[1ذَ][2هَ][3بَ] – يَ[1ذْ][2هَ][3بُ]', ru: 'уходить', res: 'مِنْ بَابِ فَتَحَ يَفْتَحُ', steps: [
+      { q: 'Огласовка ع в прошедшем?', a: 'Фатха: ذَهَبَ', tg: 'فَعَلَ' },
+      { q: 'Огласовка ع в мудари‘?', a: 'Тоже фатха: يَذْهَبُ', tg: 'يَفْعَلُ' },
+      { q: 'Почему фатха?', a: 'ع глагола — ه, гортанная буква', tg: 'ه' }] },
+    { w: '[1جَ][2لَ][3سَ] – يَ[1جْ][2لِ][3سُ]', ru: 'сидеть', self: true, res: 'مِنْ بَابِ ضَرَبَ يَضْرِبُ', steps: [
+      { q: 'Огласовка ع в прошедшем?', o: ['фатха', 'касра', 'дамма'], ans: 0, a: 'Фатха: جَلَسَ.', tg: 'فَعَلَ' },
+      { q: 'Огласовка ع в мудари‘?', o: ['фатха', 'касра', 'дамма'], ans: 1, a: 'Касра: يَجْلِسُ.', tg: 'يَفْعِلُ' },
+      { q: 'Какой это баб?', o: ['1-й (نَصَرَ)', '2-й (ضَرَبَ)', '3-й (فَتَحَ)'], ans: 1, a: 'Второй: فَعَلَ – يَفْعِلُ.', tg: '٢' }] },
+  ],
+  px: [
+    { t: 'mc', k: 'Баб', q: `Из какого баба ${a('عَلِمَ يَعْلَمُ')}?`, arOpts: true, o: ['فَعِلَ – يَفْعَلُ', 'فَعَلَ – يَفْعُلُ', 'فَعَلَ – يَفْعَلُ', 'فَعُلَ – يَفْعُلُ'], ans: 0, why: 'Касра на ع в прошедшем, фатха в мудари‘: 4-й баб.' },
+    { t: 'mc', k: 'Правило', q: `Почему у ${a('فَتَحَ')} мудари‘ ${a('يَفْتَحُ')} с фатхой?`, o: ['Его ع или ل — гортанная буква (ح)', 'Так у всех глаголов на فَعَلَ', 'Это четырёхбуквенный глагол', 'Это исключение'], ans: 0, why: `Лям глагола — ${a('ح')}, одна из шести гортанных букв.` },
+    { t: 'bin', k: 'Гортанные', q: 'Гортанная буква или нет?', o: ['حَلْقِيٌّ', 'غَيْرُ حَلْقِيٍّ'], items: [
+      { w: 'ع', ans: 0, why: 'ع — гортанная.' }, { w: 'ق', ans: 1, why: 'ق не входит в шесть гортанных: ء ه ع ح غ خ.' },
+      { w: 'ه', ans: 0, why: 'ه — гортанная.' }, { w: 'ك', ans: 1, why: 'ك не гортанная.' }, { w: 'خ', ans: 0, why: 'خ — гортанная.' }] },
+    { t: 'mc', k: 'Правило', q: `Мудари‘ от ${a('حَسُنَ')}`, arOpts: true, o: ['يَحْسُنُ', 'يَحْسَنُ', 'يَحْسِنُ', 'يُحْسِنُ'], ans: 0, why: `При дамме в прошедшем (${a('فَعُلَ')}) мудари‘ всегда ${a('يَفْعُلُ')}.` },
+    { t: 'mc', k: 'Исключение', q: `Почему ${a('أَبَى يَأْبَى')} — исключение?`, o: ['В нём нет гортанной буквы на месте ع или ل, а мудари‘ всё равно с фатхой', 'Это четырёхбуквенный глагол', 'У него дамма в прошедшем'], ans: 0, why: `Корень ${a('ء ب ي')}: ع — ${a('ب')}, ل — ${a('ي')}. Гортанных среди них нет.` },
+    { t: 'match', k: 'Бабы', q: 'Соедините вес и пример', rAr: true, P: [['فَعِلَ – يَفْعِلُ', 'حَسِبَ – يَحْسِبُ'], ['فَعُلَ – يَفْعُلُ', 'كَرُمَ – يَكْرُمُ'], ['فَعَلَ – يَفْعَلُ', 'فَتَحَ – يَفْتَحُ'], ['فَعَلَ – يَفْعِلُ', 'ضَرَبَ – يَضْرِبُ']] },
+    { t: 'mc', k: 'Четырёхбуквенный', q: `Мудари‘ от ${a('دَحْرَجَ')}`, arOpts: true, o: ['يُدَحْرِجُ', 'يَدْحَرِجُ', 'يُدَحْرَجُ', 'يَتَدَحْرَجُ'], ans: 0, why: `Вес ${a('يُفَعْلِلُ')}: приставка с даммой, перед последней касра.` },
+    { t: 'mc', k: 'Масдар', q: `Какой масдар у ${a('دَحْرَجَ')} по правилу?`, arOpts: true, o: ['دَحْرَجَةٌ', 'تَدَحْرُجٌ', 'مُدَحْرَجٌ', 'دَحْرُوجٌ'], ans: 0, why: `${a('فَعْلَلَةٌ')} — по правилу, ${a('فِعْلَالٌ')} (${a('دِحْرَاجٌ')}) — когда встречается.` },
+  ],
+  cards: [
+    { k: 'баб', fw: '[1نَ][2صَ][3رَ] – يَ[1نْ][2صُ][3رُ]', q: 'Вес?', bAr: true, b: 'فَعَلَ – يَفْعُلُ', d: '1-й баб' },
+    { k: 'баб', fw: '[1ضَ][2رَ][3بَ] – يَ[1ضْ][2رِ][3بُ]', q: 'Вес?', bAr: true, b: 'فَعَلَ – يَفْعِلُ', d: '2-й баб' },
+    { k: 'баб', fw: '[1فَ][2تَ][3حَ] – يَ[1فْ][2تَ][3حُ]', q: 'Вес?', bAr: true, b: 'فَعَلَ – يَفْعَلُ', d: '3-й баб: ع или ل гортанная' },
+    { k: 'баб', fw: '[1عَ][2لِ][3مَ] – يَ[1عْ][2لَ][3مُ]', q: 'Вес?', bAr: true, b: 'فَعِلَ – يَفْعَلُ', d: '4-й баб' },
+    { k: 'баб', fw: '[1حَ][2سِ][3بَ] – يَ[1حْ][2سِ][3بُ]', q: 'Вес?', bAr: true, b: 'فَعِلَ – يَفْعِلُ', d: '5-й баб, редкий' },
+    { k: 'баб', fw: '[1حَ][2سُ][3نَ] – يَ[1حْ][2سُ][3نُ]', q: 'Вес?', bAr: true, b: 'فَعُلَ – يَفْعُلُ', d: '6-й баб' },
+    { k: 'правило', ru: true, f: 'Какие шесть букв гортанные?', bAr: true, b: 'ء ه ع ح غ خ', d: 'حُرُوفُ الْحَلْقِ' },
+    { k: 'правило', ru: true, f: 'Какой мудари‘ у глаголов на فَعُلَ?', bAr: true, b: 'يَفْعُلُ', d: 'Только с даммой: حَسُنَ – يَحْسُنُ.' },
+    { k: 'термин', f: 'شَاذٌّ', b: 'исключение', d: 'Например, أَبَى – يَأْبَى.' },
+    { k: 'правило', ru: true, f: 'Вес «голого» четырёхбуквенного глагола', bAr: true, b: 'فَعْلَلَ – يُفَعْلِلُ', d: 'Масдар: فَعْلَلَةٌ، فِعْلَالٌ.', ex: '[1دَ][2حْ][3رَ][4جَ] – يُ[1دَ][2حْ][3رِ][4جُ]' },
+  ] },
+
+/* ---------- 3 ---------- */
+{ n: 3, ar: 'أَوْزَانُ الْمَزِيدِ فِيهِ', ru: 'Глаголы с добавочными буквами', short: 'Бабы с добавками', min: 20,
+  text: [
+    { src: `وَأَمَّا الثُّلَاثِيُّ ${T('mazid', 'الْمَزِيدُ فِيهِ')} فَهُوَ عَلَى ثَلَاثَةِ أَقْسَامٍ: الْأَوَّلُ: مَا كَانَ مَاضِيهِ عَلَى أَرْبَعَةِ أَحْرُفٍ كَأَفْعَلَ نَحْوُ: أَكْرَمَ إِكْرَامًا، وَفَعَّلَ نَحْوُ: فَرَّحَ تَفْرِيحًا، وَفَاعَلَ نَحْوُ: قَاتَلَ مُقَاتَلَةً وَقِتَالًا.`,
+      tr: 'Трёхбуквенный глагол с добавками делится на три группы. Первая — глаголы, у которых прошедшее из четырёх букв: أَفْعَلَ, например أَكْرَمَ إِكْرَامًا «почтить»; فَعَّلَ — فَرَّحَ تَفْرِيحًا «обрадовать»; فَاعَلَ — قَاتَلَ مُقَاتَلَةً وَقِتَالًا «сражаться».',
+      gl: [['قِسْمٌ ج أَقْسَامٌ', 'часть, группа'], ['حَرْفٌ ج أَحْرُفٌ', 'буква'], ['أَكْرَمَ', 'почтить, оказать уважение'], ['فَرَّحَ', 'обрадовать'], ['قَاتَلَ', 'сражаться']] },
+    { src: 'وَالثَّانِي: مَا كَانَ مَاضِيهِ عَلَى خَمْسَةِ أَحْرُفٍ، إِمَّا أَوَّلُهُ التَّاءُ مِثْلُ تَفَعَّلَ نَحْوُ: تَكَسَّرَ تَكَسُّرًا، وَتَفَاعَلَ نَحْوُ: تَبَاعَدَ تَبَاعُدًا، وَإِمَّا أَوَّلُهُ الْهَمْزَةُ مِثْلُ اِنْفَعَلَ نَحْوُ: اِنْقَطَعَ اِنْقِطَاعًا، وَافْتَعَلَ نَحْوُ: اِجْتَمَعَ اِجْتِمَاعًا، وَافْعَلَّ نَحْوُ: اِحْمَرَّ اِحْمِرَارًا.',
+      tr: 'Вторая — прошедшее из пяти букв. Одни начинаются с та: تَفَعَّلَ — تَكَسَّرَ تَكَسُّرًا «разбиться»; تَفَاعَلَ — تَبَاعَدَ تَبَاعُدًا «отдалиться». Другие начинаются с хамзы: اِنْفَعَلَ — اِنْقَطَعَ اِنْقِطَاعًا «прерваться»; اِفْتَعَلَ — اِجْتَمَعَ اِجْتِمَاعًا «собраться»; اِفْعَلَّ — اِحْمَرَّ اِحْمِرَارًا «покраснеть».',
+      gl: [['تَكَسَّرَ', 'разбиться'], ['تَبَاعَدَ', 'отдалиться'], ['اِنْقَطَعَ', 'прерваться'], ['اِجْتَمَعَ', 'собраться'], ['اِحْمَرَّ', 'покраснеть']] },
+    { src: 'وَالثَّالِثُ: مَا كَانَ مَاضِيهِ عَلَى سِتَّةِ أَحْرُفٍ مِثْلُ اِسْتَفْعَلَ نَحْوُ: اِسْتَخْرَجَ اِسْتِخْرَاجًا، وَافْعَالَّ نَحْوُ: اِحْمَارَّ اِحْمِيرَارًا، وَافْعَوْعَلَ نَحْوُ: اِعْشَوْشَبَ اِعْشِيشَابًا، وَافْعَنْلَلَ نَحْوُ: اِقْعَنْسَسَ اِقْعِنْسَاسًا، وَافْعَنْلَى نَحْوُ: اِسْلَنْقَى اِسْلِنْقَاءً.',
+      tr: 'Третья — прошедшее из шести букв: اِسْتَفْعَلَ — اِسْتَخْرَجَ اِسْتِخْرَاجًا «извлечь»; اِفْعَالَّ — اِحْمَارَّ اِحْمِيرَارًا «сильно покраснеть»; اِفْعَوْعَلَ — اِعْشَوْشَبَ اِعْشِيشَابًا «густо зарасти травой»; اِفْعَنْلَلَ — اِقْعَنْسَسَ اِقْعِنْسَاسًا «отпрянуть, упереться»; اِفْعَنْلَى — اِسْلَنْقَى اِسْلِنْقَاءً «лечь на спину».',
+      gl: [['اِسْتَخْرَجَ', 'извлечь'], ['اِعْشَوْشَبَ', 'густо зарасти травой'], ['اِقْعَنْسَسَ', 'отпрянуть, упереться'], ['اِسْلَنْقَى', 'лечь на спину']] },
+    { src: 'وَأَمَّا الرُّبَاعِيُّ الْمَزِيدُ فِيهِ فَأَمْثِلَتُهُ تَفَعْلَلَ نَحْوُ: تَدَحْرَجَ تَدَحْرُجًا، وَافْعَنْلَلَ نَحْوُ: اِحْرَنْجَمَ اِحْرِنْجَامًا، وَافْعَلَلَّ نَحْوُ: اِقْشَعَرَّ اِقْشِعْرَارًا.',
+      tr: 'У четырёхбуквенного глагола с добавками такие формы: تَفَعْلَلَ — تَدَحْرَجَ تَدَحْرُجًا «скатиться»; اِفْعَنْلَلَ — اِحْرَنْجَمَ اِحْرِنْجَامًا «столпиться»; اِفْعَلَلَّ — اِقْشَعَرَّ اِقْشِعْرَارًا «содрогнуться (о коже)».',
+      gl: [['تَدَحْرَجَ', 'скатиться'], ['اِحْرَنْجَمَ', 'столпиться'], ['اِقْشَعَرَّ', 'покрыться мурашками, содрогнуться']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Простыми словами</h2>
+  <p class="lead">К «голому» корню добавляют одну, две или три буквы. Так у трёхбуквенного глагола получается 13 бабов с добавками, у четырёхбуквенного — ещё 3. Добавка меняет смысл: ${a('[1خَ][2رَ][3جَ]')} «вышел» → ${a('أَ[1خْ][2رَ][3جَ]')} «вывел» → ${a('اِسْتَ[1خْ][2رَ][3جَ]')} «извлёк».</p>
+  <p>Главное правило: <b>считайте буквы прошедшего времени</b>. Шадда — это две буквы: в ${a('فَرَّحَ')} четыре буквы (${a('ف ر ر ح')}).</p>
+  <div class="card" style="padding:6px 14px">${tblMazid()}</div>
+  ${legend()}
+  <div class="callout"><b>Не у каждого корня есть все бабы</b><span>Какие формы у корня есть, узнают по употреблению (${a('السَّمَاعُ')}). От ${a('زَلْزَلَ')} есть только ${a('تَزَلْزَلَ')}. А иногда «голой» формы нет вовсе: говорят ${a('أَرْسَلَ')} «послал», но не ${a('رَسَلَ')}.</span></div>`,
+  wk: [
+    { w: 'اِسْتَ[1غْ][2فَ][3رَ]', ru: 'просить прощения', res: 'اِسْتَغْفَرَ عَلَى وَزْنِ اِسْتَفْعَلَ', steps: [
+      { q: 'Найдите корень', a: 'غ ف ر, сравните غَفَرَ «простил»', tg: 'غ ف ر' },
+      { q: 'Что добавлено?', a: 'ا، س، ت в начале: три буквы', tg: '+٣' },
+      { q: 'Ставим ف ع ل на место корня', a: 'Добавки переносим как есть', tg: 'اِسْتَفْعَلَ' }] },
+    { w: 'تَ[1عَ][2لَّ][3مَ]', ru: 'учиться', res: 'تَعَلَّمَ عَلَى وَزْنِ تَفَعَّلَ', steps: [
+      { q: 'Найдите корень', a: 'ع ل م, сравните عَلِمَ «знал»', tg: 'ع ل م' },
+      { q: 'Что добавлено?', a: 'تَ в начале и удвоение ع (шадда на ل)', tg: '+٢' },
+      { q: 'Вес', a: 'Пять букв, начинается с та', tg: 'تَفَعَّلَ' }] },
+    { w: 'اِنْ[1كَ][2سَ][3رَ]', ru: 'сломаться', self: true, res: 'اِنْكَسَرَ عَلَى وَزْنِ اِنْفَعَلَ', steps: [
+      { q: 'Найдите корень', o: ['ك س ر', 'ن ك س'], ans: 0, a: 'ك س ر, сравните كَسَرَ «сломал».', tg: 'ك س ر' },
+      { q: 'Что добавлено?', o: ['اِ и نْ', 'تَ', 'اِ и تَ'], ans: 0, a: 'Хамза в начале и нун.', tg: '+٢' },
+      { q: 'Вес', o: ['اِنْفَعَلَ', 'اِفْتَعَلَ', 'تَفَعَّلَ'], ans: 0, a: 'اِنْفَعَلَ: пять букв, начинается с хамзы.', tg: 'اِنْفَعَلَ' }] },
+  ],
+  px: [
+    { t: 'mc', k: 'Вес', q: `Вес глагола ${a('أَرْسَلَ')} «послал»`, arOpts: true, o: ['أَفْعَلَ', 'فَاعَلَ', 'فَعَّلَ', 'اِفْتَعَلَ'], ans: 0, why: `Корень ${a('ر س ل')}, добавлена ${a('أَ')}.` },
+    { t: 'mc', k: 'Вес', q: `Вес глагола ${a('عَلَّمَ')} «научил»`, arOpts: true, o: ['فَعَّلَ', 'فَاعَلَ', 'تَفَعَّلَ', 'أَفْعَلَ'], ans: 0, why: 'Удвоена вторая коренная (ل).' },
+    { t: 'mc', k: 'Вес', q: `Вес глагола ${a('اِقْتَرَبَ')} «приблизился»`, arOpts: true, o: ['اِفْتَعَلَ', 'اِنْفَعَلَ', 'تَفَعَّلَ', 'اِسْتَفْعَلَ'], ans: 0, why: `Корень ${a('ق ر ب')}: ${a('اِ')} в начале и ${a('تَ')} после первой коренной.` },
+    { t: 'bin', k: 'Счёт букв', q: 'Сколько букв в прошедшем?', o: ['٤ أَحْرُفٍ', '٥ أَحْرُفٍ'], items: [
+      { w: '[1قَ]ا[2تَ][3لَ]', ans: 0, why: 'ق ا ت ل — четыре.' },
+      { w: 'تَ[1بَ]ا[2عَ][3دَ]', ans: 1, why: 'ت ب ا ع د — пять.' },
+      { w: '[1فَ][2رَّ][3حَ]', ans: 0, why: 'Шадда — две буквы: ف ر ر ح.' },
+      { w: 'اِ[1حْ][2مَ][3رَّ]', ans: 1, why: 'ا ح م ر ر — пять.' },
+      { w: 'أَ[1كْ][2رَ][3مَ]', ans: 0, why: 'أ ك ر م — четыре.' }] },
+    { t: 'root', k: 'Корень', q: 'Отметьте корневые буквы', w: 'اِسْتَخْرَجَ', ru: 'извлёк', L: [['ا', 0], ['س', 0], ['ت', 0], ['خ', 1], ['ر', 1], ['ج', 1]], why: 'Корень — خ ر ج. Добавлены ا س ت.' },
+    { t: 'root', k: 'Корень', q: 'Отметьте корневые буквы', w: 'تَبَاعَدَ', ru: 'отдалился', L: [['ت', 0], ['ب', 1], ['ا', 0], ['ع', 1], ['د', 1]], why: 'Корень — ب ع د. Добавлены تَ и алиф.' },
+    { t: 'match', k: 'Вес и пример', q: 'Соедините вес и пример', rAr: true, P: [['تَفَاعَلَ', 'تَبَاعَدَ'], ['اِنْفَعَلَ', 'اِنْقَطَعَ'], ['اِفْعَلَّ', 'اِحْمَرَّ'], ['تَفَعْلَلَ', 'تَدَحْرَجَ']] },
+    { t: 'mc', k: 'Масдар', q: `Масдар от ${a('فَرَّحَ')}`, arOpts: true, o: ['تَفْرِيحٌ', 'إِفْرَاحٌ', 'مُفَارَحَةٌ', 'تَفَرُّحٌ'], ans: 0, why: `У ${a('فَعَّلَ')} масдар ${a('تَفْعِيلٌ')}.` },
+  ],
+  cards: [
+    { k: 'вес', f: 'أَفْعَلَ', b: '+ хамза в начале', ex: 'أَكْرَمَ – إِكْرَامًا', d: '4 буквы' },
+    { k: 'вес', f: 'فَعَّلَ', b: '+ удвоение ع', ex: 'فَرَّحَ – تَفْرِيحًا', d: '4 буквы' },
+    { k: 'вес', f: 'فَاعَلَ', b: '+ алиф после ف', ex: 'قَاتَلَ – مُقَاتَلَةً، قِتَالًا', d: '4 буквы' },
+    { k: 'вес', f: 'تَفَعَّلَ', b: '+ تَ и удвоение ع', ex: 'تَكَسَّرَ – تَكَسُّرًا', d: '5 букв' },
+    { k: 'вес', f: 'تَفَاعَلَ', b: '+ تَ и алиф', ex: 'تَبَاعَدَ – تَبَاعُدًا', d: '5 букв' },
+    { k: 'вес', f: 'اِنْفَعَلَ', b: '+ اِ и нун', ex: 'اِنْقَطَعَ – اِنْقِطَاعًا', d: '5 букв' },
+    { k: 'вес', f: 'اِفْتَعَلَ', b: '+ اِ и та после ف', ex: 'اِجْتَمَعَ – اِجْتِمَاعًا', d: '5 букв' },
+    { k: 'вес', f: 'اِفْعَلَّ', b: '+ اِ и удвоение ل', ex: 'اِحْمَرَّ – اِحْمِرَارًا', d: '5 букв, цвета и изъяны' },
+    { k: 'вес', f: 'اِسْتَفْعَلَ', b: '+ ا س ت', ex: 'اِسْتَخْرَجَ – اِسْتِخْرَاجًا', d: '6 букв' },
+    { k: 'наоборот', fw: 'تَ[1دَ][2حْ][3رَ][4جَ]', q: 'Вес?', bAr: true, b: 'تَفَعْلَلَ', d: 'Четырёхбуквенный + تَ.' },
+    { k: 'правило', ru: true, f: 'Сколько бабов у трёхбуквенного глагола с добавками?', b: '13: три из 4 букв, пять из 5, пять из 6', d: 'У четырёхбуквенного — ещё 3.' },
+  ] },
+
+/* ---------- 4 ---------- */
+{ n: 4, ar: 'الْفِعْلُ اللَّازِمُ وَالْمُتَعَدِّي', ru: 'Переходный и непереходный глагол', short: 'Переходный глагол', min: 12,
+  text: [
+    { src: `تَنْبِيهٌ: الْفِعْلُ إِمَّا ${T('mutaaddi', 'مُتَعَدٍّ')}، وَهُوَ الَّذِي يَتَعَدَّى مِنَ ${T('fail', 'الْفَاعِلِ')} إِلَى ${T('mafulbihi', 'الْمَفْعُولِ بِهِ')}، كَقَوْلِكَ ضَرَبْتُ زَيْدًا، وَيُسَمَّى أَيْضًا وَاقِعًا وَمُجَاوِزًا، وَإِمَّا غَيْرُ مُتَعَدٍّ وَهُوَ الَّذِي لَمْ يَتَجَاوَزِ الْفَاعِلَ كَقَوْلِكَ حَسُنَ زَيْدٌ، وَيُسَمَّى ${T('lazim', 'لَازِمًا')} وَغَيْرَ وَاقِعٍ.`,
+      tr: 'Замечание: глагол бывает либо переходным (مُتَعَدٍّ) — его действие переходит от деятеля к объекту, как в ضَرَبْتُ زَيْدًا «я ударил Зайда»; его называют также وَاقِعٌ «падающий» и مُجَاوِزٌ «переходящий». Либо непереходным — он не выходит за пределы деятеля, как в حَسُنَ زَيْدٌ «Зайд стал красив»; его называют لَازِمٌ и غَيْرُ وَاقِعٍ.',
+      gl: [['تَنْبِيهٌ', 'замечание'], ['مُتَعَدٍّ', 'переходный'], ['لَازِمٌ', 'непереходный'], ['فَاعِلٌ', 'деятель'], ['مَفْعُولٌ بِهِ', 'дополнение, объект действия'], ['يَتَعَدَّى', 'переходит'], ['يَتَجَاوَزُ', 'выходит за пределы']] },
+    { src: `وَتُعَدِّيهِ فِي الثُّلَاثِيِّ الْمُجَرَّدِ بِتَضْعِيفِ الْعَيْنِ وَبِالْهَمْزَةِ كَقَوْلِكَ فَرَّحْتُ زَيْدًا وَأَجْلَسْتُهُ، وَ${T('jarr', 'بِحَرْفِ الْجَرِّ')} فِي الْكُلِّ نَحْوُ: ذَهَبْتُ بِزَيْدٍ وَانْطَلَقْتُ بِهِ.`,
+      tr: 'Трёхбуквенный голый глагол ты делаешь переходным удвоением ع и хамзой: فَرَّحْتُ زَيْدًا «я обрадовал Зайда», أَجْلَسْتُهُ «я усадил его». А с помощью предлога — любой глагол: ذَهَبْتُ بِزَيْدٍ «я увёл Зайда», اِنْطَلَقْتُ بِهِ «я увёз его».',
+      gl: [['تُعَدِّيهِ', 'ты делаешь его переходным'], ['تَضْعِيفُ الْعَيْنِ', 'удвоение ع'], ['حَرْفُ الْجَرِّ', 'предлог'], ['فِي الْكُلِّ', 'во всех глаголах'], ['أَجْلَسَ', 'усадить']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Простыми словами</h2>
+  <p class="lead">Переходному глаголу нужен объект: ${a('فَتَحَ مُحَمَّدٌ الْبَابَ')} «Мухаммад открыл дверь». Непереходному хватает деятеля: ${a('ذَهَبَ مُحَمَّدٌ')} «Мухаммад ушёл».</p>
+  <div class="callout"><b>Как проверить</b><span>Если к глаголу можно присоединить местоимение ${a('ـهُ')} «его», которое отсылает к объекту, глагол переходный: ${a('أَكْرَمْتُهُ')} «я почтил его», ${a('دَرَسْتُهُ')} «я изучил его».</span></div>
+
+  <h2 class="h2">Три способа сделать глагол переходным</h2>
+  <div class="card">${rules([
+    `<p><b>Удвоить ع</b> (перевести в ${a('فَعَّلَ')})</p>${flow(['[1فَ][2رِ][3حَ] زَيْدٌ', '[1فَ][2رَّ][3حْ]تُ زَيْدًا'], 'sm')}<p class="note">«Зайд обрадовался» → «я обрадовал Зайда»</p>`,
+    `<p><b>Добавить хамзу</b> (перевести в ${a('أَفْعَلَ')})</p>${flow(['[1جَ][2لَ][3سَ] زَيْدٌ', 'أَ[1جْ][2لَ][3سْ]تُ زَيْدًا'], 'sm')}<p class="note">«Зайд сел» → «я усадил Зайда». Так же ${a('كَرُمَ')} → ${a('أَكْرَمَ')}.</p>`,
+    `<p><b>Добавить предлог</b> — годится для любого глагола</p>${flow(['[1ذَ][2هَ][3بَ] زَيْدٌ', '[1ذَ][2هَ][3بْ]تُ بِزَيْدٍ'], 'sm')}<p class="note">«Зайд ушёл» → «я увёл Зайда»</p>`,
+  ])}</div>
+  <div class="callout"><b>Объект без предлога и с предлогом</b><span>Переходный «сам по себе» (${a('مُتَعَدٍّ بِنَفْسِهِ')}) берёт объект прямо: ${a('أَخَذْتُ الْقَلَمَ')} «я взял ручку». Переходный «через другое» (${a('مُتَعَدٍّ بِغَيْرِهِ')}) — через предлог: ${a('ذَهَبْتُ بِهِ')}.</span></div>`,
+  wk: [
+    { w: '[1فَ][2رِ][3حَ]', ru: 'обрадовался', res: 'فَرِحَ ← فَرَّحَ', steps: [
+      { q: 'Переходный?', a: 'Нет: فَرِحَ زَيْدٌ «Зайд обрадовался», объекта нет', tg: 'لَازِمٌ' },
+      { q: 'Способ', a: 'Удваиваем ع', tg: 'فَعَّلَ' },
+      { q: 'Пример', a: '«я обрадовал Зайда»', tg: 'فَرَّحْتُ زَيْدًا' }] },
+    { w: '[1جَ][2لَ][3سَ]', ru: 'сел', res: 'جَلَسَ ← أَجْلَسَ', steps: [
+      { q: 'Переходный?', a: 'Нет: «Зайд сел»', tg: 'لَازِمٌ' },
+      { q: 'Способ', a: 'Добавляем хамзу', tg: 'أَفْعَلَ' },
+      { q: 'Пример', a: '«я усадил его»', tg: 'أَجْلَسْتُهُ' }] },
+    { w: '[1خَ][2رَ][3جَ]', ru: 'вышел', self: true, res: 'خَرَجَ ← أَخْرَجَ، خَرَجَ بِـ', steps: [
+      { q: 'Переходный?', o: ['Да', 'Нет'], ans: 1, a: 'Нет: خَرَجَ زَيْدٌ «Зайд вышел».', tg: 'لَازِمٌ' },
+      { q: 'Сделайте переходным хамзой', o: ['أَخْرَجَ', 'اِخْتَرَجَ', 'تَخَرَّجَ'], ans: 0, a: 'أَخْرَجَ «вывел».', tg: 'أَخْرَجَ' },
+      { q: 'А с предлогом?', o: ['خَرَجْتُ بِهِ', 'خَرَجْتُ مِنْهُ'], ans: 0, a: 'خَرَجْتُ بِهِ «я вывел его». С مِنْ смысл другой: «вышел из».', tg: 'خَرَجَ بِـ' }] },
+  ],
+  px: [
+    { t: 'bin', k: 'Вид', q: 'Переходный или непереходный?', o: ['مُتَعَدٍّ', 'لَازِمٌ'], items: [
+      { w: '[1ضَ][2رَ][3بَ]', ans: 0, why: 'Бьют кого-то: ضَرَبَ زَيْدًا.' }, { w: '[1حَ][2سُ][3نَ]', ans: 1, why: 'Быть красивым: объекта нет.' },
+      { w: '[1فَ][2تَ][3حَ]', ans: 0, why: 'Открывают что-то.' }, { w: '[1ذَ][2هَ][3بَ]', ans: 1, why: 'Уходить: объекта нет.' },
+      { w: '[1جَ][2لَ][3سَ]', ans: 1, why: 'Сидеть: объекта нет.' }] },
+    { t: 'mc', k: 'Правило', q: 'Какими тремя способами делают глагол переходным?', o: ['Удвоение ع, хамза, предлог', 'Удвоение ل, та, окончание', 'Приставка اِسْتَ, та, нун', 'Сукун, дамма, касра'], ans: 0, why: 'Удвоение ع и хамза — для трёхбуквенного голого глагола, предлог — для любого.' },
+    { t: 'mc', k: 'Хамза', q: `${a('كَرُمَ')} «быть благородным» + хамза = ?`, arOpts: true, o: ['أَكْرَمَ', 'اِكْتَرَمَ', 'تَكَرَّمَ', 'كَارَمَ'], ans: 0, why: `${a('أَكْرَمْتُ زَيْدًا')} «я почтил Зайда».` },
+    { t: 'mc', k: 'Объект', q: `В ${a('ضَرَبْتُ زَيْدًا')} объект (${a('مَفْعُولٌ بِهِ')}) — это…`, arOpts: true, o: ['زَيْدًا', 'تُ', 'ضَرَبَ'], ans: 0, why: `${a('تُ')} — деятель (я), ${a('زَيْدًا')} — объект.` },
+    { t: 'mc', k: 'Названия', q: 'Как ещё называют переходный глагол?', o: [`${a('وَاقِعٌ')} и ${a('مُجَاوِزٌ')}`, `${a('لَازِمٌ')} и ${a('قَاصِرٌ')}`, `${a('سَالِمٌ')}`, `${a('مُجَرَّدٌ')}`], ans: 0, why: `${a('لَازِمٌ')} и ${a('قَاصِرٌ')} — названия непереходного.` },
+    { t: 'match', k: 'Термины', q: 'Соедините термин и значение', P: [['مُتَعَدٍّ', 'переходный'], ['لَازِمٌ', 'непереходный'], ['فَاعِلٌ', 'деятель'], ['مَفْعُولٌ بِهِ', 'объект действия']] },
+    { t: 'mc', k: 'Предлог', q: `${a('ذَهَبْتُ بِزَيْدٍ')} значит…`, o: ['Я увёл Зайда', 'Я ушёл от Зайда', 'Зайд ушёл'], ans: 0, why: `Предлог ${a('بِـ')} делает ${a('ذَهَبَ')} переходным: «ушёл с ним» → «увёл».` },
+  ],
+  cards: [
+    { k: 'термин', f: 'مُتَعَدٍّ', b: 'переходный глагол', d: 'Также وَاقِعٌ, مُجَاوِزٌ.', ex: 'ضَرَبْتُ زَيْدًا' },
+    { k: 'термин', f: 'لَازِمٌ', b: 'непереходный глагол', d: 'Также غَيْرُ وَاقِعٍ, قَاصِرٌ.', ex: 'حَسُنَ زَيْدٌ' },
+    { k: 'термин', f: 'فَاعِلٌ', b: 'деятель' },
+    { k: 'термин', f: 'مَفْعُولٌ بِهِ', b: 'объект действия, прямое дополнение' },
+    { k: 'правило', ru: true, f: 'Три способа сделать глагол переходным', b: 'удвоение ع, хамза, предлог', ex: 'فَرَّحَ · أَجْلَسَ · ذَهَبَ بِـ' },
+    { k: 'правило', ru: true, f: 'Как проверить, что глагол переходный?', b: 'к нему можно присоединить ـهُ «его»', ex: 'أَكْرَمْتُهُ' },
+    { k: 'форма', fw: 'أَ[1جْ][2لَ][3سْ]تُهُ', q: 'Перевод и способ', b: 'я усадил его', d: 'جَلَسَ + хамза.' },
+  ] },
+
+/* ---------- 5 ---------- */
+{ n: 5, ar: 'تَصْرِيفُ الْفِعْلِ الْمَاضِي', ru: 'Прошедшее время: спряжение и залоги', short: 'Прошедшее время', min: 20,
+  text: [
+    { src: `فَصْلٌ فِي أَمْثِلَةِ تَصْرِيفِ هَذِهِ الْأَفْعَالِ، أَمَّا ${T('madi', 'الْمَاضِي')} فَهُوَ الْفِعْلُ الَّذِي دَلَّ عَلَى مَعْنًى وُجِدَ فِي الزَّمَانِ الْمَاضِي،`,
+      tr: 'Раздел о формах спряжения этих глаголов. Прошедшее — это глагол, который обозначает действие, совершившееся в прошлом.',
+      gl: [['فَصْلٌ', 'раздел'], ['دَلَّ عَلَى', 'указал на, обозначил'], ['وُجِدَ', 'произошёл'], ['الزَّمَانُ', 'время']] },
+    { src: `${T('mfail', 'فَالْمَبْنِيُّ لِلْفَاعِلِ')} مِنْهُ ${BR('[مِنَ الْمَاضِي]')} مَا كَانَ أَوَّلُهُ مَفْتُوحًا أَوْ كَانَ أَوَّلُ مُتَحَرِّكٍ مِنْهُ مَفْتُوحًا، مِثَالُهُ: نَصَرَ نَصَرَا نَصَرُوا نَصَرَتْ نَصَرَتَا نَصَرْنَ نَصَرْتَ نَصَرْتُمَا نَصَرْتُمْ نَصَرْتِ نَصَرْتُمَا نَصَرْتُنَّ نَصَرْتُ نَصَرْنَا`,
+      tr: 'Действительный залог прошедшего времени — форма, у которой первая буква с фатхой или первая огласованная буква с фатхой. Пример: نَصَرَ «он помог» … نَصَرْنَا «мы помогли» (все 14 форм — в «Объяснении»).',
+      gl: [['الْمَبْنِيُّ لِلْفَاعِلِ', 'действительный залог'], ['أَوَّلُهُ', 'его первая буква'], ['مُتَحَرِّكٌ', 'огласованная буква'], ['مِثَالُهُ', 'его пример']] },
+    { src: `وَقِسْ عَلَى هَذَا ${BR('[صَرْفَ نَصَرَ]')} أَفْعَلَ وَفَاعَلَ وَفَعَّلَ وَتَفَعْلَلَ وَافْتَعَلَ وَانْفَعَلَ وَاسْتَفْعَلَ وَافْعَلَلَّ وَافْعَوْعَلَ وَلَا تَعْتَبِرْ حَرَكَاتِ الْأَلِفَاتِ فِي الْأَوَائِلِ فَإِنَّهَا زَائِدَةٌ تَثْبُتُ فِي الِابْتِدَاءِ وَتَسْقُطُ فِي ${T('darj', 'الدَّرْجِ')}.`,
+      tr: 'По этому образцу спрягай أَفْعَلَ, فَاعَلَ, فَعَّلَ, تَفَعْلَلَ, اِفْتَعَلَ, اِنْفَعَلَ, اِسْتَفْعَلَ, اِفْعَلَلَّ, اِفْعَوْعَلَ. Не смотри на огласовку алифов в начале: они добавочные, произносятся в начале речи и выпадают в её потоке.',
+      gl: [['قِسْ', 'строй по образцу'], ['لَا تَعْتَبِرْ', 'не принимай в расчёт'], ['الْأَوَائِلُ', 'начала'], ['تَثْبُتُ', 'сохраняется'], ['تَسْقُطُ', 'выпадает'], ['الِابْتِدَاءُ', 'начало речи'], ['الدَّرْجُ', 'связная речь']] },
+    { src: `وَ${T('mmaful', 'الْمَبْنِيُّ لِلْمَفْعُولِ')} مِنْهُ وَهُوَ الَّذِي لَمْ يُسَمَّ فَاعِلُهُ مَا كَانَ أَوَّلُهُ مَضْمُومًا، كَفُعِلَ، وَفُعْلِلَ، وَأُفْعِلَ وَفُوعِلَ، وَفُعِّلَ، وَتُفُعِّلَ، وَتُفُوعِلَ أَوْ كَانَ أَوَّلُ مُتَحَرِّكٍ مِنْهُ مَضْمُومًا نَحْوُ: اُفْتُعِلَ، وَاُسْتُفْعِلَ وَ${T('wasl', 'هَمْزَةُ الْوَصْلِ')} تَتْبَعُ هَذَا الْمَضْمُومَ فِي الضَّمِّ وَمَا قَبْلَ آخِرِهِ يَكُونُ مَكْسُورًا أَبَدًا تَقُولُ: نُصِرَ زَيْدٌ وَاسْتُخْرِجَ الْمَالُ.`,
+      tr: 'Страдательный залог — форма, в которой деятель не назван. У неё первая буква с даммой: فُعِلَ, فُعْلِلَ, أُفْعِلَ, فُوعِلَ, فُعِّلَ, تُفُعِّلَ, تُفُوعِلَ, или первая огласованная буква с даммой: اُفْتُعِلَ, اُسْتُفْعِلَ. Хамза васль следует за ней и тоже получает дамму, а буква перед последней всегда с касрой. Говоришь: نُصِرَ زَيْدٌ «Зайду помогли», اُسْتُخْرِجَ الْمَالُ «деньги были извлечены».',
+      gl: [['الْمَبْنِيُّ لِلْمَفْعُولِ', 'страдательный залог'], ['لَمْ يُسَمَّ فَاعِلُهُ', 'деятель не назван'], ['مَضْمُومٌ', 'с даммой'], ['تَتْبَعُ', 'следует за'], ['مَا قَبْلَ آخِرِهِ', 'буква перед последней'], ['أَبَدًا', 'всегда']] },
+  ],
+  ex: () => `
+  <h2 class="h2">14 форм прошедшего времени</h2>
+  <p class="lead">Основа ${a('[1نَ][2صَ][3رَ]')} остаётся, меняются только окончания. Перед ${a('تَ، نَ، نَا')} последняя коренная получает сукун.</p>
+  ${paradigm(k => form(NSR, BABS[0], 'm', k))}
+  <p class="note">Так же спрягаются все бабы с добавками: ${a('أَكْرَمْتُ، قَاتَلْتُ، اِسْتَخْرَجْتُ')}.</p>
+
+  <h2 class="h2">Страдательный залог: два правила</h2>
+  <div class="card">${rules([
+    `<p><b>Первая огласованная буква получает дамму.</b> Если перед ней хамза васль, она тоже с даммой.</p>`,
+    `<p><b>Буква перед последней получает касру.</b></p>`,
+  ])}</div>
+  <div class="card" style="padding:6px 14px">${tb(['Действительный', 'Страдательный', ''], [
+    ['[1نَ][2صَ][3رَ]', '[1نُ][2صِ][3رَ]', 'ему помогли'],
+    ['أَ[1كْ][2رَ][3مَ]', 'أُ[1كْ][2رِ][3مَ]', 'его почтили'],
+    ['[1قَ]ا[2تَ][3لَ]', '[1قُ]و[2تِ][3لَ]', 'с ним сражались'],
+    ['[1دَ][2حْ][3رَ][4جَ]', '[1دُ][2حْ][3رِ][4جَ]', 'его покатили'],
+    ['تَ[1كَ][2سَّ][3رَ]', 'تُ[1كُ][2سِّ][3رَ]', 'дамма и на 2-й букве'],
+    ['اِ[1جْ]تَ[2مَ][3عَ]', 'اُ[1جْ]تُ[2مِ][3عَ]', 'хамза тоже с даммой'],
+    ['اِسْتَ[1خْ][2رَ][3جَ]', 'اُسْتُ[1خْ][2رِ][3جَ]', 'хамза тоже с даммой'],
+  ])}</div>
+  <div class="callout"><b>Две хамзы</b><span>${a('هَمْزَةُ الْوَصْلِ')} читается только в начале речи: ${a('اِسْتَغْفَرَ، اِجْتَمَعَ، اِبْنٌ، اِسْمٌ')}. В потоке речи она выпадает. ${a('هَمْزَةُ الْقَطْعِ')} читается всегда: ${a('أَكْرَمَ، أَخَذَ، إِلَى')}.</span></div>
+  <p class="note">Страдательный залог обычно образуют от переходных глаголов. От непереходного — только вместе с предлогом: ${a('ذُهِبَ بِزَيْدٍ')} «Зайда увели».</p>`,
+  wk: [
+    { w: '[1كَ][2تَ][3بَ]', ru: 'написал → было написано', res: 'كُتِبَ', steps: [
+      { q: 'Первая огласованная буква', a: 'ك получает дамму', tg: 'كُـ' },
+      { q: 'Буква перед последней', a: 'ت получает касру', tg: 'ـتِـ' },
+      { q: 'Последняя буква', a: 'Остаётся с фатхой', tg: 'ـبَ' }] },
+    { w: 'اِسْتَ[1خْ][2رَ][3جَ]', ru: 'извлёк → был извлечён', res: 'اُسْتُخْرِجَ', steps: [
+      { q: 'Первая огласованная буква', a: 'ت (перед ней س с сукуном) → дамма', tg: 'ـتُـ' },
+      { q: 'Хамза васль', a: 'Следует за даммой', tg: 'اُ' },
+      { q: 'Буква перед последней', a: 'ر → касра', tg: 'ـرِـ' }] },
+    { w: 'أَ[1كْ][2رَ][3مَ]', ru: 'почтил → был почтён', self: true, res: 'أُكْرِمَ', steps: [
+      { q: 'Первая буква أ получает…', o: ['дамму', 'касру'], ans: 0, a: 'Дамму: أُ.', tg: 'أُ' },
+      { q: 'Буква перед последней (ر) получает…', o: ['касру', 'фатху'], ans: 0, a: 'Касру: ـرِـ.', tg: 'ـرِـ' },
+      { q: 'Итог', o: ['أُكْرِمَ', 'أُكْرَمَ', 'أَكْرِمَ'], ans: 0, a: 'أُكْرِمَ «его почтили».', tg: 'أُكْرِمَ' }] },
+  ],
+  px: [
+    { t: 'mc', k: 'Спряжение', q: '«Вы двое помогли»', arOpts: true, o: ['نَصَرْتُمَا', 'نَصَرَتَا', 'نَصَرْتُمْ', 'نَصَرَا'], ans: 0, why: `${a('نَصَرَتَا')} — «они две помогли», ${a('نَصَرَا')} — «они двое помогли».` },
+    { t: 'mc', k: 'Спряжение', q: '«Они (ж.) помогли»', arOpts: true, o: ['نَصَرْنَ', 'نَصَرْتُنَّ', 'نَصَرْنَا', 'نَصَرَتْ'], ans: 0, why: `${a('نَصَرْتُنَّ')} — «вы (ж.) помогли», ${a('نَصَرْنَا')} — «мы помогли».` },
+    { t: 'mc', k: 'Спряжение', q: `${a('نَصَرْتِ')} — это…`, o: ['ты (ж.) помогла', 'я помог', 'она помогла', 'ты (м.) помог'], ans: 0, why: `Касра на ${a('تِ')} — женский род 2-го лица.` },
+    { t: 'match', k: 'Спряжение', q: 'Соедините форму и лицо', P: [['نَصَرُوا', 'они помогли'], ['نَصَرَتْ', 'она помогла'], ['نَصَرْتُ', 'я помог'], ['نَصَرْنَا', 'мы помогли']] },
+    { t: 'bin', k: 'Залог', q: 'Действительный или страдательный?', o: ['مَعْلُومٌ', 'مَجْهُولٌ'], items: [
+      { w: 'نُصِرَ', ans: 1, why: 'Дамма на первой, касра перед последней.' }, { w: 'أَكْرَمَ', ans: 0, why: 'Фатха на первой.' },
+      { w: 'اُسْتُخْرِجَ', ans: 1, why: 'Первая огласованная с даммой.' }, { w: 'دُحْرِجَ', ans: 1, why: 'Дамма на первой.' }, { w: 'اِجْتَمَعَ', ans: 0, why: 'Первая огласованная (ت) с фатхой.' }] },
+    { t: 'mc', k: 'Страдательный', q: `Страдательный от ${a('ضَرَبَ')}`, arOpts: true, o: ['ضُرِبَ', 'ضُرَبَ', 'ضَرِبَ', 'اُضْرِبَ'], ans: 0, why: 'Первая — дамма, перед последней — касра.' },
+    { t: 'mc', k: 'Страдательный', q: `Страдательный от ${a('قَاتَلَ')}`, arOpts: true, o: ['قُوتِلَ', 'قُتِلَ', 'قُاتِلَ', 'قَوتَلَ'], ans: 0, why: `После даммы алиф превращается в ${a('و')}: ${a('فَاعَلَ')} → ${a('فُوعِلَ')}.` },
+    { t: 'mc', k: 'Хамза', q: `Хамза в начале ${a('اِجْتَمَعَ')} — это…`, o: [`${a('هَمْزَةُ الْوَصْلِ')}: читается только в начале речи`, `${a('هَمْزَةُ الْقَطْعِ')}: читается всегда`, 'Коренная буква'], ans: 0, why: 'Она добавочная и выпадает в потоке речи.' },
+  ],
+  cards: [
+    { k: 'термин', f: 'الْمَبْنِيُّ لِلْفَاعِلِ', b: 'действительный залог', d: 'Также مَعْلُومٌ.', ex: 'نَصَرَ' },
+    { k: 'термин', f: 'الْمَبْنِيُّ لِلْمَفْعُولِ', b: 'страдательный залог', d: 'Также مَجْهُولٌ: деятель не назван.', ex: 'نُصِرَ' },
+    { k: 'правило', ru: true, f: 'Как образовать страдательный залог прошедшего?', b: 'первая огласованная — дамма, перед последней — касра', ex: 'نَصَرَ ← نُصِرَ' },
+    { k: 'форма', fw: '[1قَ]ا[2تَ][3لَ]', q: 'Страдательный залог?', bAr: true, b: 'قُوتِلَ', d: 'Алиф после даммы → و.' },
+    { k: 'форма', fw: 'اِسْتَ[1خْ][2رَ][3جَ]', q: 'Страдательный залог?', bAr: true, b: 'اُسْتُخْرِجَ', d: 'Хамза васль следует за даммой.' },
+    { k: 'форма', fw: 'تَ[1كَ][2سَّ][3رَ]', q: 'Страдательный залог?', bAr: true, b: 'تُكُسِّرَ', d: 'Дамма и на та, и на первой коренной.' },
+    { k: 'термин', f: 'هَمْزَةُ الْوَصْلِ', b: 'хамза, которая читается только в начале речи', ex: 'اِجْتَمَعَ · اِسْمٌ' },
+    { k: 'термин', f: 'هَمْزَةُ الْقَطْعِ', b: 'хамза, которая читается всегда', ex: 'أَكْرَمَ · أَخَذَ' },
+    { k: 'форма', f: 'نَصَرْتُمْ', b: 'вы помогли' },
+    { k: 'форма', f: 'نَصَرْتُنَّ', b: 'вы (ж.) помогли' },
+    { k: 'форма', f: 'نَصَرَتَا', b: 'они две помогли' },
+  ] },
+
+/* ---------- 6 ---------- */
+{ n: 6, ar: 'تَصْرِيفُ الْفِعْلِ الْمُضَارِعِ', ru: 'Мудари‘: настоящее и будущее время', short: 'Мудари‘', min: 15,
+  text: [
+    { src: `وَأَمَّا ${T('mudari', 'الْمُضَارِعُ')} فَهُوَ مَا كَانَ فِي أَوَّلِهِ إِحْدَى ${T('zawaid', 'الزَّوَائِدِ الْأَرْبَعِ')} وَهِيَ: الْهَمْزَةُ، وَالنُّونُ، وَالتَّاءُ، وَالْيَاءُ، يَجْمَعُهَا قَوْلُكَ أَنَيْتَ، أَوْ أَتَيْنَ، أَوْ نَأْتِي، فَالْهَمْزَةُ لِلْمُتَكَلِّمِ وَحْدَهُ وَالنُّونُ لَهُ إِذَا كَانَ مَعَهُ غَيْرُهُ وَالتَّاءُ لِلْمُخَاطَبِ مُفْرَدًا وَمُثَنًّى وَمَجْمُوعًا مُذَكَّرًا كَانَ أَوْ مُؤَنَّثًا وَلِلْغَائِبَةِ الْمُفْرَدَةِ وَلِمُثَنَّاهَا وَالْيَاءُ لِلْغَائِبِ الْمُذَكَّرِ مُفْرَدًا وَمُثَنًّى وَمَجْمُوعًا وَلِجَمْعِ الْمُؤَنَّثِ الْغَائِبَةِ.`,
+      tr: 'Мудари‘ — глагол, в начале которого одна из четырёх добавочных букв: хамза, нун, та и йа. Их собирает слово أَنَيْتَ (или أَتَيْنَ, или نَأْتِي). Хамза — для говорящего о себе одном; нун — для говорящего, когда с ним есть другие; та — для собеседника в ед., дв. и мн. числе, мужского и женского рода, а также для «её» и «их двух (ж.)»; йа — для «него», «их двух», «их (м.)» и «их (ж.)».',
+      gl: [['الزَّوَائِدُ الْأَرْبَعُ', 'четыре добавочные буквы'], ['يَجْمَعُهَا', 'их собирает'], ['الْمُتَكَلِّمُ', 'говорящий, 1-е лицо'], ['الْمُخَاطَبُ', 'собеседник, 2-е лицо'], ['الْغَائِبُ', 'отсутствующий, 3-е лицо'], ['مُفْرَدٌ · مُثَنًّى · مَجْمُوعٌ', 'ед. · дв. · мн. число'], ['مُذَكَّرٌ · مُؤَنَّثٌ', 'м. · ж. род']] },
+    { src: `وَهَذَا يَصْلُحُ ${T('hal', 'لِلْحَالِ')} وَ${T('mustaqbal', 'الِاسْتِقْبَالِ')} تَقُولُ يَفْعَلُ الْآنَ، وَيُسَمَّى حَالًا وَحَاضِرًا وَيَفْعَلُ غَدًا وَيُسَمَّى مُسْتَقْبَلًا فَإِذَا أَدْخَلْتَ عَلَيْهِ السِّينَ أَوْ سَوْفَ فَقُلْتَ سَيَفْعَلُ أَوْ سَوْفَ يَفْعَلُ اخْتَصَّ بِزَمَانِ الِاسْتِقْبَالِ.`,
+      tr: 'Эта форма годится и для настоящего, и для будущего. Говоришь يَفْعَلُ الْآنَ «делает сейчас» — это называют настоящим (حَالٌ, حَاضِرٌ), и يَفْعَلُ غَدًا «сделает завтра» — это будущее (مُسْتَقْبَلٌ). Если добавить سَـ или سَوْفَ — سَيَفْعَلُ, سَوْفَ يَفْعَلُ, — форма относится только к будущему.',
+      gl: [['يَصْلُحُ لِـ', 'годится для'], ['الْآنَ', 'сейчас'], ['غَدًا', 'завтра'], ['حَالٌ، حَاضِرٌ', 'настоящее время'], ['مُسْتَقْبَلٌ', 'будущее время'], ['اِخْتَصَّ بِـ', 'стал относиться только к']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Четыре буквы мудари‘</h2>
+  <p class="lead">Мудари‘ образуют от прошедшего, добавляя в начало одну из букв слова ${a('أَنَيْتَ')}. Буква показывает лицо:</p>
+  <div class="pfx">${[['أَ', 'я'], ['نَ', 'мы'], ['تَ', 'ты, вы, она, они две (ж.)'], ['يَ', 'он, они двое, они (м.), они (ж.)']].map(([p, r]) => `<div>${ar(p)}<small>${r}</small></div>`).join('')}</div>
+
+  <h2 class="h2">14 форм мудари‘</h2>
+  ${paradigm(k => form(NSR, BABS[0], 'u', k))}
+
+  <h2 class="h2">Как получить мудари‘ из прошедшего</h2>
+  <div class="card">${rules([
+    `<p><b>Трёхбуквенный глагол:</b> после буквы мудари‘ первая коренная получает сукун. Огласовку ع берут из словаря.</p>${flow(['[1كَ][2تَ][3بَ]', 'يَ[1كْ][2تُ][3بُ]'], 'sm')}`,
+    `<p><b>В начале добавочная хамза</b> — она выпадает, перед последней буквой ставится касра.</p>${flow(['اِنْ[1طَ][2لَ][3قَ]', 'يَنْ[1طَ][2لِ][3قُ]'], 'sm')}${flow(['أَ[1كْ][2رَ][3مَ]', 'يُ[1كْ][2رِ][3مُ]'], 'sm')}`,
+    `<p><b>В начале добавочная та</b> — форма не меняется.</p>${flow(['تَ[1كَ][2لَّ][3مَ]', 'يَتَ[1كَ][2لَّ][3مُ]'], 'sm')}`,
+    `<p><b>Нет ни хамзы, ни та</b> — перед последней буквой касра.</p>${flow(['[1عَ][2ظَّ][3مَ]', 'يُ[1عَ][2ظِّ][3مُ]'], 'sm')}${flow(['[1دَ][2حْ][3رَ][4جَ]', 'يُ[1دَ][2حْ][3رِ][4جُ]'], 'sm')}`,
+  ])}</div>
+
+  <h2 class="h2">Настоящее или будущее?</h2>
+  <div class="card" style="padding:6px 14px">${tb(['Признак', 'Пример', 'Время'], [
+    ['الْآنَ', 'يَقْرَأُ دَرْسَهُ الْآنَ', 'настоящее'],
+    ['لَيْسَ', 'لَسْتُ أَرْضَى عَنْكَ', 'настоящее'],
+    ['غَدًا، بَعْدَ', 'يُسَافِرُ غَدًا', 'будущее'],
+    ['سَـ، سَوْفَ', 'سَأَكْتُبُ، سَوْفَ أَلْعَبُ', 'будущее'],
+    ['أَنْ، إِنْ', 'أُرِيدُ أَنْ أَكْتُبَ', 'будущее'],
+  ])}</div>
+  <p class="note">${a('سَـ')} указывает на ближайшее будущее, ${a('سَوْفَ')} — на более далёкое. Между ними и глаголом ничего не ставят.</p>`,
+  wk: [
+    { wr: '«Они (ж.) помогают»', res: 'يَنْصُرْنَ', steps: [
+      { q: 'Буква мудари‘', a: 'Йа: 3-е лицо ж. р. мн. ч.', tg: 'يَـ' },
+      { q: 'Основа', a: 'Первая коренная с сукуном, ع с даммой', tg: 'نْصُرْ' },
+      { q: 'Окончание', a: 'Нун женского мн. числа', tg: 'ـنَ' }] },
+    { wr: '«Ты (ж.) помогаешь»', res: 'تَنْصُرِينَ', steps: [
+      { q: 'Буква мудари‘', a: 'Та: 2-е лицо', tg: 'تَـ' },
+      { q: 'Основа', a: 'نْصُرِ', tg: 'نْصُرِ' },
+      { q: 'Окончание', a: 'ـينَ для «ты (ж.)»', tg: 'ـينَ' }] },
+    { wr: '«Мы помогаем»', self: true, res: 'نَنْصُرُ', steps: [
+      { q: 'Буква мудари‘', o: ['نَـ', 'أَ', 'يَـ'], ans: 0, a: 'Нун — говорящий вместе с другими.', tg: 'نَـ' },
+      { q: 'Окончание', o: ['дамма, без добавок', 'ـونَ'], ans: 0, a: 'Как у «я»: просто дамма.', tg: 'ـُ' },
+      { q: 'Итог', o: ['نَنْصُرُ', 'نَنْصُرُونَ', 'أَنْصُرُ'], ans: 0, a: 'نَنْصُرُ.', tg: 'نَنْصُرُ' }] },
+  ],
+  px: [
+    { t: 'mc', k: 'Буквы', q: 'Какое слово собирает четыре буквы мудари‘?', arOpts: true, o: ['أَنَيْتَ', 'سَأَلْتُمُونِيهَا', 'فَعَلَ', 'سَوْفَ'], ans: 0, why: `${a('أ ن ي ت')}. Ещё говорят ${a('أَتَيْنَ')} или ${a('نَأْتِي')}.` },
+    { t: 'bin', k: 'Буква мудари‘', q: 'Какая буква мудари‘?', o: ['تَـ', 'يَـ'], items: [
+      { t: 'она пишет', ans: 0, why: 'تَكْتُبُ' }, { t: 'он пишет', ans: 1, why: 'يَكْتُبُ' },
+      { t: 'они (ж.) пишут', ans: 1, why: 'يَكْتُبْنَ: для «них (ж.)» — йа.' }, { t: 'они две (ж.) пишут', ans: 0, why: 'تَكْتُبَانِ' },
+      { t: 'ты (ж.) пишешь', ans: 0, why: 'تَكْتُبِينَ' }, { t: 'они двое пишут', ans: 1, why: 'يَكْتُبَانِ' }] },
+    { t: 'mc', k: 'Спряжение', q: '«Они (ж.) помогают»', arOpts: true, o: ['يَنْصُرْنَ', 'تَنْصُرْنَ', 'يَنْصُرُونَ', 'تَنْصُرَانِ'], ans: 0, why: `${a('تَنْصُرْنَ')} — «вы (ж.) помогаете».` },
+    { t: 'mc', k: 'Образование', q: `Мудари‘ от ${a('أَكْرَمَ')}`, arOpts: true, o: ['يُكْرِمُ', 'يَأَكْرِمُ', 'يَكْرُمُ', 'يُكْرَمُ'], ans: 0, why: 'Хамза выпадает, перед последней касра.' },
+    { t: 'mc', k: 'Образование', q: `Мудари‘ от ${a('تَكَلَّمَ')}`, arOpts: true, o: ['يَتَكَلَّمُ', 'يُكَلِّمُ', 'يَتَكَلِّمُ', 'يُتَكَلَّمُ'], ans: 0, why: 'Если в начале та, форма не меняется.' },
+    { t: 'mc', k: 'Время', q: `${a('سَيَكْتُبُ')} значит…`, o: ['он напишет', 'он пишет сейчас', 'он написал'], ans: 0, why: `${a('سَـ')} относит мудари‘ к будущему.` },
+    { t: 'match', k: 'Лица', q: 'Соедините букву и лицо', P: [['أَ', 'я'], ['نَ', 'мы'], ['تَ', 'ты, она'], ['يَ', 'он, они']] },
+  ],
+  cards: [
+    { k: 'термин', f: 'الْمُضَارِعُ', b: 'настоящее-будущее время', ex: 'يَعْلَمُ · يَجْتَهِدُ' },
+    { k: 'правило', ru: true, f: 'Слово, которое собирает буквы мудари‘', bAr: true, b: 'أَنَيْتَ', d: 'أ ن ي ت' },
+    { k: 'правило', f: 'أَ · نَ', b: 'я · мы' },
+    { k: 'правило', f: 'تَـ', b: 'ты, вы (все), она, они две (ж.)' },
+    { k: 'правило', f: 'يَـ', b: 'он, они двое, они (м.), они (ж.)' },
+    { k: 'термин', f: 'حَالٌ · مُسْتَقْبَلٌ', b: 'настоящее · будущее' },
+    { k: 'правило', f: 'سَـ · سَوْفَ', b: 'будущее: ближе · дальше', ex: 'سَأَكْتُبُ · سَوْفَ أَكْتُبُ' },
+    { k: 'форма', f: 'تَنْصُرِينَ', b: 'ты (ж.) помогаешь' },
+    { k: 'форма', f: 'يَنْصُرْنَ', b: 'они (ж.) помогают' },
+    { k: 'форма', fw: 'أَ[1كْ][2رَ][3مَ]', q: 'Мудари‘?', bAr: true, b: 'يُكْرِمُ', d: 'Хамза выпадает, перед последней касра.' },
+  ] },
+
+/* ---------- 7 ---------- */
+{ n: 7, ar: 'بِنَاءُ الْمُضَارِعِ لِلْمَعْلُومِ وَالْمَجْهُولِ', ru: 'Мудари‘ в действительном и страдательном залоге', short: 'Залоги мудари‘', min: 15,
+  text: [
+    { src: `فَالْمَبْنِيُّ لِلْفَاعِلِ مِنْهُ ${BR('[مِنَ الْمُضَارِعِ]')} مَا كَانَ ${T('hmud', 'حَرْفُ الْمُضَارَعَةِ')} مِنْهُ مَفْتُوحًا إِلَّا مَا كَانَ مَاضِيهِ عَلَى أَرْبَعَةِ أَحْرُفٍ فَإِنَّ حَرْفَ الْمُضَارَعَةِ مِنْهُ يَكُونُ مَضْمُومًا أَبَدًا نَحْوُ: يُدَحْرِجُ وَيُكْرِمُ وَيُقَاتِلُ وَيُفَرِّحُ.`,
+      tr: 'Действительный залог мудари‘ — форма, у которой буква мудари‘ с фатхой. Кроме глаголов, чьё прошедшее из четырёх букв: у них буква мудари‘ всегда с даммой: يُدَحْرِجُ «катит», يُكْرِمُ «почитает», يُقَاتِلُ «сражается», يُفَرِّحُ «радует».',
+      gl: [['حَرْفُ الْمُضَارَعَةِ', 'буква мудари‘ (أ ن ت ي)'], ['مَفْتُوحٌ', 'с фатхой'], ['مَضْمُومٌ', 'с даммой']] },
+    { src: 'وَعَلَامَةُ بِنَاءِ هَذِهِ الْأَرْبَعَةِ لِلْفَاعِلِ كَوْنُ الْحَرْفِ الَّذِي قَبْلَ الْآخِرِ مَكْسُورًا أَبَدًا مِثَالُهُ مِنْ يَفْعُلُ بِضَمِّ الْعَيْنِ: يَنْصُرُ يَنْصُرَانِ يَنْصُرُونَ تَنْصُرُ تَنْصُرَانِ يَنْصُرْنَ تَنْصُرُ تَنْصُرَانِ تَنْصُرُونَ تَنْصُرِينَ تَنْصُرَانِ تَنْصُرْنَ أَنْصُرُ نَنْصُرُ',
+      tr: 'Признак действительного залога у этих четырёх — касра на букве перед последней, всегда. Пример спряжения от يَفْعُلُ (с даммой на ع): يَنْصُرُ «он помогает» … نَنْصُرُ «мы помогаем».',
+      gl: [['عَلَامَةٌ', 'признак'], ['قَبْلَ الْآخِرِ', 'перед последней'], ['مَكْسُورٌ', 'с касрой']] },
+    { src: 'وَقِسْ عَلَى هَذَا يَضْرِبُ وَيَعْلَمُ وَيُدَحْرِجُ وَيُكْرِمُ وَيُفَرِّحُ وَيُقَاتِلُ وَيَتَكَسَّرُ وَيَتَبَاعَدُ وَيَنْقَطِعُ وَيَجْتَمِعُ وَيَحْمَرُّ وَيَحْمَارُّ وَيَسْتَخْرِجُ وَيَعْشَوْشِبُ وَيَقْعَنْسِسُ وَيَسْلَنْقِي وَيَتَدَحْرَجُ وَيَحْرَنْجِمُ وَيَقْشَعِرُّ.',
+      tr: 'По этому образцу спрягай يَضْرِبُ, يَعْلَمُ, يُدَحْرِجُ, يُكْرِمُ, يُفَرِّحُ, يُقَاتِلُ, يَتَكَسَّرُ, يَتَبَاعَدُ, يَنْقَطِعُ, يَجْتَمِعُ, يَحْمَرُّ, يَحْمَارُّ, يَسْتَخْرِجُ, يَعْشَوْشِبُ, يَقْعَنْسِسُ, يَسْلَنْقِي, يَتَدَحْرَجُ, يَحْرَنْجِمُ, يَقْشَعِرُّ.',
+      gl: [['قِسْ عَلَى هَذَا', 'строй по этому образцу']] },
+    { src: 'وَالْمَبْنِيُّ لِلْمَفْعُولِ مِنْهُ مَا كَانَ حَرْفُ الْمُضَارَعَةِ مِنْهُ مَضْمُومًا وَمَا قَبْلَ الْآخِرِ مِنْهُ مَفْتُوحًا نَحْوُ: يُنْصَرُ وَيُدَحْرَجُ وَيُكْرَمُ وَيُقَاتَلُ وَيُسْتَخْرَجُ.',
+      tr: 'Страдательный залог мудари‘ — буква мудари‘ с даммой, а буква перед последней с фатхой: يُنْصَرُ «ему помогают», يُدَحْرَجُ, يُكْرَمُ, يُقَاتَلُ, يُسْتَخْرَجُ.',
+      gl: [['مَا قَبْلَ الْآخِرِ', 'буква перед последней']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Правило в двух строках</h2>
+  <div class="card">${rules([
+    `<p><b>Действительный:</b> буква мудари‘ с фатхой — ${a('يَنْصُرُ، يَسْتَخْرِجُ')}. Если в прошедшем 4 буквы (${a('أَفْعَلَ، فَعَّلَ، فَاعَلَ، فَعْلَلَ')}), она с даммой, а перед последней касра: ${a('يُكْرِمُ، يُفَرِّحُ، يُقَاتِلُ، يُدَحْرِجُ')}.</p>`,
+    `<p><b>Страдательный:</b> у всех глаголов буква мудари‘ с даммой, перед последней — фатха: ${a('يُنْصَرُ، يُكْرَمُ، يُسْتَخْرَجُ')}.</p>`,
+  ])}</div>
+  <div class="callout"><b>Одна огласовка меняет смысл</b>${flow(['يُ[1كْ][2رِ][3مُ]', 'يُ[1كْ][2رَ][3مُ]'])}<span class="note" style="text-align:center">«он почитает» → «его почитают»</span></div>
+
+  <h2 class="h2">Все бабы из уроков 2–3</h2>
+  <div class="card" style="padding:6px 14px">${tb(['Прошедшее', 'Действительный', 'Страдательный'], [
+    ['[1نَ][2صَ][3رَ]', 'يَ[1نْ][2صُ][3رُ]', 'يُ[1نْ][2صَ][3رُ]'],
+    ['أَ[1كْ][2رَ][3مَ]', 'يُ[1كْ][2رِ][3مُ]', 'يُ[1كْ][2رَ][3مُ]'],
+    ['[1فَ][2رَّ][3حَ]', 'يُ[1فَ][2رِّ][3حُ]', 'يُ[1فَ][2رَّ][3حُ]'],
+    ['[1قَ]ا[2تَ][3لَ]', 'يُ[1قَ]ا[2تِ][3لُ]', 'يُ[1قَ]ا[2تَ][3لُ]'],
+    ['[1دَ][2حْ][3رَ][4جَ]', 'يُ[1دَ][2حْ][3رِ][4جُ]', 'يُ[1دَ][2حْ][3رَ][4جُ]'],
+    ['تَ[1كَ][2سَّ][3رَ]', 'يَتَ[1كَ][2سَّ][3رُ]', 'يُتَ[1كَ][2سَّ][3رُ]'],
+    ['اِ[1جْ]تَ[2مَ][3عَ]', 'يَ[1جْ]تَ[2مِ][3عُ]', 'يُ[1جْ]تَ[2مَ][3عُ]'],
+    ['اِسْتَ[1خْ][2رَ][3جَ]', 'يَسْتَ[1خْ][2رِ][3جُ]', 'يُسْتَ[1خْ][2رَ][3جُ]'],
+  ], 'st3')}</div>`,
+  wk: [
+    { w: 'يَسْتَ[1خْ][2رِ][3جُ]', ru: 'извлекает → извлекается', res: 'يُسْتَخْرَجُ', steps: [
+      { q: 'Буква мудари‘', a: 'Дамма', tg: 'يُـ' },
+      { q: 'Буква перед последней (ر)', a: 'Фатха', tg: 'ـرَـ' },
+      { q: 'Остальное', a: 'Без изменений', tg: 'سْتَخْ' }] },
+    { w: 'يُ[1قَ]ا[2تِ][3لُ]', ru: 'сражается → с ним сражаются', res: 'يُقَاتَلُ', steps: [
+      { q: 'Буква мудари‘', a: 'Уже с даммой: в прошедшем 4 буквы', tg: 'يُـ' },
+      { q: 'Буква перед последней (ت)', a: 'Касра меняется на фатху', tg: 'ـتَـ' },
+      { q: 'Что отличает залоги?', a: 'Только эта огласовка', tg: 'ـِ ← ـَ' }] },
+    { w: 'يَ[1ضْ][2رِ][3بُ]', ru: 'бьёт → его бьют', self: true, res: 'يُضْرَبُ', steps: [
+      { q: 'Буква мудари‘ получает…', o: ['дамму', 'фатху'], ans: 0, a: 'Дамму: يُـ.', tg: 'يُـ' },
+      { q: 'Буква перед последней получает…', o: ['фатху', 'касру'], ans: 0, a: 'Фатху: ـرَـ.', tg: 'ـرَـ' },
+      { q: 'Итог', o: ['يُضْرَبُ', 'يُضْرِبُ', 'يَضْرَبُ'], ans: 0, a: 'يُضْرَبُ «его бьют».', tg: 'يُضْرَبُ' }] },
+  ],
+  px: [
+    { t: 'bin', k: 'Буква мудари‘', q: 'Какая огласовка у буквы мудари‘ в действительном залоге?', o: ['يُـ', 'يَـ'], items: [
+      { w: 'أَ[1كْ][2رَ][3مَ]', ans: 0, why: 'В прошедшем 4 буквы: يُكْرِمُ.' }, { w: '[1نَ][2صَ][3رَ]', ans: 1, why: 'يَنْصُرُ' },
+      { w: '[1قَ]ا[2تَ][3لَ]', ans: 0, why: '4 буквы: يُقَاتِلُ.' }, { w: 'اِسْتَ[1خْ][2رَ][3جَ]', ans: 1, why: '6 букв: يَسْتَخْرِجُ.' },
+      { w: '[1دَ][2حْ][3رَ][4جَ]', ans: 0, why: '4 буквы: يُدَحْرِجُ.' }, { w: 'تَ[1كَ][2سَّ][3رَ]', ans: 1, why: '5 букв: يَتَكَسَّرُ.' }] },
+    { t: 'bin', k: 'Залог', q: 'Действительный или страдательный?', o: ['مَعْلُومٌ', 'مَجْهُولٌ'], items: [
+      { w: 'يُكْرِمُ', ans: 0, why: 'Касра перед последней.' }, { w: 'يُكْرَمُ', ans: 1, why: 'Фатха перед последней.' },
+      { w: 'يُنْصَرُ', ans: 1, why: 'Дамма на букве мудари‘ у трёхбуквенного.' }, { w: 'يُفَرِّحُ', ans: 0, why: 'Касра перед последней.' },
+      { w: 'يُسْتَخْرَجُ', ans: 1, why: 'Дамма и фатха.' }] },
+    { t: 'mc', k: 'Страдательный', q: `Страдательный от ${a('يَعْلَمُ')}`, arOpts: true, o: ['يُعْلَمُ', 'يُعْلِمُ', 'يَعْلُمُ', 'يُعَلَّمُ'], ans: 0, why: 'Буква мудари‘ — дамма, перед последней — фатха.' },
+    { t: 'mc', k: 'Правило', q: `Почему в ${a('يُكْرِمُ')} буква мудари‘ с даммой?`, o: [`В прошедшем ${a('أَكْرَمَ')} четыре буквы`, 'Это страдательный залог', 'После хамзы всегда дамма'], ans: 0, why: 'Касра перед последней показывает, что залог действительный.' },
+    { t: 'mc', k: 'Перевод', q: `${a('يُدَحْرَجُ')} значит…`, o: ['его катят', 'он катит', 'он скатился'], ans: 0, why: 'Фатха перед последней — страдательный.' },
+    { t: 'mc', k: 'Действительный', q: `Мудари‘ от ${a('فَرَّحَ')} (действительный)`, arOpts: true, o: ['يُفَرِّحُ', 'يَفْرَحُ', 'يُفَرَّحُ', 'يَتَفَرَّحُ'], ans: 0, why: 'Четыре буквы в прошедшем: дамма на букве мудари‘, касра перед последней.' },
+  ],
+  cards: [
+    { k: 'правило', ru: true, f: 'Действительный мудари‘: огласовка буквы мудари‘?', b: 'фатха; дамма, если в прошедшем 4 буквы', ex: 'يَنْصُرُ · يُكْرِمُ' },
+    { k: 'правило', ru: true, f: 'Страдательный мудари‘: правило', b: 'буква мудари‘ — дамма, перед последней — фатха', ex: 'يُنْصَرُ' },
+    { k: 'форма', f: 'يُكْرِمُ · يُكْرَمُ', b: 'почитает · его почитают' },
+    { k: 'форма', fw: 'يُ[1قَ]ا[2تِ][3لُ]', q: 'Страдательный?', bAr: true, b: 'يُقَاتَلُ' },
+    { k: 'форма', fw: 'يَسْتَ[1خْ][2رِ][3جُ]', q: 'Страдательный?', bAr: true, b: 'يُسْتَخْرَجُ' },
+    { k: 'форма', fw: 'تَ[1كَ][2سَّ][3رَ]', q: 'Мудари‘?', bAr: true, b: 'يَتَكَسَّرُ', d: 'В прошедшем 5 букв — фатха.' },
+  ] },
+
+/* ---------- 8 ---------- */
+{ n: 8, ar: 'الْمُضَارِعُ إِذَا دَخَلَ عَلَيْهِ نَاصِبٌ أَوْ جَازِمٌ', ru: 'Мудари‘ после частиц: насб, джазм, повеление и запрет', short: 'Насб и джазм', min: 20,
+  text: [
+    { src: `وَاعْلَمْ أَنَّهُ يَدْخُلُ عَلَى الْفِعْلِ الْمُضَارِعِ مَا، وَلَا ${T('nafiya', 'النَّافِيَتَانِ')} فَلَا تُغَيِّرَانِ صِيغَتَهُ تَقُولُ: لَا يَنْصُرُ لَا يَنْصُرَانِ لَا يَنْصُرُونَ... إِلَخْ.`,
+      tr: 'Знай, что к мудари‘ присоединяются отрицательные مَا и لَا, и они не меняют его формы: لَا يَنْصُرُ «не помогает», لَا يَنْصُرَانِ, لَا يَنْصُرُونَ и т. д.',
+      gl: [['النَّافِيَةُ', 'отрицательная (частица)'], ['لَا تُغَيِّرَانِ', 'обе не меняют'], ['صِيغَةٌ', 'форма']] },
+    { src: `وَيَدْخُلُ ${T('jazim', 'الْجَازِمُ')} فَيَحْذِفُ حَرَكَةَ الْوَاحِدِ وَنُونَ التَّثْنِيَةِ، وَالْجَمْعِ الْمُذَكَّرِ، وَالْوَاحِدَةِ الْمُخَاطَبَةِ وَلَا يَحْذِفُ نُونَ جَمَاعَةِ الْمُؤَنَّثِ فَإِنَّهُ ضَمِيرٌ كَالْوَاوِ فِي الْجَمْعِ الْمُذَكَّرِ فَتَثْبُتُ ${BR('[نُونُ جَمْعِ الْمُؤَنَّثِ]')} عَلَى كُلِّ حَالٍ تَقُولُ: لَمْ يَنْصُرْ لَمْ يَنْصُرَا لَمْ يَنْصُرُوا... إِلَخْ.`,
+      tr: 'Присоединяется джазим (частица усечения): он убирает огласовку единственного числа и нун двойственного числа, мн. числа м. р. и «ты (ж.)». Нун женского мн. числа он не убирает: это местоимение, как و во мн. числе м. р., поэтому он остаётся всегда: لَمْ يَنْصُرْ «не помог», لَمْ يَنْصُرَا, لَمْ يَنْصُرُوا и т. д.',
+      gl: [['جَازِمٌ', 'частица джазма'], ['يَحْذِفُ', 'убирает'], ['حَرَكَةٌ', 'огласовка'], ['التَّثْنِيَةُ', 'двойственное число'], ['ضَمِيرٌ', 'местоимение'], ['عَلَى كُلِّ حَالٍ', 'в любом случае']] },
+    { src: `وَيَدْخُلُ ${T('nasib', 'النَّاصِبُ')} فَيُبْدِلُ مِنَ الضَّمَّةِ فَتْحَةً وَيُسْقِطُ النُّونَاتِ سِوَى نُونِ جَمْعِ الْمُؤَنَّثِ فَتَقُولُ: لَنْ يَنْصُرَ لَنْ يَنْصُرَا لَنْ يَنْصُرُوا...`,
+      tr: 'Присоединяется насиб (частица насба): он заменяет дамму фатхой и убирает нуны, кроме нуна женского мн. числа: لَنْ يَنْصُرَ «никогда не поможет», لَنْ يَنْصُرَا, لَنْ يَنْصُرُوا…',
+      gl: [['نَاصِبٌ', 'частица насба'], ['يُبْدِلُ مِنْ … فَتْحَةً', 'заменяет … фатхой'], ['يُسْقِطُ', 'убирает'], ['سِوَى', 'кроме']] },
+    { src: `وَمِنَ الْجَوَازِمِ ${T('lamamr', 'لَامُ الْأَمْرِ')} فَتَقُولُ فِي الْأَمْرِ الْغَائِبِ لِيَنْصُرْ لِيَنْصُرَا لِيَنْصُرُوا لِتَنْصُرْ لِتَنْصُرَا لِيَنْصُرْنَ وَكَذَلِكَ لِيَضْرِبْ وَلِيَعْلَمْ وَغَيْرُهُمَا.`,
+      tr: 'Среди частиц джазма — лям повеления. Повеление 3-му лицу: لِيَنْصُرْ «пусть поможет», لِيَنْصُرَا, لِيَنْصُرُوا, لِتَنْصُرْ, لِتَنْصُرَا, لِيَنْصُرْنَ. Так же لِيَضْرِبْ, لِيَعْلَمْ и другие.',
+      gl: [['الْجَوَازِمُ', 'частицы джазма'], ['لَامُ الْأَمْرِ', 'лям повеления'], ['الْأَمْرُ الْغَائِبُ', 'повеление 3-му лицу']] },
+    { src: `وَمِنْهَا ${T('nahiya', 'لَاءُ النَّاهِيَةِ')} فَتَقُولُ فِي نَهْيِ الْغَائِبِ لَا يَنْصُرْ لَا يَنْصُرَا لَا يَنْصُرُوا لَا تَنْصُرْ لَا تَنْصُرَا لَا يَنْصُرْنَ وَفِي نَهْيِ الْحَاضِرِ لَا تَنْصُرْ لَا تَنْصُرَا لَا تَنْصُرُوا لَا تَنْصُرِي لَا تَنْصُرَا لَا تَنْصُرْنَ وَهَكَذَا قِيَاسُ سَائِرِ الْأَمْثِلَةِ.`,
+      tr: 'Среди них и запретительное لَا. Запрет 3-му лицу: لَا يَنْصُرْ «пусть не помогает» … لَا يَنْصُرْنَ; запрет собеседнику: لَا تَنْصُرْ «не помогай» … لَا تَنْصُرْنَ. По этому образцу строятся и все остальные формы.',
+      gl: [['لَا النَّاهِيَةُ', 'запретительное ля'], ['نَهْيٌ', 'запрет'], ['الْحَاضِرُ', 'присутствующий, собеседник'], ['سَائِرُ الْأَمْثِلَةِ', 'все остальные формы']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Три состояния мудари‘</h2>
+  <p class="lead">После частиц мудари‘ меняет окончание. Главное видно на пяти формах:</p>
+  <div class="card" style="padding:6px 14px">${tb(['Обычный', 'После ' + a('لَنْ'), 'После ' + a('لَمْ')], [
+    ['يَ[1نْ][2صُ][3رُ]', 'لَنْ يَ[1نْ][2صُ][3رَ]', 'لَمْ يَ[1نْ][2صُ][3رْ]'],
+    ['يَ[1نْ][2صُ][3رَ]انِ', 'لَنْ يَ[1نْ][2صُ][3رَ]ا', 'لَمْ يَ[1نْ][2صُ][3رَ]ا'],
+    ['يَ[1نْ][2صُ][3رُ]ونَ', 'لَنْ يَ[1نْ][2صُ][3رُ]وا', 'لَمْ يَ[1نْ][2صُ][3رُ]وا'],
+    ['تَ[1نْ][2صُ][3رِ]ينَ', 'لَنْ تَ[1نْ][2صُ][3رِ]ي', 'لَمْ تَ[1نْ][2صُ][3رِ]ي'],
+    ['يَ[1نْ][2صُ][3رْ]نَ', 'لَنْ يَ[1نْ][2صُ][3رْ]نَ', 'لَمْ يَ[1نْ][2صُ][3رْ]نَ'],
+  ], 'st3')}</div>
+  <div class="card">${rules([
+    `<p><b>${a('مَا')} и ${a('لَا')} отрицательные</b> — форма не меняется: ${a('لَا يَنْصُرُ')} «не помогает».</p>`,
+    `<p><b>Насб</b>: дамма → фатха, нуны выпадают. Нун ж. мн. числа остаётся.</p>`,
+    `<p><b>Джазм</b>: дамма → сукун, нуны выпадают. Нун ж. мн. числа остаётся: это местоимение.</p>`,
+  ])}</div>
+  <p class="note">Алиф после ${a('و')} в ${a('يَنْصُرُوا')} пишется, но не читается.</p>
+
+  <h2 class="h2">Частицы и их значения</h2>
+  <div class="card" style="padding:6px 14px">${tblParticles()}</div>
+  <div class="callout"><b>Одно ${a('لَا')}, два смысла</b><span>${a('لَا تَنْصُرُ')} (дамма) — «ты не помогаешь», отрицание. ${a('لَا تَنْصُرْ')} (сукун) — «не помогай!», запрет.</span></div>
+  <button class="btn ghost block" data-act="open-conj" data-t="j">Все 14 форм с ${a('لَمْ')} — в спрягателе</button>`,
+  wk: [
+    { w: 'تَنْصُرُونَ', ru: '+ لَمْ', res: 'لَمْ تَنْصُرُوا', steps: [
+      { q: 'Какая частица?', a: 'لَمْ — джазм', tg: 'جَزْمٌ' },
+      { q: 'Что с нуном?', a: 'Нун мн. числа м. р. выпадает', tg: 'تَنْصُرُو' },
+      { q: 'Что пишем в конце?', a: 'Алиф после و (не читается)', tg: 'تَنْصُرُوا' }] },
+    { w: 'يَكْتُبُ', ru: '+ لَنْ', res: 'لَنْ يَكْتُبَ', steps: [
+      { q: 'Какая частица?', a: 'لَنْ — насб', tg: 'نَصْبٌ' },
+      { q: 'Что с окончанием?', a: 'Дамма → фатха', tg: 'يَكْتُبَ' },
+      { q: 'Смысл', a: '«никогда не напишет»', tg: 'لَنْ' }] },
+    { w: 'تَضْرِبِينَ', ru: '+ لَا запретительное', self: true, res: 'لَا تَضْرِبِي', steps: [
+      { q: 'Какое это لَا?', o: ['запретительное: джазм', 'отрицательное: без изменений'], ans: 0, a: 'Запрет ставит глагол в джазм.', tg: 'جَزْمٌ' },
+      { q: 'Что с нуном?', o: ['выпадает', 'остаётся'], ans: 0, a: 'Нун «ты (ж.)» выпадает.', tg: 'ـي' },
+      { q: 'Итог', o: ['لَا تَضْرِبِي', 'لَا تَضْرِبِينَ', 'لَا تَضْرِبْنَ'], ans: 0, a: 'لَا تَضْرِبِي «не бей!» (женщине).', tg: 'لَا تَضْرِبِي' }] },
+  ],
+  px: [
+    { t: 'mc', k: 'Джазм', q: `${a('لَمْ')} + ${a('يَعْلَمُ')}`, arOpts: true, o: ['لَمْ يَعْلَمْ', 'لَمْ يَعْلَمَ', 'لَمْ يَعْلَمُ', 'لَمْ يُعْلَمْ'], ans: 0, why: 'Джазм: дамма → сукун.' },
+    { t: 'mc', k: 'Насб', q: `${a('لَنْ')} + ${a('يَنْصُرُونَ')}`, arOpts: true, o: ['لَنْ يَنْصُرُوا', 'لَنْ يَنْصُرُونَ', 'لَنْ يَنْصُرْنَ', 'لَنْ يَنْصُرُو'], ans: 0, why: 'Нун выпадает, после و пишется алиф.' },
+    { t: 'mc', k: 'Нун ж. мн.', q: `${a('لَمْ')} + ${a('يَنْصُرْنَ')}`, arOpts: true, o: ['لَمْ يَنْصُرْنَ', 'لَمْ يَنْصُرْ', 'لَمْ يَنْصُرُوا', 'لَمْ يَنْصُرَ'], ans: 0, why: 'Нун женского мн. числа — местоимение, он остаётся.' },
+    { t: 'bin', k: 'Частицы', q: 'Насб или джазм?', o: ['نَصْبٌ', 'جَزْمٌ'], items: [
+      { w: 'لَنْ', ans: 0, why: 'لَنْ — насб.' }, { w: 'لَمْ', ans: 1, why: 'لَمْ — джазм.' }, { w: 'أَنْ', ans: 0, why: 'أَنْ — насб.' },
+      { w: 'لَامُ الْأَمْرِ', ans: 1, why: 'Лям повеления — джазм.' }, { w: 'كَيْ', ans: 0, why: 'كَيْ — насб.' }, { w: 'لَا النَّاهِيَةُ', ans: 1, why: 'Запретительное ля — джазм.' }] },
+    { t: 'mc', k: 'Смысл', q: `${a('لَا يَنْصُرُ')} и ${a('لَا يَنْصُرْ')} — в чём разница?`, o: ['Первое: «не помогает», второе: «пусть не помогает»', 'Никакой', 'Первое — прошедшее время'], ans: 0, why: 'Отрицательное لَا не меняет форму, запретительное ставит джазм.' },
+    { t: 'mc', k: 'Повеление', q: `${a('لِيَكْتُبْ')} значит…`, o: ['пусть он напишет', 'он не написал', 'он напишет'], ans: 0, why: `Лям повеления + джазм: «пусть».` },
+    { t: 'match', k: 'Значения', q: 'Соедините частицу и значение', P: [['لَمْ يَكْتُبْ', 'не написал'], ['لَنْ يَكْتُبَ', 'никогда не напишет'], ['لَا تَكْتُبْ', 'не пиши!'], ['لِيَكْتُبْ', 'пусть напишет']] },
+  ],
+  cards: [
+    { k: 'правило', ru: true, f: 'Что делает частица насба?', b: 'дамма → фатха, нуны выпадают (кроме ж. мн.)', ex: 'لَنْ يَنْصُرَ · لَنْ يَنْصُرُوا' },
+    { k: 'правило', ru: true, f: 'Что делает частица джазма?', b: 'дамма → сукун, нуны выпадают (кроме ж. мн.)', ex: 'لَمْ يَنْصُرْ · لَمْ يَنْصُرُوا' },
+    { k: 'правило', ru: true, f: 'Почему нун в يَنْصُرْنَ не выпадает?', b: 'это местоимение, как و в يَنْصُرُونَ', ex: 'لَمْ يَنْصُرْنَ' },
+    { k: 'список', ru: true, f: 'Частицы насба', bAr: true, b: 'أَنْ · لَنْ · كَيْ · إِذَنْ' },
+    { k: 'список', ru: true, f: 'Частицы джазма', bAr: true, b: 'لَمْ · لَمَّا · لِـ · لَا', d: 'لَمَّا — «ещё не».' },
+    { k: 'форма', f: 'لَا تَنْصُرُ · لَا تَنْصُرْ', b: 'ты не помогаешь · не помогай!' },
+    { k: 'форма', f: 'لِيَنْصُرْ', b: 'пусть он поможет' },
+    { k: 'форма', fw: 'تَنْصُرِينَ', q: 'С لَنْ?', bAr: true, b: 'لَنْ تَنْصُرِي' },
+  ] },
+
+/* ---------- 9 ---------- */
+{ n: 9, ar: 'بِنَاءُ أَمْرِ الْحَاضِرِ', ru: 'Повелительное наклонение', short: 'Повеление', min: 15,
+  text: [
+    { src: `وَأَمَّا الْأَمْرُ بِالصِّيغَةِ وَهُوَ ${T('amrhadir', 'أَمْرُ الْحَاضِرِ')} فَهُوَ جَارٍ عَلَى لَفْظِ الْمُضَارِعِ الْمَجْزُومِ.`,
+      tr: 'Повеление особой формой — это повеление собеседнику (أَمْرُ الْحَاضِرِ). Оно строится по образцу мудари‘ в джазме.',
+      gl: [['الْأَمْرُ بِالصِّيغَةِ', 'повеление особой формой'], ['أَمْرُ الْحَاضِرِ', 'повеление собеседнику'], ['جَارٍ عَلَى', 'идёт по образцу'], ['لَفْظٌ', 'форма, звучание'], ['الْمَجْزُومُ', 'в джазме']] },
+    { src: 'فَإِنْ كَانَ مَا بَعْدَ حَرْفِ الْمُضَارَعَةِ مُتَحَرِّكًا فَتُسْقِطُ مِنْهُ حَرْفَ الْمُضَارَعَةِ، وَتَأْتِي بِالصُّورَةِ الْبَاقِي مَجْزُومًا فَتَقُولُ فِي الْأَمْرِ مِنْ تُدَحْرِجُ دَحْرِجْ دَحْرِجَا دَحْرِجُوا دَحْرِجِي دَحْرِجَا دَحْرِجْنَ وَهَكَذَا تَقُولُ فَرِّحْ وَقَاتِلْ وَتَكَسَّرْ وَتَبَاعَدْ وَتَدَحْرَجْ.',
+      tr: 'Если буква после буквы мудари‘ огласована, убираешь букву мудари‘, а оставшееся ставишь в джазм. От تُدَحْرِجُ: دَحْرِجْ «кати!», دَحْرِجَا, دَحْرِجُوا, دَحْرِجِي, دَحْرِجَا, دَحْرِجْنَ. Так же فَرِّحْ, قَاتِلْ, تَكَسَّرْ, تَبَاعَدْ, تَدَحْرَجْ.',
+      gl: [['مُتَحَرِّكٌ', 'огласованная'], ['تُسْقِطُ', 'убираешь'], ['الصُّورَةُ الْبَاقِي', 'оставшаяся форма']] },
+    { src: `وَإِنْ كَانَ مَا بَعْدَ حَرْفِ الْمُضَارَعَةِ سَاكِنًا فَتَحْذِفُ مِنْهُ حَرْفَ الْمُضَارَعَةِ وَتَأْتِي بِالصُّورَةِ الْبَاقِي مَجْزُومًا مَزِيدًا فِي أَوَّلِهِ ${T('wasl', 'هَمْزَةَ وَصْلٍ')} مَكْسُورَةً إِلَّا أَنْ يَكُونَ عَيْنُ الْمُضَارِعِ مِنْهُ مَضْمُومًا فَتَضُمُّهَا فَتَقُولُ: اُنْصُرْ اُنْصُرَا اُنْصُرُوا اُنْصُرِي اُنْصُرَا اُنْصُرْنَ وَكَذَلِكَ اِضْرِبْ وَاعْلَمْ وَانْقَطِعْ وَاجْتَمِعْ وَاسْتَخْرِجْ`,
+      tr: 'Если буква после буквы мудари‘ с сукуном, убираешь букву мудари‘, ставишь оставшееся в джазм и добавляешь в начало хамзу васль с касрой. Но если ع в мудари‘ с даммой, хамзе тоже даёшь дамму: اُنْصُرْ «помоги!», اُنْصُرَا, اُنْصُرُوا, اُنْصُرِي, اُنْصُرَا, اُنْصُرْنَ. Так же اِضْرِبْ, اِعْلَمْ, اِنْقَطِعْ, اِجْتَمِعْ, اِسْتَخْرِجْ.',
+      gl: [['سَاكِنٌ', 'с сукуном'], ['تَحْذِفُ', 'убираешь'], ['مَزِيدًا فِي أَوَّلِهِ', 'с добавкой в начале'], ['تَضُمُّهَا', 'даёшь ей дамму']] },
+    { src: `وَفَتَحُوا هَمْزَةَ أَكْرِمْ بِنَاءً عَلَى ${T('marfud', 'الْأَصْلِ الْمَرْفُوضِ')} فَإِنَّ أَصْلَ تُكْرِمُ تُؤَكْرِمُ.`,
+      tr: 'А хамзу в أَكْرِمْ «почти!» арабы огласовали фатхой, опираясь на исходную форму, вышедшую из употребления: исходно تُكْرِمُ было تُؤَكْرِمُ.',
+      gl: [['فَتَحُوا', 'огласовали фатхой (арабы)'], ['بِنَاءً عَلَى', 'исходя из'], ['الْأَصْلُ الْمَرْفُوضُ', 'исходная форма, вышедшая из употребления']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Повеление за три шага</h2>
+  <div class="card">${rules([
+    `<p><b>Возьмите мудари‘ 2-го лица в джазме.</b></p>${flow(['تَ[1نْ][2صُ][3رُ]', 'تَ[1نْ][2صُ][3رْ]'], 'sm')}`,
+    `<p><b>Уберите букву мудари‘.</b></p>${flow(['تَ[1نْ][2صُ][3رْ]', '[1نْ][2صُ][3رْ]'], 'sm')}`,
+    `<p><b>Если первая буква с сукуном, добавьте хамзу васль.</b> Дамма — если ع с даммой, иначе касра. Если первая буква огласована, ничего не добавляйте.</p>${flow(['[1نْ][2صُ][3رْ]', 'اُ[1نْ][2صُ][3رْ]'], 'sm')}${flow(['[1ضْ][2رِ][3بْ]', 'اِ[1ضْ][2رِ][3بْ]'], 'sm')}${flow(['تُ[1دَ][2حْ][3رِ][4جْ]', '[1دَ][2حْ][3رِ][4جْ]'], 'sm')}`,
+  ])}</div>
+
+  <h2 class="h2">Повеление во всех лицах</h2>
+  <p>У 2-го лица — особая форма из этого урока. У 1-го и 3-го лица особой формы нет: берут лям повеления и джазм (урок 8).</p>
+  ${paradigm(k => form(NSR, BABS[0], 'a', k))}
+
+  <div class="callout"><b>Исключение: ${a('أَفْعَلَ')}</b><span>От ${a('تُكْرِمُ')} повеление ${a('أَكْرِمْ')} с фатхой: исходная форма мудари‘ — ${a('تُؤَكْرِمُ')}. Так у всех глаголов на ${a('أَفْعَلَ')}: ${a('أَخْرِجْ، أَرْسِلْ')}. Это хамза катъ, она читается всегда.</span></div>
+  <div class="card xcard"><span class="sub">Три способа выразить повеление</span>${tb(['Способ', 'Пример', 'Кому'], [
+    ['!Особая форма', 'اُنْصُرْ', 'ты, вы'],
+    ['!' + a('لِـ') + ' + джазм', 'لِيَنْصُرْ، لِأَنْصُرْ', 'он, они; я, мы'],
+    ['!' + a('لَا') + ' + джазм', 'لَا تَنْصُرْ', 'запрет всем лицам'],
+  ])}</div>
+  <p class="note">От глаголов на ${a('فَعُلَ')} (качества: ${a('حَسُنَ، شَرُفَ')}) повеление обычно не образуют. Повеление, обращённое к Аллаху, называют мольбой (${a('دُعَاءٌ')}): ${a('اللَّهُمَّ اغْفِرْ لَنَا')}.</p>`,
+  wk: [
+    { w: 'تَ[1ضْ][2رِ][3بُ]', ru: 'ты бьёшь → бей!', res: 'اِضْرِبْ', steps: [
+      { q: 'Джазм', a: 'Дамма → сукун', tg: 'تَضْرِبْ' },
+      { q: 'Убираем букву мудари‘', a: 'Первая буква ض с сукуном', tg: 'ضْرِبْ' },
+      { q: 'Хамза васль', a: 'ع с касрой → хамза с касрой', tg: 'اِضْرِبْ' }] },
+    { w: 'تُ[1قَ]ا[2تِ][3لُ]', ru: 'ты сражаешься → сражайся!', res: 'قَاتِلْ', steps: [
+      { q: 'Джазм', a: 'Дамма → сукун', tg: 'تُقَاتِلْ' },
+      { q: 'Убираем букву мудари‘', a: 'Первая буква ق огласована', tg: 'قَاتِلْ' },
+      { q: 'Хамза нужна?', a: 'Нет', tg: '—' }] },
+    { w: 'تَ[1كْ][2تُ][3بُ]', ru: 'ты пишешь → пиши!', self: true, res: 'اُكْتُبْ', steps: [
+      { q: 'После удаления تَ первая буква…', o: ['с сукуном', 'огласована'], ans: 0, a: 'ك с сукуном: нужна хамза васль.', tg: 'كْتُبْ' },
+      { q: 'Огласовка хамзы', o: ['дамма', 'касра'], ans: 0, a: 'ع (ت) с даммой — хамза тоже с даммой.', tg: 'اُ' },
+      { q: 'Итог', o: ['اُكْتُبْ', 'اِكْتُبْ', 'كْتُبْ'], ans: 0, a: 'اُكْتُبْ «пиши!».', tg: 'اُكْتُبْ' }] },
+  ],
+  px: [
+    { t: 'mc', k: 'Повеление', q: `Повеление от ${a('تَجْلِسُ')}`, arOpts: true, o: ['اِجْلِسْ', 'اُجْلُسْ', 'جَلِّسْ', 'أَجْلِسْ'], ans: 0, why: 'ع с касрой — хамза с касрой.' },
+    { t: 'mc', k: 'Повеление', q: `Повеление от ${a('تَخْرُجُ')}`, arOpts: true, o: ['اُخْرُجْ', 'اِخْرُجْ', 'اِخْرِجْ', 'أَخْرِجْ'], ans: 0, why: `ع с даммой — хамза с даммой. ${a('أَخْرِجْ')} — повеление от другого глагола, ${a('أَخْرَجَ')} «выведи!».` },
+    { t: 'mc', k: 'Повеление', q: `Повеление от ${a('تَتَعَلَّمُ')}`, arOpts: true, o: ['تَعَلَّمْ', 'اِتَعَلَّمْ', 'اِتْعَلَّمْ', 'تَعَلَّمُ'], ans: 0, why: 'После удаления первой та вторая огласована — хамза не нужна.' },
+    { t: 'mc', k: 'Исключение', q: `Повеление от ${a('تُكْرِمُ')}`, arOpts: true, o: ['أَكْرِمْ', 'اِكْرِمْ', 'اُكْرُمْ', 'كْرِمْ'], ans: 0, why: `Исходная форма ${a('تُؤَكْرِمُ')}: хамза возвращается с фатхой.` },
+    { t: 'mc', k: 'Формы', q: `Повеление для ${a('أَنْتُمْ')} от ${a('تَنْصُرُونَ')}`, arOpts: true, o: ['اُنْصُرُوا', 'اُنْصُرُونَ', 'اُنْصُرْنَ', 'اُنْصُرِي'], ans: 0, why: 'Как в джазме: нун выпадает, пишется алиф.' },
+    { t: 'bin', k: 'Хамза', q: 'Нужна хамза васль?', o: ['نَعَمْ', 'لَا'], items: [
+      { w: 'تَفْتَحُ', ans: 0, why: 'اِفْتَحْ' }, { w: 'تُقَاتِلُ', ans: 1, why: 'قَاتِلْ' }, { w: 'تَسْتَغْفِرُ', ans: 0, why: 'اِسْتَغْفِرْ' },
+      { w: 'تُفَرِّحُ', ans: 1, why: 'فَرِّحْ' }, { w: 'تَتَبَاعَدُ', ans: 1, why: 'تَبَاعَدْ' }, { w: 'تَعْلَمُ', ans: 0, why: 'اِعْلَمْ' }] },
+    { t: 'match', k: 'Повеление', q: 'Соедините мудари‘ и повеление', rAr: true, P: [['تَضْرِبُ', 'اِضْرِبْ'], ['تَنْصُرُ', 'اُنْصُرْ'], ['تُدَحْرِجُ', 'دَحْرِجْ'], ['تُكْرِمُ', 'أَكْرِمْ']] },
+  ],
+  cards: [
+    { k: 'правило', ru: true, f: 'Как строится повеление?', b: 'мудари‘ 2-го лица в джазме без буквы мудари‘', ex: 'تَنْصُرْ ← اُنْصُرْ' },
+    { k: 'правило', ru: true, f: 'Когда хамза повеления с даммой?', b: 'когда ع в мудари‘ с даммой', ex: 'اُنْصُرْ · اُكْتُبْ' },
+    { k: 'правило', ru: true, f: 'Когда хамза в повелении не нужна?', b: 'когда после удаления буквы мудари‘ первая огласована', ex: 'دَحْرِجْ · قَاتِلْ' },
+    { k: 'форма', fw: 'تُ[1كْ][2رِ][3مُ]', q: 'Повеление?', bAr: true, b: 'أَكْرِمْ', d: 'От تُؤَكْرِمُ: хамза с фатхой.' },
+    { k: 'форма', f: 'اُنْصُرِي', b: 'помоги! (женщине)' },
+    { k: 'форма', f: 'اُنْصُرْنَ', b: 'помогите! (женщинам)' },
+    { k: 'термин', f: 'أَمْرُ الْحَاضِرِ', b: 'повеление собеседнику' },
+    { k: 'термин', f: 'دُعَاءٌ', b: 'мольба: повеление, обращённое к Аллаху', ex: 'رَبِّ اغْفِرْ لِي' },
+  ] },
+
+/* ---------- 10 ---------- */
+{ n: 10, ar: 'قَوَاعِدُ صَرْفِيَّةٌ', ru: 'Правила: две та и та в اِفْتَعَلَ', short: 'Две та и اِفْتَعَلَ', min: 15,
+  text: [
+    { src: `وَاعْلَمْ أَنَّهُ إِذَا اجْتَمَعَ تَاءَانِ فِي أَوَّلِ مُضَارِعِ تَفَعَّلَ وَتَفَاعَلَ وَتَفَعْلَلَ فَيَجُوزُ إِثْبَاتُهُمَا نَحْوُ: تَتَجَنَّبُ وَتَتَقَاتَلُ وَتَتَدَحْرَجُ وَيَجُوزُ حَذْفُ إِحْدَيْهِمَا وَفِي ${T('tanzil', 'التَّنْزِيلِ')} ﴿فَأَنْتَ لَهُ تَصَدَّى﴾ وَ﴿نَارًا تَلَظَّى﴾ وَ﴿تَنَزَّلُ الْمَلَائِكَةُ﴾`,
+      tr: 'Знай: если в начале мудари‘ от تَفَعَّلَ, تَفَاعَلَ и تَفَعْلَلَ сошлись две та, можно сохранить обе: تَتَجَنَّبُ «ты избегаешь», تَتَقَاتَلُ, تَتَدَحْرَجُ. А можно убрать одну из них. В Коране: «ты обращаешься к нему» (80:6), «огонь, что пылает» (92:14), «нисходят ангелы» (97:4).',
+      gl: [['اِجْتَمَعَ', 'сошлись'], ['يَجُوزُ', 'допустимо'], ['إِثْبَاتٌ', 'сохранение'], ['حَذْفٌ', 'удаление'], ['التَّنْزِيلُ', 'Коран'], ['تَصَدَّى', 'обратиться к'], ['تَلَظَّى', 'пылать']] },
+    { src: `وَمَتَى كَانَ فَاءُ افْتَعَلَ صَادًا أَوْ ضَادًا أَوْ طَاءً أَوْ ظَاءً قُلِبَتْ تَاؤُهُ طَاءً فَتَقُولُ فِي افْتَعَلَ مِنَ الصُّلْحِ اِصْطَلَحَ وَمِنَ الضَّرْبِ اِضْطَرَبَ وَمِنَ الطَّرْدِ اِطَّرَدَ وَمِنَ الظُّلْمِ اِظْطَلَمَ وَكَذَلِكَ ${T('mutasarrif', 'مُتَصَرِّفَاتُهُ')} نَحْوُ: اِصْطَلَحَ يَصْطَلِحُ فَهُوَ مُصْطَلِحٌ وَذَاكَ مُصْطَلَحٌ عَلَيْهِ اِصْطَلِحْ لَا تَصْطَلِحْ.`,
+      tr: 'Если фа (первая коренная) в اِفْتَعَلَ — ص, ض, ط или ظ, то та этого веса превращается в ط. От الصُّلْحُ «мир» — اِصْطَلَحَ «примириться, договориться», от الضَّرْبُ — اِضْطَرَبَ «волноваться», от الطَّرْدُ — اِطَّرَدَ «идти чередой», от الظُّلْمُ — اِظْطَلَمَ «терпеть несправедливость». Так же во всех производных: اِصْطَلَحَ, يَصْطَلِحُ, مُصْطَلِحٌ, مُصْطَلَحٌ عَلَيْهِ, اِصْطَلِحْ, لَا تَصْطَلِحْ.',
+      gl: [['مَتَى', 'когда'], ['قُلِبَتْ', 'была заменена'], ['مُتَصَرِّفَاتٌ', 'производные формы'], ['مُصْطَلَحٌ', 'то, о чём договорились; термин']] },
+    { src: 'وَمَتَى كَانَ فَاءُ افْتَعَلَ دَالًا أَوْ ذَالًا أَوْ زَاءً قُلِبَتْ تَاؤُهُ دَالًا فَتَقُولُ فِي افْتَعَلَ مِنَ الدَّرْءِ وَالذِّكْرِ وَالزَّجْرِ اِدَّرَأَ وَاذَّكَرَ وَازْدَجَرَ.',
+      tr: 'Если фа в اِفْتَعَلَ — د, ذ или ز, та превращается в د: от الدَّرْءُ «отталкивание» — اِدَّرَأَ, от الذِّكْرُ «поминание» — اِذَّكَرَ, от الزَّجْرُ «удерживание» — اِزْدَجَرَ.',
+      gl: [['الدَّرْءُ', 'отталкивание'], ['الذِّكْرُ', 'поминание'], ['الزَّجْرُ', 'удерживание, запрет']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Правило 1. Две та в начале</h2>
+  <p class="lead">У ${a('تَفَعَّلَ، تَفَاعَلَ، تَفَعْلَلَ')} в мудари‘ встречаются две та: буква мудари‘ и та самого веса. Одну можно убрать.</p>
+  ${flow(['تَتَ[1نَ][2زَّ][3لُ]', 'تَ[1نَ][2زَّ][3لُ]'])}
+  <p class="note">Только в действительном залоге. В страдательном удалять нельзя: ${a('تُتَنَزَّلُ')}, не ${a('تُنَزَّلُ')}, иначе получится другое слово.</p>
+  <div class="callout"><b>Как отличить от прошедшего</b><span>${a('تَجَنَّبَ')} может быть и прошедшим «он избегал», и мудари‘ «ты избегаешь» без одной та. Различают по смыслу фразы и по окончанию: у мудари‘ в конце дамма — ${a('تَجَنَّبُ')}.</span></div>
+
+  <h2 class="h2">Правило 2. Та в ${a('اِفْتَعَلَ')}</h2>
+  <p>После некоторых букв та трудно произносить, поэтому её меняют на близкий звук.</p>
+  <div class="card">${rules([
+    `<p><b>Первая коренная ${a('ص ض ط ظ')} → та становится ${a('ط')}</b></p>${tb(['Исходно', 'Стало', 'Значение'], [
+      ['اِصْتَلَحَ', 'اِ[1صْ]طَ[2لَ][3حَ]', 'примириться'],
+      ['اِضْتَرَبَ', 'اِ[1ضْ]طَ[2رَ][3بَ]', 'волноваться'],
+      ['اِطْتَرَدَ', 'اِ[1طَّ][2رَ][3دَ]', 'идти чередой'],
+      ['اِظْتَلَمَ', 'اِ[1ظْ]طَ[2لَ][3مَ]', 'терпеть обиду'],
+    ])}`,
+    `<p><b>Первая коренная ${a('د ذ ز')} → та становится ${a('د')}</b></p>${tb(['Исходно', 'Стало', 'Значение'], [
+      ['اِدْتَرَأَ', 'اِ[1دَّ][2رَ][3أَ]', 'отразить'],
+      ['اِذْتَكَرَ', 'اِ[1ذَّ][2كَ][3رَ]', 'вспомнить'],
+      ['اِزْتَجَرَ', 'اِ[1زْ]دَ[2جَ][3رَ]', 'удержаться'],
+    ])}<p class="note">У ${a('اِذْتَكَرَ')} три варианта: ${a('اِذْدَكَرَ، اِدَّكَرَ، اِذَّكَرَ')}. У ${a('اِزْدَجَرَ')} два: ${a('اِزْدَجَرَ، اِزَّجَرَ')}.</p>`,
+  ])}</div>
+  <div class="extra-note callout"><span><span class="tag-x">доп.</span> В Коране: ${a('﴿فَهَلْ مِنْ مُدَّكِرٍ﴾')} «найдётся ли вспоминающий?» (54:17). ${a('مُدَّكِرٌ')} — причастие от ${a('اِدَّكَرَ')}, исходно ${a('مُذْتَكِرٌ')}.</span></div>`,
+  wk: [
+    { w: '[1صَ][2بَ][3رَ]', ru: 'терпеть → اِفْتَعَلَ', res: 'اِصْطَبَرَ', steps: [
+      { q: 'Первая коренная', a: 'ص', tg: 'ص' },
+      { q: 'Что с та?', a: 'ص из группы ص ض ط ظ → та становится ط', tg: 'ت ← ط' },
+      { q: 'Итог', a: 'Как в Коране: وَاصْطَبِرْ «и будь терпелив»', tg: 'اِصْطَبَرَ' }] },
+    { w: 'تَتَ[1نَ][2زَّ][3لُ]', ru: 'нисходят', res: 'تَنَزَّلُ الْمَلَائِكَةُ', steps: [
+      { q: 'Сколько та в начале?', a: 'Две: буква мудари‘ и та веса تَفَعَّلَ', tg: 'تَتَـ' },
+      { q: 'Можно убрать одну?', a: 'Да, залог действительный', tg: 'تَـ' },
+      { q: 'Итог', a: 'Сура «Аль-Кадр», 97:4', tg: 'تَنَزَّلُ' }] },
+    { w: '[1زَ][2حَ][3مَ]', ru: 'теснить → اِفْتَعَلَ', self: true, res: 'اِزْدَحَمَ', steps: [
+      { q: 'Первая коренная ز — какое правило?', o: ['د ذ ز → د', 'ص ض ط ظ → ط'], ans: 0, a: 'ز — та становится د.', tg: 'ت ← د' },
+      { q: 'Итог', o: ['اِزْدَحَمَ', 'اِزْطَحَمَ', 'اِزْتَحَمَ'], ans: 0, a: 'اِزْدَحَمَ «толпиться».', tg: 'اِزْدَحَمَ' }] },
+  ],
+  px: [
+    { t: 'mc', k: 'Вопрос 1', q: 'Когда можно убрать одну из двух та в начале мудари‘?', o: [`В мудари‘ от ${a('تَفَعَّلَ، تَفَاعَلَ، تَفَعْلَلَ')} в действительном залоге`, 'Всегда', 'Только в прошедшем времени'], ans: 0, why: 'В страдательном залоге удалять нельзя.' },
+    { t: 'mc', k: 'Вопрос 2', q: `${a('اِفْتَعَلَ')} от ${a('ضَرَبَ')}`, arOpts: true, o: ['اِضْطَرَبَ', 'اِضْتَرَبَ', 'اِضَّرَبَ', 'اِضْدَرَبَ'], ans: 0, why: 'ض из группы ص ض ط ظ: та → ط.' },
+    { t: 'mc', k: 'Вопрос 3', q: `${a('اِفْتَعَلَ')} от ${a('ذَكَرَ')}`, arOpts: true, o: ['اِذَّكَرَ', 'اِذْتَكَرَ', 'اِذْطَكَرَ', 'تَذَكَّرَ'], ans: 0, why: 'ذ из группы د ذ ز: та → د, затем слияние.' },
+    { t: 'bin', k: 'Правило', q: 'Та становится ط или د?', o: ['ط', 'د'], items: [
+      { w: 'ص', ans: 0, why: 'ص ض ط ظ → ط' }, { w: 'ز', ans: 1, why: 'د ذ ز → د' }, { w: 'ظ', ans: 0, why: 'ص ض ط ظ → ط' },
+      { w: 'د', ans: 1, why: 'د ذ ز → د' }, { w: 'ض', ans: 0, why: 'ص ض ط ظ → ط' }, { w: 'ذ', ans: 1, why: 'د ذ ز → د' }] },
+    { t: 'mc', k: 'Упражнение 1', q: `Исходная форма ${a('تَمَيَّزُ')} в ${a('﴿تَكَادُ تَمَيَّزُ مِنَ الْغَيْظِ﴾')} (67:8)`, arOpts: true, o: ['تَتَمَيَّزُ', 'تُمَيِّزُ', 'تَمَيَّزَ'], ans: 0, why: 'Одна из двух та удалена.' },
+    { t: 'mc', k: 'Упражнение 1', q: `Исходная форма ${a('تَنَاصَرُونَ')} в ${a('﴿مَا لَكُمْ لَا تَنَاصَرُونَ﴾')} (37:25)`, arOpts: true, o: ['تَتَنَاصَرُونَ', 'تُنَاصِرُونَ', 'تَنْصُرُونَ'], ans: 0, why: 'Мудари‘ от تَنَاصَرَ, одна та удалена.' },
+    { t: 'mc', k: 'Упражнение 2', q: `Прошедшее от ${a('تَزَلْزَلُ')} в ${a('تَزَلْزَلُ الْجِبَالُ')}`, arOpts: true, o: ['تَزَلْزَلَ', 'زَلْزَلَ', 'تُزُلْزِلَ'], ans: 0, why: `${a('تَزَلْزَلُ')} — мудари‘ ${a('تَتَزَلْزَلُ')} без одной та.` },
+    { t: 'mc', k: 'Упражнение 3', q: `Исходная форма ${a('اِطَّلَعَ')}`, arOpts: true, o: ['اِطْتَلَعَ', 'تَطَلَّعَ', 'اِطْطَلَعَ'], ans: 0, why: 'Корень ط ل ع: та → ط, две ط слились.' },
+    { t: 'root', k: 'Упражнение 3', q: 'Отметьте корневые буквы', w: 'اِصْطَحَبَ', ru: 'сопровождать', L: [['ا', 0], ['ص', 1], ['ط', 0], ['ح', 1], ['ب', 1]], why: 'Корень ص ح ب. ط — изменённая та веса اِفْتَعَلَ.' },
+  ],
+  cards: [
+    { k: 'правило', ru: true, f: 'Две та в начале мудари‘ (تَفَعَّلَ, تَفَاعَلَ, تَفَعْلَلَ)', b: 'можно сохранить обе или убрать одну', ex: 'تَتَنَزَّلُ ← تَنَزَّلُ', d: 'Только в действительном залоге.' },
+    { k: 'правило', ru: true, f: 'Фа в اِفْتَعَلَ — ص ض ط ظ', b: 'та → ط', ex: 'اِصْطَلَحَ · اِضْطَرَبَ' },
+    { k: 'правило', ru: true, f: 'Фа в اِفْتَعَلَ — د ذ ز', b: 'та → د', ex: 'اِدَّرَأَ · اِزْدَجَرَ' },
+    { k: 'форма', fw: 'اِ[1صْ]طَ[2لَ][3حَ]', q: 'Исходная форма?', bAr: true, b: 'اِصْتَلَحَ' },
+    { k: 'форма', fw: 'اِ[1ذَّ][2كَ][3رَ]', q: 'Варианты?', bAr: true, b: 'اِذْدَكَرَ · اِدَّكَرَ · اِذَّكَرَ' },
+    { k: 'форма', f: 'تَنَزَّلُ الْمَلَائِكَةُ', b: 'нисходят ангелы', d: 'Из تَتَنَزَّلُ.' },
+    { k: 'термин', f: 'مُتَصَرِّفَاتٌ', b: 'производные формы', d: 'Прошедшее, мудари‘, причастия, повеление, запрет.' },
+  ] },
+
+/* ---------- 11 ---------- */
+{ n: 11, ar: 'تَصْرِيفُ الْأَفْعَالِ مَعَ نُونَيِ التَّأْكِيدِ', ru: 'Нуны усиления', short: 'Нун усиления', min: 15, partial: true,
+  text: [
+    { src: `وَيَلْحَقُ الْفِعْلَ غَيْرَ الْمَاضِي وَالْحَالِ نُونَانِ ${T('tawkid', 'لِلتَّأْكِيدِ')} ${T('khafifa', 'خَفِيفَةٌ')} سَاكِنَةٌ وَ${T('thaqila', 'ثَقِيلَةٌ')} مَفْتُوحَةٌ إِلَّا فِي مَا يَخْتَصُّ بِهِ وَهُوَ فِعْلُ الِاثْنَيْنِ وَجَمَاعَةِ النِّسَاءِ فَهِيَ مَكْسُورَةٌ فِيهِ فَتَقُولُ: اِذْهَبَانِّ لِلِاثْنَيْنِ وَاذْهَبْنَانِّ يَا نِسْوَةُ.`,
+      tr: 'К глаголу — кроме прошедшего и мудари‘ в значении «сейчас» — присоединяются два нуна усиления: лёгкий с сукуном и тяжёлый с фатхой. Кроме форм, у которых здесь своя особенность, — глагола двойственного числа и женского мн. числа: у них нун с касрой. Говоришь: اِذْهَبَانِّ «уходите же!» (двоим) и اِذْهَبْنَانِّ «уходите же, женщины!».',
+      gl: [['يَلْحَقُ', 'присоединяется'], ['التَّأْكِيدُ', 'усиление'], ['خَفِيفَةٌ', 'лёгкая'], ['ثَقِيلَةٌ', 'тяжёлая'], ['يَخْتَصُّ بِهِ', 'особенный для него'], ['الِاثْنَانِ', 'двое'], ['نِسْوَةٌ', 'женщины']] },
+    { src: `وَتُدْخِلُ أَلِفًا بَعْدَ نُونِ جَمْعِ الْمُؤَنَّثِ لِتَفْصِلَ بَيْنَ النُّونَاتِ وَلَا تُدْخِلُهُمَا الْخَفِيفَةَ لِأَنَّهُ يَلْزَمُ ${T('iltiqa', 'الْتِقَاءُ السَّاكِنَيْنِ')} عَلَى غَيْرِ حَدِّهِ فَإِنَّ الْتِقَاءَ السَّاكِنَيْنِ إِنَّمَا يَجُوزُ إِذَا كَانَ الْأَوَّلُ ${T('madd', 'حَرْفَ مَدٍّ')} وَالثَّانِي ${T('mudgham', 'مُدْغَمًا')} نَحْوُ دَابَّةٍ.`,
+      tr: 'После нуна женского мн. числа добавляешь алиф, чтобы разделить нуны. Лёгкий нун к этим двум формам не присоединяешь: тогда встретились бы два сукуна недопустимым образом. Два сукуна подряд допустимы, только если первый — буква протяжения, а второй слит в шадду, как в دَابَّةٌ «животное».',
+      gl: [['تَفْصِلُ', 'разделяешь'], ['يَلْزَمُ', 'неизбежно получается'], ['عَلَى غَيْرِ حَدِّهِ', 'недопустимым образом'], ['إِنَّمَا يَجُوزُ', 'допустимо лишь'], ['حَرْفُ مَدٍّ', 'буква протяжения'], ['مُدْغَمٌ', 'слитый с шаддой'], ['دَابَّةٌ', 'животное']] },
+  ],
+  ex: () => `
+  <h2 class="h2">Два нуна усиления</h2>
+  <p class="lead">Нун усиления добавляет глаголу настойчивости: «непременно», «обязательно».</p>
+  <div class="card" style="padding:6px 14px">${tb(['Нун', 'Пример', 'Перевод'], [
+    ['ثَقِيلَةٌ نَّ', 'اُ[1كْ][2تُ][3بَ]نَّ', 'непременно пиши!'],
+    ['خَفِيفَةٌ نْ', 'اُ[1كْ][2تُ][3بَ]نْ', 'пиши же!'],
+  ])}</div>
+  <div class="card">${rules([
+    `<p><b>К прошедшему не присоединяется.</b> К мудари‘ «сейчас» тоже.</p>`,
+    `<p><b>Повеление</b> — всегда можно: ${a('اِجْتَهِدَنَّ')} «старайся же!».</p>`,
+    `<p><b>Мудари‘</b> — когда в нём просьба, запрет, вопрос, пожелание: ${a('لَا تَخْرُجَنَّ')} «ни в коем случае не выходи!». После клятвы — обязательно: ${a('وَاللهِ لَأَقُومَنَّ بِوَاجِبِي')} «клянусь Аллахом, я непременно исполню свой долг».</p>`,
+  ])}</div>
+
+  <h2 class="h2">Особые формы: двое и женщины</h2>
+  <div class="card" style="padding:6px 14px">${tb(['Было', 'Стало', 'Что меняется'], [
+    ['اِذْهَبَا', 'اِذْهَبَانِّ', 'нун с касрой'],
+    ['اِذْهَبْنَ', 'اِذْهَبْنَانِّ', 'алиф между нунами, нун с касрой'],
+  ])}</div>
+  <p>Здесь возможен только тяжёлый нун. С лёгким получилось бы ${a('اِذْهَبَانْ')}: алиф и нун с сукуном подряд.</p>
+  <div class="callout"><b>Когда два сукуна подряд допустимы</b><span>Первый — буква протяжения (${a('ا')}; ${a('و')} после даммы; ${a('ي')} после касры), второй — слит в шадду: ${a('دَابَّةٌ')}, ${a('الضَّالِّينَ')} (исходно ${a('الضَّالْلِينَ')}).</span></div>
+  <p class="miss-note">Урок в присланном PDF обрывается на стр. 49. Продолжение со стр. 50 (спряжение с нунами) добавим, когда пришлёте.</p>`,
+  wk: [
+    { w: 'اُ[1كْ][2تُ][3بْ]', ru: 'пиши! + тяжёлый нун', res: 'اُكْتُبَنَّ', steps: [
+      { q: 'Огласовка перед нуном', a: 'Сукун меняется на фатху', tg: 'اُكْتُبَـ' },
+      { q: 'Какой нун?', a: 'Тяжёлый, с шаддой и фатхой', tg: 'ـنَّ' },
+      { q: 'Смысл', a: '«Непременно пиши!»', tg: 'اُكْتُبَنَّ' }] },
+    { w: 'اِ[1ذْ][2هَ][3بْ]نَ', ru: 'уходите! (женщинам) + нун', res: 'اِذْهَبْنَانِّ', steps: [
+      { q: 'Что вставляем?', a: 'Алиф, чтобы разделить нуны', tg: 'ـنَا' },
+      { q: 'Огласовка нуна усиления', a: 'Касра', tg: 'ـنِّ' },
+      { q: 'Лёгкий нун возможен?', a: 'Нет: встретились бы два сукуна', tg: '✕' }] },
+    { w: 'اِ[1ضْ][2رِ][3بَ]ا', ru: 'бейте! (двоим) + нун', self: true, res: 'اِضْرِبَانِّ', steps: [
+      { q: 'Можно добавить лёгкий нун?', o: ['нет', 'да'], ans: 0, a: 'Нет: после алифа два сукуна.', tg: '✕' },
+      { q: 'Огласовка тяжёлого нуна', o: ['касра', 'фатха'], ans: 0, a: 'В двойственном числе — касра.', tg: 'ـنِّ' },
+      { q: 'Итог', o: ['اِضْرِبَانِّ', 'اِضْرِبَانَّ', 'اِضْرِبَنْ'], ans: 0, a: 'اِضْرِبَانِّ.', tg: 'اِضْرِبَانِّ' }] },
+  ],
+  px: [
+    { t: 'mc', k: 'Правило', q: 'К какой форме нун усиления НЕ присоединяется?', o: ['Прошедшее время', 'Повеление', 'Мудари‘ после клятвы', 'Запрет'], ans: 0, why: 'Нун усиления присоединяется к глаголу, кроме прошедшего и мудари‘ «сейчас».' },
+    { t: 'mc', k: 'Форма', q: `${a('دَحْرِجْ')} + тяжёлый нун`, arOpts: true, o: ['دَحْرِجَنَّ', 'دَحْرِجْنَّ', 'دَحْرِجِنَّ', 'دَحْرِجُنَّ'], ans: 0, why: 'В единственном числе перед нуном фатха.' },
+    { t: 'mc', k: 'Двое', q: `${a('اِذْهَبَا')} + нун усиления`, arOpts: true, o: ['اِذْهَبَانِّ', 'اِذْهَبَانَّ', 'اِذْهَبَانْ', 'اِذْهَبَنَّ'], ans: 0, why: 'Только тяжёлый нун, и с касрой.' },
+    { t: 'mc', k: 'Алиф', q: `Зачем алиф в ${a('اِذْهَبْنَانِّ')}?`, o: ['Чтобы разделить нуны', 'Это алиф двойственного числа', 'Чтобы читать хамзу'], ans: 0, why: 'Иначе подряд шли бы три нуна.' },
+    { t: 'mc', k: 'Два сукуна', q: 'Почему к двойственному числу не добавляют лёгкий нун?', o: ['Встретились бы два сукуна недопустимо', 'Лёгкий нун бывает только в прошедшем', 'Двойственное число не усиливают'], ans: 0, why: 'Алиф и нун с сукуном: второй сукун не слит в шадду.' },
+    { t: 'bin', k: 'Два сукуна', q: 'Допустимы ли тут два сукуна подряд?', o: ['جَائِزٌ', 'مَمْنُوعٌ'], items: [
+      { w: 'دَابَّةٌ', ans: 0, why: 'Алиф + слитная ب.' }, { w: 'الضَّالِّينَ', ans: 0, why: 'Алиф + слитная ل.' },
+      { w: 'اِذْهَبَانْ', ans: 1, why: 'Алиф + нун с сукуном без шадды.' }, { w: 'اِذْهَبْنَانْ', ans: 1, why: 'Та же проблема.' }] },
+    { t: 'match', k: 'Термины', q: 'Соедините термин и значение', P: [['خَفِيفَةٌ', 'нун с сукуном'], ['ثَقِيلَةٌ', 'нун с шаддой'], ['حَرْفُ مَدٍّ', 'буква протяжения'], ['مُدْغَمٌ', 'слитый в шадду']] },
+  ],
+  cards: [
+    { k: 'термин', f: 'نُونُ التَّأْكِيدِ', b: 'нун усиления', ex: 'اُكْتُبَنَّ' },
+    { k: 'термин', f: 'خَفِيفَةٌ · ثَقِيلَةٌ', b: 'лёгкий (сукун) · тяжёлый (шадда)', ex: 'اُكْتُبَنْ · اُكْتُبَنَّ' },
+    { k: 'правило', ru: true, f: 'К каким формам нун усиления не присоединяется?', b: 'к прошедшему и к мудари‘ «сейчас»' },
+    { k: 'правило', ru: true, f: 'Огласовка нуна в двойственном и ж. мн. числе', b: 'касра', ex: 'اِذْهَبَانِّ · اِذْهَبْنَانِّ' },
+    { k: 'правило', ru: true, f: 'Когда допустимы два сукуна подряд?', b: 'первый — буква протяжения, второй слит в шадду', ex: 'دَابَّةٌ' },
+    { k: 'форма', f: 'وَاللهِ لَأَقُومَنَّ بِوَاجِبِي', b: 'клянусь Аллахом, я непременно исполню свой долг', d: 'После клятвы нун обязателен.' },
+  ] },
+];
+LESSONS.forEach(L => L.cards.forEach((c, i) => { c.id = L.n + '-' + i; c.l = L.n; }));
+const CARDS = LESSONS.flatMap(L => L.cards);
+const STEPS = ['Текст', 'Объяснение', 'Разбор', 'Практика'];
+const TOTAL = 36;
+const lessonBy = n => LESSONS.find(L => L.n === n);
+
+/* ============ SRS ============ */
+const DAY = 864e5, IV = [0, 1, 3, 7, 14, 30, 60];
+function unlock(n) { let add = 0; lessonBy(n).cards.forEach(c => { if (!S.cards[c.id]) { S.cards[c.id] = { b: 0, due: 0 }; add++; } }); persist(); return add; }
+const dueList = () => { const now = Date.now(); return CARDS.filter(c => S.cards[c.id] && S.cards[c.id].due <= now); };
+const hasCards = () => CARDS.some(c => S.cards[c.id]);
+const RV = { q: [], n: 0, flip: false, started: false };
+function startReview() { RV.q = shuffle(dueList().map(c => c.id)); RV.n = RV.q.length; RV.flip = false; RV.started = true; }
+function nextIv(b, g) { if (g === 0) return 0; if (g === 1) return Math.max(1, Math.round(IV[Math.max(1, b)] / 2)); return IV[Math.min(b + 1, 6)]; }
+const ivLabel = d => d === 0 ? 'сейчас' : d + ' ' + plural(d, ['день', 'дня', 'дней']);
+
+/* ============ ROUTER ============ */
+let R = 'home', REF = 'conj', CUR = 1;
+const stepOf = () => S.at[CUR] || 0;
+function go(v) { R = v; if (v === 'review' && (!RV.started || !RV.q.length)) startReview(); render(); window.scrollTo(0, 0); }
+function openLesson(n) { if (n !== CUR) { W.i = 0; W.step = 1; W.pick = {}; pxReset(); } CUR = n; S.last = n; if (S.max[n] === undefined) S.max[n] = 0; persist(); go('lesson'); }
+function rerender() { const y = window.scrollY; render(); window.scrollTo(0, y); }
+function render() {
+  $('#top').innerHTML = header();
+  const views = { home: vHome, lesson: vLesson, review: vReview, ref: vRef };
+  $('#view').innerHTML = `<div class="view">${views[R]()}</div>`;
+  const focus = R === 'lesson';
+  $('#tabs').hidden = focus; $('#app').classList.toggle('focus', focus);
+  $('#tabs').innerHTML = tabs();
+  if (focus) { wkRender(); pxRender(); }
+  document.documentElement.style.setProperty('--top-h', $('#top').offsetHeight + 'px');
+}
+
+function header() {
+  const set = `<button class="icon-btn push" data-act="settings" aria-label="Настройки">${I.sliders}</button>`;
+  if (R === 'lesson') { const L = lessonBy(CUR); return `<button class="icon-btn" data-go="home" aria-label="Назад к урокам" style="margin-left:-10px">${I.back}</button><div class="hd-t"><b>Урок ${L.n}</b><small>${L.short}</small></div>${set}`; }
+  return `<div class="brand">${STAR}Мизан</div>${set}`;
+}
+function tabs() {
+  const due = dueList().length;
+  const t = [['home', 'Уроки', I.course], ['review', 'Повторение', I.review], ['ref', 'Справочник', I.ref]];
+  return `<div class="tabs-in">${t.map(([id, n, i]) => `<button class="tab ${R === id ? 'on' : ''}" data-go="${id}" ${R === id ? 'aria-current="page"' : ''}>${i}${n}${id === 'review' && due ? `<span class="badge">${due}</span>` : ''}</button>`).join('')}</div>`;
+}
+
+/* ============ VIEW: HOME ============ */
+function progressOf(n) { return S.done[n] ? 4 : S.max[n] !== undefined ? S.max[n] + 1 : 0; }
+function vHome() {
+  const nextN = (LESSONS.find(L => !S.done[L.n]) || LESSONS[LESSONS.length - 1]).n;
+  const heroN = S.max[S.last] !== undefined && !S.done[S.last] ? S.last : nextN;
+  const L = lessonBy(heroN), started = S.max[heroN] !== undefined, done = !!S.done[heroN], seen = progressOf(heroN);
+  const due = dueList().length, doneCount = LESSONS.filter(x => S.done[x.n]).length;
+  return `
+  <section class="hero">
+    <span class="eyebrow">Урок ${L.n} · ≈ ${L.min} минут</span>
+    <h1 class="hero-t" lang="ar">${L.ar}</h1>
+    <p class="hero-sub">${L.ru}</p>
+    ${started ? `<div class="hero-row"><div class="bar"><i style="width:${seen / 4 * 100}%"></i></div><span>${done ? 'пройден' : `${seen} из 4`}</span></div>` : ''}
+    <button class="btn" data-lesson="${L.n}">${done ? 'Открыть урок' : started ? 'Продолжить' : 'Начать урок'}</button>
+  </section>
+  <button class="row" data-go="review">
+    <span class="n">${due}</span>
+    <span class="tx"><b>${due ? plural(due, ['карточка', 'карточки', 'карточек']) + ' на повторение' : hasCards() ? 'Повторение на сегодня сделано' : 'Карточек пока нет'}</b>
+    <small>${due ? `≈ ${Math.max(1, Math.ceil(due * 10 / 60))} мин` : hasCards() ? 'Следующие появятся позже' : 'Они появятся после практики первого урока'}</small></span>
+    ${I.chev}
+  </button>
+  <div class="sec-row"><h2 class="h2">Уроки</h2><span class="note">${doneCount} из ${TOTAL} пройдено</span></div>
+  <div class="list">
+    ${LESSONS.map(x => { const p = progressOf(x.n); return `<button class="li ${x.n === nextN ? 'next' : ''}" data-lesson="${x.n}"><span class="num">${x.n}</span><span class="tx"><b>${x.short}</b>${ar(x.ar)}</span><span class="st ${S.done[x.n] ? 'ok' : ''}">${S.done[x.n] ? 'пройден' : p ? `${p} из 4` : ''}</span></button>`; }).join('')}
+    <div class="li soon"><span class="num">${LESSONS.length + 1}</span><span class="tx"><b>Уроки ${LESSONS.length + 1}–${TOTAL} появятся по мере работы</b></span><span></span></div>
+  </div>`;
+}
+
+/* ============ VIEW: LESSON ============ */
+function vLesson() {
+  const L = lessonBy(CUR), s = stepOf(), mx = S.max[CUR] || 0;
+  const stepper = `<nav class="stepper" aria-label="Шаги урока">${STEPS.map((n, i) => `<button class="st ${i === s ? 'on' : ''} ${i <= mx ? 'seen' : ''}" data-act="step" data-v="${i}" ${i === s ? 'aria-current="step"' : ''}><i></i>${n}</button>`).join('')}</nav>`;
+  const body = [stText, stExplain, stWorked, stPractice][s](L);
+  const nav = s < 3
+    ? `<div class="lnav">${s > 0 ? `<button class="btn ghost" data-act="step" data-v="${s - 1}" aria-label="Назад">${I.back}</button>` : ''}<button class="btn" data-act="step" data-v="${s + 1}">Дальше: ${STEPS[s + 1].toLowerCase()}</button></div>`
+    : '';
+  return stepper + body + nav;
+}
+function stText(L) {
+  return `
+  <div class="intro"><h2 class="h2" lang="ar" dir="rtl" style="font-family:var(--font-ar);text-align:right;font-size:calc(1.6rem*var(--ar-scale));font-weight:700;line-height:1.6">${L.ar}</h2><p class="note">${L.ru}. Нажмите на подчёркнутое слово, чтобы увидеть термин.</p></div>
+  ${L.text.map((p, i) => `
+  <div class="card para">
+    ${p.h ? `<div class="para-h" lang="ar">${p.h}</div>` : ''}
+    <p class="ar src" lang="ar">${p.src}</p>
+    <button class="disc" data-act="tgl" data-t="tr${i}" aria-expanded="false">${I.chev}Перевод и слова</button>
+    <div class="pane" id="tr${i}" hidden>
+      <p>${mix(p.tr)}</p>
+      <div class="gl">${p.gl.map(([w, r]) => `${ar(w)}<span>${mix(r)}</span>`).join('')}</div>
+    </div>
+  </div>`).join('')}
+  ${L.partial ? '<p class="miss-note">В присланном PDF урок обрывается на стр. 49. Продолжение добавим, когда пришлёте стр. 50.</p>' : ''}`;
+}
+const stExplain = L => L.ex();
+const stWorked = L => `<div class="intro"><h2 class="h2">Разберём вместе</h2><p class="note">Два примера с решением, третий разбираете сами.</p></div><div class="card" id="wk"></div>`;
+const stPractice = L => `<h2 class="h2">Практика</h2><div class="card" id="px"></div>`;
+
+/* ---- worked examples ---- */
+const W = { i: 0, step: 1, pick: {} };
+function wkRender() {
+  const el = $('#wk'); if (!el) return;
+  const WK = lessonBy(CUR).wk, ex = WK[W.i];
+  const stepHtml = ex.steps.map((s, k) => {
+    const tg = `<span class="tg" lang="ar">${s.tg}</span>`;
+    if (ex.self) {
+      const p = W.pick[k];
+      const open = k === 0 || W.pick[k - 1] !== undefined;
+      if (!open) return `<div class="wk-step pending"><span class="q">${s.q}</span><span class="a">…</span><span class="tg">?</span></div>`;
+      if (p === undefined) return `<div class="wk-step"><span class="q">${s.q}</span><span class="tg">?</span><div class="wk-opts">${s.o.map((o, j) => `<button class="chipb" data-act="wk-opt" data-k="${k}" data-j="${j}">${hasAr(o) && !/[а-я]/i.test(o) ? ar(o) : o}</button>`).join('')}</div></div>`;
+      const ok = p === s.ans;
+      return `<div class="wk-step ${ok ? 'ok' : 'bad'}"><span class="q">${ok ? 'Верно. ' : 'Не совсем. '}${s.q}</span><span class="a">${mix(s.a)}</span>${tg}</div>`;
+    }
+    if (k < W.step) return `<div class="wk-step"><span class="q">${s.q}</span><span class="a">${mix(s.a)}</span>${tg}</div>`;
+    return `<div class="wk-step pending"><span class="q">${s.q}</span><span class="a">…</span><span class="tg">?</span></div>`;
+  }).join('');
+  const finished = ex.self ? Object.keys(W.pick).length === ex.steps.length : W.step >= ex.steps.length;
+  el.innerHTML = `<div class="wk">
+    <div class="seg">${WK.map((e, i) => `<button class="${W.i === i ? 'on' : ''}" data-act="wk-tab" data-v="${i}">${e.self ? 'Сами' : 'Пример ' + (i + 1)}</button>`).join('')}</div>
+    ${ex.w ? `<div class="wk-word">${ar(ex.w)}</div><div class="wk-ru">${ex.ru}</div>` : `<div class="wk-wr">${ex.wr}</div>`}
+    <div class="wk-steps">${stepHtml}</div>
+    ${finished ? `<div class="wk-res" lang="ar">${ex.res}</div>` : ''}
+    ${!ex.self && !finished ? `<button class="btn ghost block" data-act="wk-next">Следующий шаг</button>` : ''}
+    ${finished && W.i < WK.length - 1 ? `<button class="btn ghost block" data-act="wk-tab" data-v="${W.i + 1}">${WK[W.i + 1].self ? 'Попробовать самому' : 'Следующий пример'}</button>` : ''}
+  </div>`;
+}
+
+/* ---- practice ---- */
+const PX = { i: 0, ok: 0, all: 0, st: {}, added: null };
+function pxReset() { PX.i = 0; PX.ok = 0; PX.all = 0; PX.st = {}; PX.added = null; }
+function pxScore(ok) { PX.all++; if (ok) PX.ok++; }
+function pxRender() {
+  const el = $('#px'); if (!el) return;
+  const L = lessonBy(CUR), PXI = L.px;
+  if (PX.i >= PXI.length) {
+    if (PX.added === null) { PX.added = unlock(CUR); $('#tabs').innerHTML = tabs(); }
+    const pct = PX.all ? Math.round(PX.ok / PX.all * 100) : 0, nc = L.cards.length;
+    const nxt = lessonBy(CUR + 1);
+    el.innerHTML = `<div class="px-res">
+      <span class="lbl">Результат</span>
+      <span class="big">${PX.ok} / ${PX.all}</span>
+      <p class="muted">${pct >= 85 ? 'Отлично, материал урока усвоен.' : pct >= 60 ? 'Хорошо. Трудные места закрепят карточки.' : 'Посмотрите ещё раз объяснение и разбор, потом пройдите практику заново.'}</p>
+      <p class="note">${nc} ${plural(nc, ['карточка', 'карточки', 'карточек'])} урока ${PX.added ? 'добавлены' : 'уже есть'} в «Повторении».</p>
+      <div class="row2"><button class="btn ghost" data-act="px-restart">Пройти заново</button>${S.done[CUR] ? (nxt ? `<button class="btn" data-lesson="${nxt.n}">Урок ${nxt.n}</button>` : `<button class="btn" data-go="home">К урокам</button>`) : `<button class="btn" data-act="finish">Завершить урок</button>`}</div>
+    </div>`;
+    return;
+  }
+  const it = PXI[PX.i], st = PX.st;
+  const head = `<div class="px-head"><span>${PX.i + 1} / ${PXI.length}</span><div class="bar"><i style="width:${PX.i / PXI.length * 100}%"></i></div><span>${it.k}</span></div>`;
+  let body = '', done = false;
+  if (it.t === 'mc') {
+    const p = st.p;
+    body = `<p class="px-q">${it.q}</p><div class="opts ${it.arOpts ? 'two' : ''}">${it.o.map((o, j) => {
+      let c = ''; if (p !== undefined) { if (j === it.ans) c = 'ok'; else if (j === p) c = 'bad'; }
+      return `<button class="opt ${it.arOpts ? 'arx' : ''} ${c}" data-act="px-mc" data-j="${j}" ${p !== undefined ? 'disabled' : ''}>${it.arOpts ? col(o) : mix(o)}</button>`;
+    }).join('')}</div>`;
+    if (p !== undefined) { done = true; body += fb(p === it.ans, it.why); }
+  } else if (it.t === 'bin') {
+    st.j = st.j || 0; st.res = st.res || [];
+    const cur = it.items[st.j], p = st.p;
+    body = `<p class="px-q">${it.q}</p>
+      <div class="dots">${it.items.map((_, k) => `<i class="${k < st.res.length ? (st.res[k] ? 'ok' : 'bad') : k === st.j ? 'cur' : ''}"></i>`).join('')}</div>
+      ${cur.t ? `<div class="px-t">${cur.t}</div>` : `<div class="px-word">${ar(cur.w)}</div>`}
+      <div class="opts two">${it.o.map((o, j) => {
+        let c = ''; if (p !== undefined) { if (j === cur.ans) c = 'ok'; else if (j === p) c = 'bad'; }
+        return `<button class="opt arx ${c}" data-act="px-bin" data-j="${j}" ${p !== undefined ? 'disabled' : ''}>${o}</button>`;
+      }).join('')}</div>`;
+    if (p !== undefined) {
+      body += fb(p === cur.ans, cur.why);
+      if (st.j < it.items.length - 1) body += `<button class="btn ghost block" data-act="px-binnext">Следующее</button>`;
+      else done = true;
+    }
+  } else if (it.t === 'root') {
+    st.sel = st.sel || [];
+    body = `<p class="px-q">${it.q}</p><div class="px-word">${ar(it.w)}</div><small>${it.ru}</small>
+      <div class="letters" lang="ar">${it.L.map(([c, r], j) => {
+        let cls = st.sel.includes(j) ? 'sel' : '';
+        if (st.checked) cls = st.sel.includes(j) ? (r ? 'ok' : 'bad') : (r ? 'miss' : '');
+        return `<button class="lt ${cls}" data-act="px-lt" data-j="${j}" ${st.checked ? 'disabled' : ''} aria-pressed="${st.sel.includes(j)}">${c}</button>`;
+      }).join('')}</div>`;
+    if (!st.checked) body += `<button class="btn block" data-act="px-check" ${st.sel.length ? '' : 'disabled'}>Проверить</button>`;
+    else { done = true; body += fb(st.ok, it.why); }
+  } else if (it.t === 'match') {
+    st.ro = st.ro || shuffle(it.P.map((_, k) => k)); st.m = st.m || []; st.err = st.err || 0;
+    body = `<p class="px-q">${it.q}</p><div class="match">
+      <div>${it.P.map(([t], k) => `<button class="mi arx ${st.m.includes(k) ? 'done' : st.l === k ? 'sel' : ''}" data-act="px-ml" data-k="${k}" ${st.m.includes(k) ? 'disabled' : ''} lang="ar">${t}</button>`).join('')}</div>
+      <div>${st.ro.map(k => `<button class="mi ${it.rAr ? 'arx' : ''} ${st.m.includes(k) ? 'done' : ''}" data-act="px-mr" data-k="${k}" ${st.m.includes(k) ? 'disabled' : ''}>${it.rAr ? it.P[k][1] : mix(it.P[k][1])}</button>`).join('')}</div>
+    </div>`;
+    if (st.m.length === it.P.length) { done = true; body += fb(st.err === 0, st.err ? `Ошибок: ${st.err}. Эти пары чаще попадутся в повторении.` : 'Все пары без ошибок.'); }
+  }
+  el.innerHTML = `<div class="px">${head}${body}${done ? `<button class="btn block" data-act="px-next">${PX.i === PXI.length - 1 ? 'Результат' : 'Дальше'}</button>` : ''}</div>`;
+}
+const fb = (ok, why) => `<div class="fb ${ok ? 'ok' : 'bad'}"><b>${ok ? 'Верно.' : 'Не совсем.'}</b> ${mix(why)}</div>`;
+
+/* ============ VIEW: REVIEW ============ */
+function vReview() {
+  if (!RV.q.length) {
+    if (!hasCards()) return `<h1 class="h1">Повторение</h1>
+    <div class="rv-done"><span class="mark">${I.review}</span><b style="font-size:18px">Карточек пока нет</b>
+    <p class="muted">Карточки урока появятся здесь, когда вы дойдёте до конца его практики.</p>
+    <button class="btn" data-lesson="${S.last || 1}">Открыть урок ${S.last || 1}</button></div>`;
+    const tomorrow = CARDS.filter(c => S.cards[c.id] && S.cards[c.id].due <= Date.now() + DAY).length;
+    return `<h1 class="h1">Повторение</h1>
+    <div class="rv-done">
+      <span class="mark">${I.check}</span>
+      <b style="font-size:18px">На сегодня всё</b>
+      <p class="muted">${tomorrow ? `Завтра: ${tomorrow} ${plural(tomorrow, ['карточка', 'карточки', 'карточек'])}.` : 'Следующие карточки появятся через несколько дней.'}</p>
+      <button class="linkbtn" data-act="rv-reset">Повторить все открытые карточки заново</button>
+    </div>`;
+  }
+  const c = CARDS.find(x => x.id === RV.q[0]);
+  const st = S.cards[c.id];
+  const front = c.ru ? `<span class="fc-ru">${mix(c.f)}</span>` : `<span class="ar fc-ar">${ar(c.fw || c.f)}</span>${c.q ? `<span class="fc-q">${c.q}</span>` : ''}`;
+  const back = RV.flip ? `<span class="fc-sep"></span>${c.bAr ? `<span class="ar fc-ar" style="font-size:calc(1.9rem*var(--ar-scale))">${ar(c.b)}</span>` : `<span class="fc-ru">${mix(c.b)}</span>`}${c.d ? `<span class="fc-d">${mix(c.d)}</span>` : ''}${c.ex ? `<span class="ar fc-ex">${ar(c.ex)}</span>` : ''}` : `<span class="fc-hint">Вспомните ответ, потом нажмите</span>`;
+  return `<h1 class="h1">Повторение</h1>
+  <div class="rv-top"><span>${RV.n - RV.q.length + 1} / ${RV.n}</span><div class="bar"><i style="width:${(RV.n - RV.q.length) / RV.n * 100}%"></i></div></div>
+  <button class="card fcard" data-act="flip" aria-label="Перевернуть карточку">
+    <span class="fc-l">Урок ${c.l} · ${c.k}</span>${front}${back}
+  </button>
+  ${RV.flip ? `<div class="grade">
+      <button class="g0" data-act="grade" data-g="0">Не помню<small>${ivLabel(nextIv(st.b, 0))}</small></button>
+      <button data-act="grade" data-g="1">Трудно<small>${ivLabel(nextIv(st.b, 1))}</small></button>
+      <button class="g2" data-act="grade" data-g="2">Помню<small>${ivLabel(nextIv(st.b, 2))}</small></button>
+    </div>` : `<button class="btn block" data-act="flip">Показать ответ</button>`}
+  <p class="note">Карточки из всех пройденных уроков перемешаны. Каждая вернётся через 1, 3, 7, 14, 30 дней, когда вы начнёте её забывать.</p>`;
+}
+
+/* ============ VIEW: REFERENCE ============ */
+const PRESETS = [['نصر', 'nasara', 'помогать'], ['ضرب', 'daraba', 'бить'], ['فتح', 'fataha', 'открывать'], ['سمع', 'samia', 'слышать'], ['حسب', 'hasiba', 'считать'], ['كرم', 'karuma', 'быть щедрым'], ['كتب', 'nasara', 'писать'], ['خرج', 'nasara', 'выходить'], ['جلس', 'daraba', 'сидеть'], ['ذهب', 'fataha', 'уходить'], ['علم', 'samia', 'знать']];
+const CJ = { root: NSR.slice(), bab: 'nasara', t: 'm', pv: false, ru: 'помогать', err: '', input: '', custom: false };
+const TENSES = [['m', 'Прошедшее'], ['u', 'Мудари‘'], ['n', 'С لَنْ'], ['j', 'С لَمْ'], ['a', 'Повеление']];
+function vRef() {
+  return `<h1 class="h1">Справочник</h1>
+  <div class="seg"><button class="${REF === 'conj' ? 'on' : ''}" data-act="ref" data-v="conj">Спрягатель</button><button class="${REF === 'tables' ? 'on' : ''}" data-act="ref" data-v="tables">Таблицы</button></div>
+  ${REF === 'conj' ? vConj() : vTables()}`;
+}
+function vConj() {
+  const bab = babById(CJ.bab), pv = CJ.pv && CJ.t !== 'a';
+  const part = CJ.t === 'n' ? 'لَنْ ' : CJ.t === 'j' ? 'لَمْ ' : '';
+  const fn = k => form(CJ.root, bab, CJ.t, k, pv);
+  const cell = k => (part ? `<span class="cj-part">${part}</span>` : '') + ar(fn(k));
+  return `
+  <div class="card ctrl">
+    <span class="lbl">Глагол</span>
+    <div class="hscroll" dir="rtl">${PRESETS.map(([r, b, ru]) => { const on = !CJ.custom && CJ.root.join('') === r && CJ.bab === b; return `<button class="rchip ${on ? 'on' : ''}" data-act="cj-pre" data-r="${r}" data-b="${b}" data-ru="${ru}" lang="ar">${col(form([...r], babById(b), 'm', 0))}</button>`; }).join('')}<button class="rchip ru ${CJ.custom ? 'on' : ''}" data-act="cj-own">Свой корень</button></div>
+    ${CJ.custom ? `<div class="inrow"><input id="rootin" type="text" lang="ar" placeholder="три буквы, например شكر" value="${CJ.input}" autocomplete="off"><button class="btn" data-act="cj-go">Спрягать</button></div>` : ''}
+    ${CJ.err ? `<p class="err">${CJ.err}</p>` : ''}
+    <span class="lbl">Баб</span>
+    <div class="hscroll" dir="rtl">${BABS.map(b => `<button class="rchip ${CJ.bab === b.id ? 'on' : ''}" data-act="cj-bab" data-v="${b.id}" lang="ar">${col(form(MZ, b, 'm', 0) + ' – ' + form(MZ, b, 'u', 0))}</button>`).join('')}</div>
+    <span class="lbl">Форма</span>
+    <div class="hscroll">${TENSES.map(([v, n]) => `<button class="rchip ru ${CJ.t === v ? 'on' : ''}" data-act="cj-t" data-v="${v}">${n.replace(/(لَنْ|لَمْ)/, m => a(m))}</button>`).join('')}</div>
+    ${CJ.t !== 'a' ? `<div class="seg"><button class="${!CJ.pv ? 'on' : ''}" data-act="cj-pv" data-v="0">Действительный</button><button class="${CJ.pv ? 'on' : ''}" data-act="cj-pv" data-v="1">Страдательный</button></div>` : ''}
+  </div>
+  <div class="cj-hero">
+    <div class="cj-big">${ar(form(CJ.root, bab, 'm', 0, pv))}<span class="dash">–</span>${ar(form(CJ.root, bab, 'u', 0, pv))}</div>
+    <div class="cj-meta">${CJ.ru ? CJ.ru + ' · ' : ''}${pv ? 'страдательный залог' : 'действительный залог'}</div>
+  </div>
+  ${paradigmCells(cell, GROUPS)}
+  <p class="note">${CJ.t === 'a' ? 'У 2-го лица особая форма повеления (урок 9). Для 1-го и 3-го лица — лям повеления + джазм: لِيَنْصُرْ «пусть поможет», لِأَنْصُرْ «дай-ка я помогу» (урок 8). После وَ и فَ лям обычно читается с сукуном: فَلْيَنْصُرْ.' : CJ.t === 'n' ? 'Насб: дамма → фатха, нуны выпадают, кроме ж. мн. (урок 8).' : CJ.t === 'j' ? 'Джазм: дамма → сукун, нуны выпадают, кроме ж. мн. (урок 8).' : pv ? 'Страдательный залог обычно образуют от переходных глаголов (уроки 4, 5, 7).' : 'Баб глагола узнают по словарю (урок 2).'} Спрягатель пока работает только со «здоровыми» трёхбуквенными корнями.</p>`;
+}
+function paradigmCells(cellFn, groups) {
+  const cells = (row, last) => row.map((k, j) => `<div class="cell ${last && j === 1 ? 'span2' : ''}"><span class="w" dir="rtl">${cellFn(k)}</span><small>${ar(PRON[k][0])} · ${PRON[k][1]}</small></div>`).join('');
+  return `<div class="cols"><span><b>مُفْرَدٌ</b><bdi dir="ltr">ед. ч.</bdi></span><span><b>مُثَنًّى</b><bdi dir="ltr">дв. ч.</bdi></span><span><b>جَمْعٌ</b><bdi dir="ltr">мн. ч.</bdi></span></div>
+  ${groups.map(g => `<div class="cg-h">${ar(g.h)}<small>${g.ru}</small></div>${g.rows.map(r => `<div class="cgrid">${cells(r, r.length === 2)}</div>`).join('')}`).join('')}`;
+}
+function vTables() {
+  return `
+  <p class="note">Таблицы из пройденных уроков. Позже сюда перенесём таблицы и формулы из второй части учебника.</p>
+  <h2 class="h2">Шесть бабов</h2><div class="card" style="padding:6px 14px">${tblBabs()}</div>
+  <h2 class="h2">Бабы с добавками</h2><div class="card" style="padding:6px 14px">${tblMazid()}</div>
+  <h2 class="h2">Частицы насба и джазма</h2><div class="card" style="padding:6px 14px">${tblParticles()}</div>
+  <h2 class="h2">Мизан</h2><div class="card" style="padding:6px 14px">${tblMizan()}</div>`;
+}
+function cjCustom() {
+  const raw = ($('#rootin') || {}).value || '';
+  CJ.input = raw;
+  const letters = [...raw.replace(/[ً-ٰٟـ\s\-–·,.]/g, '')];
+  if (!letters.length) { CJ.err = 'Введите три буквы корня, например شكر.'; return rerender(); }
+  if (letters.some(ch => !/[ء-ي]/.test(ch))) { CJ.err = 'Нужны арабские буквы.'; return rerender(); }
+  if (letters.length !== 3) { CJ.err = `В корне ${letters.length} ${plural(letters.length, ['буква', 'буквы', 'букв'])}, а спрягатель пока работает с трёхбуквенными.`; return rerender(); }
+  if (letters.some(ch => /[اويىءأإآؤئ]/.test(ch))) { CJ.err = 'В корне есть слабая буква или хамза. Такие глаголы добавим вместе с уроками о них.'; return rerender(); }
+  if (letters[1] === letters[2]) { CJ.err = 'Удвоенные корни (как مدّ) спрягаются по особым правилам. Добавим позже.'; return rerender(); }
+  CJ.root = letters; CJ.ru = ''; CJ.err = '';
+  rerender();
+}
+
+/* ============ SHEETS ============ */
+function openSheet(html) { const sh = $('#sheet'); sh.innerHTML = '<div class="grab"></div>' + html; sh.hidden = false; $('#scrim').hidden = false; const f = sh.querySelector('button,input'); if (f) f.focus({ preventScroll: true }); }
+function closeSheet() { $('#sheet').hidden = true; $('#scrim').hidden = true; }
+const sheetOpen = () => !$('#sheet').hidden;
+function settingsHtml() {
+  return `<h3>Настройки</h3>
+  <span class="lbl">Тема</span>
+  <div class="seg">${[['auto', 'Как в системе'], ['light', 'Светлая'], ['dark', 'Тёмная']].map(([v, n]) => `<button class="${S.theme === v ? 'on' : ''}" data-act="theme" data-v="${v}">${n}</button>`).join('')}</div>
+  <label class="lbl" for="arsize">Размер арабского текста</label>
+  <div class="arsize"><span class="ar" style="font-size:16px">ب</span><input type="range" id="arsize" min="0.85" max="1.4" step="0.05" value="${S.ar}"><span class="ar" style="font-size:28px">ب</span></div>
+  <p class="ar sample" lang="ar">اِعْلَمْ أَنَّ التَّصْرِيفَ فِي اللُّغَةِ التَّغْيِيرُ</p>
+  <button class="btn ghost block" data-act="close">Готово</button>`;
+}
+function openTerm(k) {
+  const [t, ru, d] = TERMS[k];
+  openSheet(`<div class="term-sh"><span class="lbl">Термин</span><div class="ar" lang="ar">${t}</div><div class="ru">${ru}</div><p>${mix(d)}</p></div><button class="btn ghost block" data-act="close">Понятно</button>`);
+}
+
+/* ============ ACTIONS ============ */
+const ACT = {
+  settings: () => openSheet(settingsHtml()),
+  close: closeSheet,
+  theme: el => { S.theme = el.dataset.v; persist(); applyLook(); $('#sheet').innerHTML = '<div class="grab"></div>' + settingsHtml(); },
+  step: el => { const v = +el.dataset.v; S.at[CUR] = v; S.max[CUR] = Math.max(S.max[CUR] || 0, v); persist(); render(); window.scrollTo(0, 0); },
+  tgl: el => { const p = document.getElementById(el.dataset.t); p.hidden = !p.hidden; el.setAttribute('aria-expanded', String(!p.hidden)); },
+  'wk-tab': el => { W.i = +el.dataset.v; W.step = 1; W.pick = {}; wkRender(); },
+  'wk-next': () => { W.step++; wkRender(); },
+  'wk-opt': el => { W.pick[+el.dataset.k] = +el.dataset.j; wkRender(); },
+  'px-mc': el => { const it = lessonBy(CUR).px[PX.i]; PX.st.p = +el.dataset.j; pxScore(PX.st.p === it.ans); pxRender(); },
+  'px-bin': el => { const it = lessonBy(CUR).px[PX.i], st = PX.st; st.p = +el.dataset.j; const ok = st.p === it.items[st.j].ans; st.res.push(ok); pxScore(ok); pxRender(); },
+  'px-binnext': () => { PX.st.j++; PX.st.p = undefined; pxRender(); },
+  'px-lt': el => { const j = +el.dataset.j, s = PX.st.sel; const k = s.indexOf(j); k < 0 ? s.push(j) : s.splice(k, 1); pxRender(); },
+  'px-check': () => { const it = lessonBy(CUR).px[PX.i], st = PX.st; const want = it.L.map((x, j) => x[1] ? j : -1).filter(j => j >= 0); st.ok = want.length === st.sel.length && want.every(j => st.sel.includes(j)); st.checked = true; pxScore(st.ok); pxRender(); },
+  'px-ml': el => { PX.st.l = +el.dataset.k; pxRender(); },
+  'px-mr': el => {
+    const st = PX.st, k = +el.dataset.k;
+    if (st.l === undefined) return;
+    if (st.l === k) { st.m.push(k); st.l = undefined; if (st.m.length === lessonBy(CUR).px[PX.i].P.length) pxScore(st.err === 0); pxRender(); }
+    else { st.err++; el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 400); }
+  },
+  'px-next': () => { PX.i++; PX.st = {}; pxRender(); window.scrollTo({ top: 0, behavior: 'smooth' }); },
+  'px-restart': () => { pxReset(); pxRender(); },
+  finish: () => { S.done[CUR] = 1; S.max[CUR] = 3; unlock(CUR); const nx = lessonBy(CUR + 1); if (nx) S.last = nx.n; persist(); go('home'); },
+  flip: () => { if (!RV.flip) { RV.flip = true; rerender(); } },
+  grade: el => {
+    const g = +el.dataset.g, id = RV.q.shift(), st = S.cards[id];
+    if (g === 0) { st.b = 0; st.due = Date.now(); RV.q.push(id); }
+    else if (g === 1) { st.b = Math.max(1, st.b); st.due = Date.now() + nextIv(st.b, 1) * DAY; }
+    else { st.b = Math.min(st.b + 1, 6); st.due = Date.now() + IV[st.b] * DAY; }
+    persist(); RV.flip = false; rerender();
+  },
+  'rv-reset': () => { Object.keys(S.cards).forEach(id => { S.cards[id] = { b: 0, due: 0 }; }); persist(); startReview(); rerender(); },
+  ref: el => { REF = el.dataset.v; rerender(); },
+  'open-conj': el => { CJ.t = el.dataset.t; CJ.pv = false; REF = 'conj'; go('ref'); },
+  'cj-pre': el => { CJ.root = [...el.dataset.r]; CJ.bab = el.dataset.b; CJ.ru = el.dataset.ru; CJ.err = ''; CJ.input = ''; CJ.custom = false; rerender(); },
+  'cj-own': () => { CJ.custom = true; CJ.err = ''; rerender(); const i = $('#rootin'); if (i) i.focus({ preventScroll: true }); },
+  'cj-bab': el => { CJ.bab = el.dataset.v; rerender(); },
+  'cj-t': el => { CJ.t = el.dataset.v; rerender(); },
+  'cj-pv': el => { CJ.pv = el.dataset.v === '1'; rerender(); },
+  'cj-go': cjCustom,
+};
+
+document.addEventListener('click', e => {
+  if (e.target.id === 'scrim') return closeSheet();
+  const ls = e.target.closest('[data-lesson]'); if (ls) { closeSheet(); return openLesson(+ls.dataset.lesson); }
+  const g = e.target.closest('[data-go]'); if (g) { closeSheet(); return go(g.dataset.go); }
+  const t = e.target.closest('[data-term]'); if (t) return openTerm(t.dataset.term);
+  const el = e.target.closest('[data-act]'); if (!el || el.disabled) return;
+  const fn = ACT[el.dataset.act]; if (fn) fn(el, e);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && sheetOpen()) closeSheet();
+  if (e.key === 'Enter' && e.target.id === 'rootin') cjCustom();
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('term')) { e.preventDefault(); openTerm(e.target.dataset.term); }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'arsize') { S.ar = +e.target.value; applyLook(); persist(); }
+  if (e.target.id === 'rootin') CJ.input = e.target.value;
+});
+window.addEventListener('resize', () => document.documentElement.style.setProperty('--top-h', $('#top').offsetHeight + 'px'));
+
+applyLook();
+startReview();
+render();
+</script>
+
+</body>
+
+</html>
