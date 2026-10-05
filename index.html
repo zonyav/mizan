@@ -53,9 +53,11 @@ p{margin:0}
 .app{max-width:620px;margin-inline:auto;padding-inline:16px;padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
 .app.focus{padding-bottom:48px}
 .view{animation:rise .35s ease both;display:grid;gap:16px}
+.view > *{min-width:0}
 @keyframes rise{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
 .w{font-family:var(--font-ar);unicode-bidi:isolate}
-.inl{font-size:1.3em;line-height:1;padding-inline:.08em}
+/* высота строки с арабской вставкой растёт, чтобы харакаты соседних строк не наезжали друг на друга */
+.inl{font-size:1.3em;line-height:1.6;vertical-align:-.06em;padding-inline:.08em}
 .nw{white-space:nowrap}
 .ar{font-family:var(--font-ar);direction:rtl;unicode-bidi:isolate}
 .r1{color:var(--r1)} .r2{color:var(--r2)} .r3{color:var(--r3)} .r4{color:var(--r4)}
@@ -1325,7 +1327,8 @@ const gU = (w, m = 'u', pre = '', only = null) => k => {
 /* повеление 2-го лица: gA('اُنْصُرْ', 'a'|'h'|'l') */
 const gA = (w, m = 'a') => k => { if (k < 6 || k > 11) return null; const e = AMR_E[m][k - 6]; return e === null ? null : w.slice(0, -1) + e; };
 /* причастие: gN('عَالِمٌ') → 6 форм */
-const gN = w => { const s = w.slice(0, -1); return [s + 'ٌ', s + 'َانِ', s + 'ُونَ', s + 'َةٌ', s + 'َتَانِ', s + 'َاتٌ']; };
+/* окончание убираем, шадду на последней букве оставляем: مُعْتَدٌّ → مُعْتَدّ */
+const gN = w => { const s = w.replace(/[ً-ْ]+$/, m => m.includes('ّ') ? 'ّ' : ''); return [s + 'ٌ', s + 'َانِ', s + 'ُونَ', s + 'َةٌ', s + 'َتَانِ', s + 'َاتٌ']; };
 
 /* ============ ИЗ УЧЕБНИКА: таблицы, أَسْئِلَةٌ, تَمَارِينُ ============ */
 /* tb — таблицы «اِحْفَظْ»; q — вопросы [арабский, перевод, ответ]; tm — упражнения.
