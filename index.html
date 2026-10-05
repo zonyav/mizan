@@ -55,7 +55,8 @@ p{margin:0}
 .view{animation:rise .35s ease both;display:grid;gap:16px}
 @keyframes rise{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
 .w{font-family:var(--font-ar);unicode-bidi:isolate}
-.inl{font-size:1.3em;line-height:1}
+.inl{font-size:1.3em;line-height:1;padding-inline:.08em}
+.nw{white-space:nowrap}
 .ar{font-family:var(--font-ar);direction:rtl;unicode-bidi:isolate}
 .r1{color:var(--r1)} .r2{color:var(--r2)} .r3{color:var(--r3)} .r4{color:var(--r4)}
 .star{width:22px;height:22px;color:var(--gold);flex:none}
@@ -107,6 +108,7 @@ p{margin:0}
 .c1{background:var(--r1)} .c2{background:var(--r2)} .c3{background:var(--r3)} .c0{background:var(--ink)}
 .hscroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-18px;padding-inline:18px;padding-block:2px}
 .hscroll::-webkit-scrollbar{display:none}
+.pt .hscroll{flex-wrap:wrap;justify-content:center;overflow:visible;margin-inline:0;padding-inline:0}
 .tag-x{display:inline-block;font:600 10.5px/1 var(--font-ui);letter-spacing:.07em;text-transform:uppercase;color:var(--gold);border:1px solid currentColor;border-radius:6px;padding:4px 6px}
 .rule-g{display:flex;align-items:center;gap:12px;color:var(--gold)}
 .rule-g::before,.rule-g::after{content:"";flex:1;height:1px;background:color-mix(in srgb,var(--gold) 45%,transparent)}
@@ -268,7 +270,7 @@ p{margin:0}
 .wk-ru{text-align:center;color:var(--muted);margin-top:-12px;font-size:14.5px}
 .wk-steps{display:grid;gap:6px}
 .wk-step{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;padding:11px 14px;border-radius:12px;background:var(--surface-2)}
-.wk-step .q{font-weight:600;font-size:14.5px}
+.wk-step .q{display:block;font-weight:600;font-size:14.5px}
 .wk-step .a{grid-column:1;color:var(--muted);font-size:14px}
 .wk-step .tg{grid-row:1/3;grid-column:2;font:700 calc(1.3rem*var(--ar-scale))/1.4 var(--font-ar);color:var(--accent)}
 .wk-step.pending{opacity:.45}
@@ -343,12 +345,15 @@ p{margin:0}
 .rtable th{font:600 11px var(--font-ui);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1px solid var(--ink)}
 .rtable td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
 .rtable tr:last-child td{border-bottom:0}
+@media (max-width:400px){.rtable th,.rtable td{padding-inline:5px}}
+@media (max-width:359px){.rtable .nw{white-space:normal}}
 .rtable .w{font-size:calc(1.2rem*var(--ar-scale));line-height:1.7}
-.rtable td.ru{direction:ltr;text-align:left;color:var(--muted);font-size:13.5px;line-height:1.45}
-.rtable td.ru .w{white-space:normal}
+.rtable td.ru{hyphens:auto;direction:ltr;text-align:left;color:var(--muted);font-size:13.5px;line-height:1.45}
+.rtable td.ru .w:not(.nw){white-space:normal}
 .rtable td.n{color:var(--muted);font-variant-numeric:tabular-nums;width:1%}
 .mz-t td small{display:block;color:var(--muted);font-size:12.5px;line-height:1.3}
 .mz-t td .w + small{margin-top:-2px}
+.mz-t td small .w{font-size:1.2em;line-height:1.5}
 .mz-t tr.grp td{padding-top:14px;font:600 11px var(--font-ui);letter-spacing:.07em;text-transform:uppercase;color:var(--gold);direction:ltr;text-align:left;border-bottom:1px solid var(--line)}
 .extra-note{border-left-color:var(--gold)}
 
@@ -403,8 +408,9 @@ p{margin:0}
 /* ============ HELPERS ============ */
 const $ = (s, el = document) => el.querySelector(s);
 const col = s => s.replace(/\[([1-4])([^\]]+)\]/g, '<span class="r$1">$2</span>');
-const ar = (s, cls = '') => `<span class="w ${cls}" dir="rtl" lang="ar">${col(s.replace(/→/g, '←'))}</span>`;
-const a = s => ar(s, 'inl');
+const ar = (s, cls = '') => `<span class="w ${cls}${/^[^\s،]+ [–←→] [^\s،]+$/.test(s) ? ' nw' : ''}" dir="rtl" lang="ar">${col(s.replace(/→/g, '←'))}</span>`;
+// короткий термин не рвём между строками: разорванная RTL-фраза читается задом наперёд
+const a = s => ar(s, s.trim().split(/\s+/).length <= 4 && s.length <= 48 ? 'inl nw' : 'inl');
 const T = (k, s) => `<span class="term" data-term="${k}" role="button" tabindex="0">${s}</span>`;
 const BR = s => `<span class="br">${s}</span>`;
 const shuffle = arr => { const r = arr.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
@@ -987,7 +993,7 @@ const LESSONS = [
   <h2 class="h2">Частицы и их значения</h2>
   <div class="card" style="padding:6px 14px">${tblParticles()}</div>
   <div class="callout"><b>Одно ${a('لَا')}, два смысла</b><span>${a('لَا تَنْصُرُ')} (дамма) — «ты не помогаешь», отрицание. ${a('لَا تَنْصُرْ')} (сукун) — «не помогай!», запрет.</span></div>
-  <button class="btn ghost block" data-act="open-conj" data-t="j">Все 14 форм с ${a('لَمْ')} — в спрягателе</button>`,
+  <button class="btn ghost block" data-act="open-conj" data-t="j"><span>Все 14 форм с ${a('لَمْ')} — в спрягателе</span></button>`,
   wk: [
     { w: 'تَنْصُرُونَ', ru: '+ لَمْ', res: 'لَمْ تَنْصُرُوا', steps: [
       { q: 'Какая частица?', a: 'لَمْ — джазм', tg: 'جَزْمٌ' },
@@ -1075,7 +1081,7 @@ const LESSONS = [
   <p class="note">Только в действительном залоге. В страдательном удалять нельзя: ${a('تُتَنَزَّلُ')}, не ${a('تُنَزَّلُ')}, иначе получится другое слово.</p>
   <div class="callout"><b>Как отличить от прошедшего</b><span>${a('تَجَنَّبَ')} может быть и прошедшим «он избегал», и мудари‘ «ты избегаешь» без одной та. Различают по смыслу фразы и по окончанию: у мудари‘ в конце дамма — ${a('تَجَنَّبُ')}.</span></div>
 
-  <h2 class="h2">Правило 2. Та в ${a('اِفْتَعَلَ')}</h2>
+  <h2 class="h2"><span>Правило 2. Та в ${a('اِفْتَعَلَ')}</span></h2>
   <p>После некоторых букв та трудно произносить, поэтому её меняют на близкий звук.</p>
   <div class="card">${rules([
     `<p><b>Первая коренная ${a('ص ض ط ظ')} → та становится ${a('ط')}</b></p>${tb(['Исходно', 'Стало', 'Значение'], [
@@ -1261,7 +1267,7 @@ const LESSONS = [
   ],
   ex: () => `
   <h2 class="h2">Простыми словами</h2>
-  <p class="lead">Если в глаголе больше трёх букв, причастие делают из мудари‘: букву мудари‘ меняют на ${a('مُـ')}.</p>
+  <p class="lead">Если в глаголе больше трёх букв, причастие строят от мудари‘. Первую букву (${a('حَرْفُ الْمُضَارَعَةِ')}) заменяют на ${a('مُـ')}.</p>
   <div class="card">${rules([
     `<p><b>Действительное</b> — из действительного мудари‘, перед последней касра.</p>${flow(['يُ[1كْ][2رِ][3مُ]', 'مُ[1كْ][2رِ][3مٌ]'], 'sm')}${flow(['يَتَ[1عَ][2لَّ][3مُ]', 'مُتَ[1عَ][2لِّ][3مٌ]'], 'sm')}${flow(['يَسْتَ[1خْ][2رِ][3جُ]', 'مُسْتَ[1خْ][2رِ][3جٌ]'], 'sm')}`,
     `<p><b>Страдательное</b> — из страдательного мудари‘, перед последней фатха.</p>${flow(['يُ[1كْ][2رَ][3مُ]', 'مُ[1كْ][2رَ][3مٌ]'], 'sm')}${flow(['يُسْتَ[1خْ][2رَ][3جُ]', 'مُسْتَ[1خْ][2رَ][3جٌ]'], 'sm')}`,
@@ -1270,12 +1276,12 @@ const LESSONS = [
 
   <h2 class="h2">Когда формы совпадают</h2>
   <p>Если буква перед последней слилась в шадду или стала алифом, её огласовки не видно. Тогда действительное и страдательное причастие пишутся одинаково, а различаются по смыслу фразы (${a('الْقَرِينَةُ')}).</p>
-  <div class="card">${tb(['Глагол', 'Действительное', 'Страдательное'], [
-    ['اِخْتَارَ', 'مُخْتَارٌ ← مُخْتَيِرٌ', 'مُخْتَارٌ ← مُخْتَيَرٌ'],
-    ['اِعْتَدَّ', 'مُعْتَدٌّ ← مُعْتَدِدٌ', 'مُعْتَدٌّ ← مُعْتَدَدٌ'],
-    ['حَابَّ', 'مُحَابٌّ ← مُحَابِبٌ', 'مُحَابٌّ ← مُحَابَبٌ'],
-    ['اِنْصَبَّ', 'مُنْصَبٌّ ← مُنْصَبِبٌ', 'مُنْصَبٌّ فِيهِ'],
-  ])}<p class="note">${a('اِخْتَارَ')}: «выбирающий» и «избранный» — оба ${a('مُخْتَارٌ')}. ${a('اِنْصَبَّ')} и ${a('اِنْجَابَ')} непереходные, поэтому страдательное причастие у них только с предлогом: ${a('مُنْصَبٌّ فِيهِ')}، ${a('مُنْجَابٌ عَنْهُ')}.</p></div>`,
+  <div class="card">${hidTb(['Глагол', 'Действ.', 'Страд.'], [
+    ['اِخْتَارَ', 'مُخْتَارٌ (مُخْتَيِرٌ)', 'مُخْتَارٌ (مُخْتَيَرٌ)'],
+    ['اِعْتَدَّ', 'مُعْتَدٌّ (مُعْتَدِدٌ)', 'مُعْتَدٌّ (مُعْتَدَدٌ)'],
+    ['حَابَّ', 'مُحَابٌّ (مُحَابِبٌ)', 'مُحَابٌّ (مُحَابَبٌ)'],
+    ['اِنْصَبَّ', 'مُنْصَبٌّ (مُنْصَبِبٌ)', 'مُنْصَبٌّ فِيهِ'],
+  ])}<p class="note">Серым под словом — исходная форма. От ${a('اِخْتَارَ')} и «выбирающий», и «избранный» — ${a('مُخْتَارٌ')}. ${a('اِنْصَبَّ')} и ${a('اِنْجَابَ')} непереходные, поэтому страдательное причастие у них только с предлогом: ${a('مُنْصَبٌّ فِيهِ')}، ${a('مُنْجَابٌ عَنْهُ')}.</p></div>`,
   wk: [
     { w: 'أَ[1كْ][2رَ][3مَ]', ru: 'оказать почёт', res: 'مُكْرِمٌ · مُكْرَمٌ', steps: [
       { q: 'Мудари‘ обоих залогов', a: 'Действительный и страдательный', tg: 'يُكْرِمُ · يُكْرَمُ' },
@@ -1891,6 +1897,8 @@ Object.assign(BOOK, {
   ] },
 });
 
+/* таблица со скрытыми формами: исходная форма — второй строкой, чтобы влезало на телефоне */
+const hidTb = (head, rows) => `<div class="tbl-wrap"><table class="rtable mz-t"><thead><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => { const m = c.match(/^(.*?) \((.*)\)$/); return m ? `<td>${ar(m[1])}<small>${ar(m[2])}</small></td>` : `<td>${ar(c)}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
 const prepForms = (w, base) => ['هِ', 'هِمَا', 'هِمْ', 'هَا', 'هِمَا', 'هِنَّ'].map(p => `${w} ${base}${p}`);
 Object.assign(BOOK, {
 /* ---------- 14 ---------- */
@@ -1903,7 +1911,7 @@ Object.assign(BOOK, {
       ['مُنْصَبٌّ', 'вливающийся', gN('مُنْصَبٌّ')], ['مُنْصَبٌّ فِيهِ', 'то, во что вылили', prepForms('مُنْصَبٌّ', 'فِي')],
       ['مُنْجَابٌ', 'рассеивающийся', gN('مُنْجَابٌ')], ['مُنْجَابٌ عَنْهُ', 'то, от чего рассеялось', prepForms('مُنْجَابٌ', 'عَنْ')]] },
       note: 'Причастие с предлогом не меняется по числу и роду: меняется только местоимение после предлога (урок 13).' },
-    { h: 'Скрытые исходные формы', html: () => tb(['Вес', 'Глагол', 'Действительное', 'Страдательное'], [
+    { h: 'Скрытые исходные формы', html: () => hidTb(['Вес', 'Глагол', 'Действ.', 'Страд.'], [
       ['فَاعَلَ', 'حَابَّ (حَابَبَ)', 'مُحَابٌّ (مُحَابِبٌ)', 'مُحَابٌّ (مُحَابَبٌ)'],
       ['تَفَاعَلَ', 'تَحَابَّ (تَحَابَبَ)', 'مُتَحَابٌّ (مُتَحَابِبٌ)', 'مُتَحَابٌّ (مُتَحَابَبٌ)'],
       ['اِنْفَعَلَ', 'اِنْصَبَّ (اِنْصَبَبَ)', 'مُنْصَبٌّ (مُنْصَبِبٌ)', 'مُنْصَبٌّ فِيهِ'],
@@ -1911,7 +1919,7 @@ Object.assign(BOOK, {
       ['اِفْتَعَلَ', 'اِضْطَرَّ (اِضْطَرَرَ)', 'مُضْطَرٌّ (مُضْطَرِرٌ)', 'مُضْطَرٌّ (مُضْطَرَرٌ)'],
       ['اِفْتَعَلَ', 'اِخْتَارَ (اِخْتَيَرَ)', 'مُخْتَارٌ (مُخْتَيِرٌ)', 'مُخْتَارٌ (مُخْتَيَرٌ)'],
       ['اِنْفَعَلَ', 'اِنْجَابَ (اِنْجَوَبَ)', 'مُنْجَابٌ (مُنْجَوِبٌ)', 'مُنْجَابٌ عَنْهُ'],
-    ]) + `<p class="note">В скобках — исходная форма. Слова со слабой буквой (${a('اِخْتَارَ، اِنْجَابَ')}) и с удвоением подробно разберём в следующих уроках.</p>` },
+    ]) + `<p class="note">Серым под словом — исходная форма. Слова со слабой буквой (${a('اِخْتَارَ، اِنْجَابَ')}) и с удвоением подробно разберём в следующих уроках.</p>` },
   ],
   q: [
     ['كَيْفَ يُصَاغُ اسْمُ الْفَاعِلِ مِمَّا زَادَ عَلَى الثَّلَاثَةِ؟ وَمَثِّلْ', 'Как образуется действительное причастие от глаголов длиннее трёх букв? Примеры.', 'Берут действительный мудари‘, букву мудари‘ меняют на مُ, перед последней буквой касра: يُكْرِمُ → مُكْرِمٌ، يَتَعَلَّمُ → مُتَعَلِّمٌ، يَجْتَمِعُ → مُجْتَمِعٌ، يَسْتَخْرِجُ → مُسْتَخْرِجٌ، يُدَحْرِجُ → مُدَحْرِجٌ.'],
@@ -2322,7 +2330,7 @@ render();
 const RU = '[А-Яа-яЁё]';
 const TERM_RX = [
   [/(Четыре|четыре) буквы мудари‘/g, 'حُرُوفُ الْمُضَارَعَةِ الْأَرْبَعَةُ'],
-  [/букв(?:а|ы|у|ой|е)? мудари‘/g, 'حَرْفُ الْمُضَارَعَةِ'],
+  [/[Бб]укв(?:а|ы|у|ой|е)? мудари‘/g, 'حَرْفُ الْمُضَارَعَةِ'],
   [/[Хх]амз(?:а|ы|у|ой|е) васль/g, 'هَمْزَةُ الْوَصْلِ'],
   [/[Хх]амз(?:а|ы|у|ой|е) катъ/g, 'هَمْزَةُ الْقَطْعِ'],
   [/[Лл]ям(?:а|у|ом|е)? повеления/g, 'لَامُ الْأَمْرِ'],
@@ -2363,7 +2371,10 @@ function arTerms(root) {
     html = html.replace(/\u0000([^\u0001]*)\u0001/g, (_, w) => a(w));
     const t = document.createElement('template');
     t.innerHTML = html;
-    n.replaceWith(t.content);
+    // во flex/grid-контейнере текст и вставленный термин стали бы отдельными колонками — держим их одним куском
+    const pd = n.parentElement && getComputedStyle(n.parentElement).display;
+    if (/flex|grid/.test(pd || '')) { const sp = document.createElement('span'); sp.append(t.content); n.replaceWith(sp); }
+    else n.replaceWith(t.content);
   }
 }
 arTerms(document.body);
