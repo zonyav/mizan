@@ -529,6 +529,16 @@ a{color:var(--accent);text-underline-offset:.2em}
 .fn-item:first-child{border-top:0;padding-top:4px}
 .fn-n{width:30px;height:30px;border-radius:50%;border:1px solid var(--line-strong);background:var(--surface);font:600 13px var(--font-ui);color:var(--muted);display:grid;place-items:center;padding:0}
 .fn-b{display:grid;gap:8px;min-width:0}
+/* ── правки 2026-11-14 (разбор по правилам stageshow/craft) ── */
+/* арабское слово внутри русской строки больше не раздвигает строки: интервал ровный, воздух даёт сам абзац */
+.inl{line-height:1}
+:is(p,.ans,.sample,.a,.t-ru,.why,.qru,td.ru,div.ru,.pt-meta,.gl>span):has(.inl){line-height:1.8}
+/* в «Разборе» вопрос получал отступы карточки из «Вопросов» (общий класс .q) */
+.wk-step .q{padding:0}
+/* ряды кнопок с прокруткой вбок: обрезанная кнопка уходит в туман, а не под рамку карточки */
+.hscroll{-webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent);mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)}
+/* вариант ответа только по-арабски начинается справа */
+.opt.ar-o{justify-content:flex-end}
 </style>
 </head>
 <body>
@@ -538,7 +548,7 @@ a{color:var(--accent);text-underline-offset:.2em}
 </div>
 <nav class="nav" id="nav" aria-label="Разделы"></nav>
 <div class="scrim" id="scrim" hidden></div>
-<div class="sheet" id="sheet" role="dialog" aria-modal="true" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" tabindex="-1" hidden></div>
 
 <script>
 /* ============ HELPERS ============ */
@@ -4870,8 +4880,17 @@ function cjCustom() {
 }
 
 /* ============ SHEETS ============ */
-function openSheet(html) { const sh = $('#sheet'); sh.innerHTML = '<div class="grab"></div>' + html; sh.hidden = false; $('#scrim').hidden = false; const f = sh.querySelector('button,input'); if (f) f.focus({ preventScroll: true }); hSync(); }
-function closeSheet() { $('#sheet').hidden = true; $('#scrim').hidden = true; hSync(); }
+/* фокус: при открытии — в шторку, Tab не уходит за её пределы, при закрытии — обратно туда, откуда открыли */
+let SH_RET = null;
+const shFocusables = () => [...$('#sheet').querySelectorAll('button:not([disabled]),input,[tabindex="0"]')].filter(x => x.getClientRects().length);
+function openSheet(html) {
+  const sh = $('#sheet'); if (sh.hidden) SH_RET = document.activeElement;
+  sh.innerHTML = '<div class="grab"></div>' + html; sh.hidden = false; $('#scrim').hidden = false;
+  const h = sh.querySelector('.lbl,h3'); sh.setAttribute('aria-label', h ? h.textContent.trim() : 'Окно');
+  const f = sh.querySelector('button:not([disabled]),input'); (f || sh).focus({ preventScroll: true }); hSync();
+}
+function sheetReturn() { const r = SH_RET; SH_RET = null; if (r && r.isConnected && r !== document.body && r.focus) r.focus({ preventScroll: true }); }
+function closeSheet() { const was = sheetOpen(); $('#sheet').hidden = true; $('#scrim').hidden = true; hSync(); if (was) sheetReturn(); }
 function sheetOpenWord(el) { const back = el.closest('.fn-sh') ? `<button class="btn ghost block" data-act="fn" data-v="${FNK}">К примечанию ${FNK}</button>` : ''; openSheet(wordSheet(el.textContent) + back + '<button class="btn ghost block" data-act="close">Понятно</button>'); }
 /* ============ примечания учебника: цифра в тексте открывает сноску ============ */
 const fnOf = (n, k) => (BOOK[n] && BOOK[n].fn || [])[k - 1];
@@ -4904,7 +4923,7 @@ function hSync() {
 }
 window.addEventListener('popstate', e => {
   const have = (e.state && e.state.mz) || 0;
-  if (hWant() > have && sheetOpen()) { $('#sheet').hidden = true; $('#scrim').hidden = true; }
+  if (hWant() > have && sheetOpen()) { $('#sheet').hidden = true; $('#scrim').hidden = true; sheetReturn(); }
   if (hWant() > have && R !== 'home') { R = 'home'; render(); window.scrollTo(0, 0); }
 });
 
@@ -4971,6 +4990,13 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && sheetOpen()) closeSheet();
+  if (e.key === 'Tab' && sheetOpen()) {
+    const f = shFocusables(), a = f[0], z = f[f.length - 1], cur = document.activeElement;
+    if (!f.length) { e.preventDefault(); return; }
+    if (!$('#sheet').contains(cur)) { e.preventDefault(); a.focus(); }
+    else if (e.shiftKey && (cur === a || cur === $('#sheet'))) { e.preventDefault(); z.focus(); }
+    else if (!e.shiftKey && cur === z) { e.preventDefault(); a.focus(); }
+  }
   if (e.key === 'Enter' && e.target.id === 'rootin') cjCustom();
   if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('term')) { e.preventDefault(); openTerm(e.target.dataset.term); }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('tw')) { e.preventDefault(); sheetOpenWord(e.target); }
