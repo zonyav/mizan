@@ -5,12 +5,55 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Мизан</title>
 <meta name="description" content="Мизан — курс арабской морфологии (сарф) по учебнику «التصريف»: текст автора, объяснения, вопросы и задания учебника, спрягатель.">
-<meta name="theme-color" content="#F6F6F3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#16181C" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23FFFFFF'/%3E%3Ccircle cx='5.5' cy='12' r='3' fill='%23AA4C08'/%3E%3Ccircle cx='12' cy='12' r='3' fill='%231C7741'/%3E%3Ccircle cx='18.5' cy='12' r='3' fill='%236243C8'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:wght@600;700&family=Noto+Naskh+Arabic:wght@400;500;700&family=Onest:wght@400;500;600&display=swap">
+<meta name="theme-color" content="#1E2559" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#20275C" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Мизан">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>
+/* приложение: офлайн-кэш (только https или localhost) и цвет системной панели под выбранную в настройках тему */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+(() => { const sync = () => { const bg = getComputedStyle(document.documentElement).getPropertyValue('--shell').trim(); if (bg) document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.content = bg); };
+  new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => setTimeout(sync, 0)); })();
+</script>
+<style>
+/* шрифты лежат рядом с сайтом, в папке fonts/ */
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/jost-cyrillic-880f7b.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/jost-latin-ext-1bb29f.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/jost-latin-b58a58.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/jost-cyrillic-880f7b.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/jost-latin-ext-1bb29f.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/jost-latin-b58a58.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/jost-cyrillic-880f7b.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/jost-latin-ext-1bb29f.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/jost-latin-b58a58.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/jost-cyrillic-880f7b.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/jost-latin-ext-1bb29f.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/jost-latin-b58a58.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Noto Naskh Arabic'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/noto-naskh-arabic-arabic-6db390.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC7, U+10EC9-10EEE, U+10EF0-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1; }
+@font-face { font-family: 'Noto Naskh Arabic'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/noto-naskh-arabic-latin-ext-763d00.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Noto Naskh Arabic'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/noto-naskh-arabic-latin-cbf017.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Noto Naskh Arabic'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/noto-naskh-arabic-arabic-6db390.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC7, U+10EC9-10EEE, U+10EF0-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1; }
+@font-face { font-family: 'Noto Naskh Arabic'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/noto-naskh-arabic-latin-ext-763d00.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Noto Naskh Arabic'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/noto-naskh-arabic-latin-cbf017.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Noto Naskh Arabic'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/noto-naskh-arabic-arabic-6db390.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC7, U+10EC9-10EEE, U+10EF0-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1; }
+@font-face { font-family: 'Noto Naskh Arabic'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/noto-naskh-arabic-latin-ext-763d00.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Noto Naskh Arabic'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/noto-naskh-arabic-latin-cbf017.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Reem Kufi'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/reem-kufi-arabic-e75323.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC7, U+10EC9-10EEE, U+10EF0-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1; }
+@font-face { font-family: 'Reem Kufi'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/reem-kufi-latin-ext-013d47.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Reem Kufi'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/reem-kufi-latin-0f10f2.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Reem Kufi'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/reem-kufi-arabic-e75323.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC7, U+10EC9-10EEE, U+10EF0-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1; }
+@font-face { font-family: 'Reem Kufi'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/reem-kufi-latin-ext-013d47.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Reem Kufi'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/reem-kufi-latin-0f10f2.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Reem Kufi'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/reem-kufi-arabic-e75323.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC7, U+10EC9-10EEE, U+10EF0-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1; }
+@font-face { font-family: 'Reem Kufi'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/reem-kufi-latin-ext-013d47.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Reem Kufi'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/reem-kufi-latin-0f10f2.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+</style>
 <style>
 /* ============ TOKENS: тетрадь — нейтральная бумага, чернила, жёлтый маркер ============ */
 :root{
@@ -539,6 +582,248 @@ a{color:var(--accent);text-underline-offset:.2em}
 .hscroll{-webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent);mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)}
 /* вариант ответа только по-арабски начинается справа */
 .opt.ar-o{justify-content:flex-end}
+
+/* ============ ДВИЖЕНИЕ (общий файл обоих курсов, пара к motion.js) ============ */
+:root{--ease-out:cubic-bezier(.2,.8,.2,1);--ease-in:cubic-bezier(.4,0,1,1)}
+/* переходы между экранами и шагами: шапка, шаги и нижняя панель стоят, сдвигается содержимое; уход 0.12 с, появление 0.2 с */
+.vt .view{animation:none}
+#view{view-transition-name:view}
+.top{view-transition-name:top}
+.nav{view-transition-name:nav}
+.steps{view-transition-name:steps}
+::view-transition-group(*){animation-duration:.18s;animation-timing-function:var(--ease-out)}
+::view-transition-old(top),::view-transition-new(top),::view-transition-old(steps),::view-transition-new(steps){animation-duration:.12s}
+:root[data-vt="fwd"]::view-transition-old(view){animation:vt-out-l .12s var(--ease-in) both}
+:root[data-vt="fwd"]::view-transition-new(view){animation:vt-in-r .2s var(--ease-out) both}
+:root[data-vt="back"]::view-transition-old(view){animation:vt-out-r .12s var(--ease-in) both}
+:root[data-vt="back"]::view-transition-new(view){animation:vt-in-l .2s var(--ease-out) both}
+:root[data-vt="tab"]::view-transition-old(view){animation:vt-fade-out .1s linear both}
+:root[data-vt="tab"]::view-transition-new(view){animation:vt-fade-in .16s var(--ease-out) both}
+::view-transition-group(view){animation:none}
+@keyframes vt-out-l{to{opacity:0;transform:translateX(-20px)}}
+@keyframes vt-in-r{from{opacity:0;transform:translateX(28px)}}
+@keyframes vt-out-r{to{opacity:0;transform:translateX(20px)}}
+@keyframes vt-in-l{from{opacity:0;transform:translateX(-28px)}}
+@keyframes vt-fade-out{to{opacity:0}}
+@keyframes vt-fade-in{from{opacity:0;transform:translateY(4px)}}
+
+/* свайп между шагами: содержимое идёт за пальцем, шаги на месте */
+#view.swiping .view > :not(.steps){transform:translateX(var(--sw,0px))}
+#view.sw-back .view > :not(.steps){transition:transform .2s var(--ease-out)}
+
+/* шторка: выезжает снизу целиком, за пальцем — без задержки, отпускание — пружинит обратно */
+.sheet{animation:sheet-up .28s var(--ease-out);touch-action:pan-y;overscroll-behavior:contain}
+.sheet.drag{transition:none;animation:none}
+.sheet.snap{transition:transform .24s var(--ease-out)}
+.sheet.sh-ghost{pointer-events:none;animation:none}
+.scrim.sh-ghost{pointer-events:none;animation:none}
+.grab{cursor:grab}
+@keyframes sheet-up{from{transform:translateY(100%)}}
+
+/* нажатие: кнопка слегка проседает */
+.btn,.opt,.chip,.rchip,.lt,.li,.stp,.nav button,.icon-btn,.fold > button{-webkit-tap-highlight-color:transparent}
+.opt:active,.chip:not([disabled]):active,.rchip:active,.lt:active,.fold > button:active,.li:not(.soon):active{transform:scale(.985)}
+.opt,.chip,.rchip,.lt,.fold > button,.li{transition:transform .12s var(--ease-out),background-color .15s,border-color .15s,color .15s}
+
+@media (prefers-reduced-motion:reduce){
+  #view,.top,.nav,.steps{view-transition-name:none}
+  .sheet{animation:none}
+}
+/* ============ ТЕМА «КОВЁР» (оба курса; описание — DESIGN.md) ============
+   Дагестанский ворсовый ковёр: индиго обрамляет работу (шапка и нижняя панель — концы ковра),
+   марена — главное действие и примечания, шафран — «где я», бирюза — вторая корневая.
+   Нейтральные тона замешаны на индиго, без серых; швы в 1 px вместо теней; углы как в iPhone.
+   Знак узла (сетка) — только у «сотканного»: номер урока, пройденный и текущий урок в списке, корневые буквы,
+   буквы корня, которые отмечает ученик. Больше нигде. */
+:root{
+  --bg:#F3F3F8; --surface:#FFFFFF; --surface-2:#E9EAF3; --ink:#161A3A; --muted:#545A7E; --line:#D5D7E6; --line-strong:#8287AB;
+  --accent:#1E2559; --accent-ink:#FFFFFF; --accent-soft:#E3E5F4;
+  --r1:#B3261E; --r2:#0B6E72; --r3:#9A6200; --r4:#7A2E8E;
+  --ok:#17733F; --ok-soft:#DDF1E4; --bad:#B3261E; --bad-soft:#F9E3E0;
+  --seg-on:#FFFFFF; --shadow:none;
+  --shell:#1E2559; --shell-2:#2A3270; --shell-ink:#FFFFFF; --shell-mut:#BFC4E6; --saf:#E2A33B; --saf-ink:#1E2559;
+  --mad:#B3261E;        /* марена — заливки (кнопки, примечания, плитка 1-й корневой) */
+  --mad-tx:#B3261E;     /* марена — текст */
+  --r2-tile:#0B6E72;    /* бирюза — заливка плитки 2-й корневой */
+  --knot-w:rgba(255,255,255,.10); --knot-k:rgba(22,26,58,.10);   /* нити узла: светлые на тёмной заливке, тёмные на светлой */
+  --font-ui:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-d:'Jost',system-ui,sans-serif;
+  --font-k:'Reem Kufi','Noto Naskh Arabic',serif;
+  --r-card:20px; --r-btn:14px; --r-chip:12px; --r-sheet:26px; --r-fn:6px; --r-num:9px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1229; --surface:#171B3A; --surface-2:#21264A; --ink:#ECEDF7; --muted:#A7ABCD; --line:#2D3361; --line-strong:#5B629C;
+    --accent:#B4BCF7; --accent-ink:#0F1229; --accent-soft:#252B57;
+    --r1:#F2786C; --r2:#45C6C0; --r3:#F2B54A; --r4:#D69BE6;
+    --ok:#5CD18E; --ok-soft:#12301F; --bad:#FF8A7E; --bad-soft:#3A1A1A;
+    --seg-on:#2E3466; --shell:#20275C; --shell-2:#2C3470; --shell-ink:#F3F4FB; --shell-mut:#B9BEE6; --saf:#F2B54A; --saf-ink:#141838;
+    --mad:#C2372E; --mad-tx:#EE6A5F; --r2-tile:#13807C; --knot-w:rgba(255,255,255,.10); --knot-k:rgba(15,18,41,.16);
+    --gold:var(--muted); --gold-soft:var(--accent-soft);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1229; --surface:#171B3A; --surface-2:#21264A; --ink:#ECEDF7; --muted:#A7ABCD; --line:#2D3361; --line-strong:#5B629C;
+  --accent:#B4BCF7; --accent-ink:#0F1229; --accent-soft:#252B57;
+  --r1:#F2786C; --r2:#45C6C0; --r3:#F2B54A; --r4:#D69BE6;
+  --ok:#5CD18E; --ok-soft:#12301F; --bad:#FF8A7E; --bad-soft:#3A1A1A;
+  --seg-on:#2E3466; --shell:#20275C; --shell-2:#2C3470; --shell-ink:#F3F4FB; --shell-mut:#B9BEE6; --saf:#F2B54A; --saf-ink:#141838;
+  --mad:#C2372E; --mad-tx:#EE6A5F; --r2-tile:#13807C; --knot-w:rgba(255,255,255,.10); --knot-k:rgba(15,18,41,.16);
+    --gold:var(--muted); --gold-soft:var(--accent-soft);
+}
+/* второго жёлтого нет: прежнее «золото» — это приглушённый текст, кремовые подложки — индиго-светлые */
+:root{--gold:var(--muted);--gold-soft:var(--accent-soft)}
+
+/* поверхности браузера тоже в палитре */
+::selection{background:var(--saf);color:var(--saf-ink)}
+html{scrollbar-color:var(--line-strong) var(--bg);caret-color:var(--mad)}
+body{font-family:var(--font-ui);font-size:16.5px}
+:focus-visible{outline:2px solid var(--saf);outline-offset:2px}
+.card,.run,.resume,.fold{box-shadow:none}
+
+/* ===== знак узла: одна сетка 6 px на всё «сотканное» ===== */
+:is(.li.done .node,.li.cur .node,.core span,.lt.sel:not([disabled]),.lt[aria-pressed="true"]:not([disabled]),.lt.rt1,.lt.rt2,.lt.rt3,.lt.rt4){
+  --k:var(--knot-w);
+  background-image:repeating-linear-gradient(0deg,transparent 0 5px,var(--k) 5px 6px),repeating-linear-gradient(90deg,transparent 0 5px,var(--k) 5px 6px)}
+.core span.fc3{--k:var(--knot-k)}
+:root[data-theme="dark"] :is(.lt.sel,.lt[aria-pressed="true"]){--k:var(--knot-k)}
+.lt.rt3{--k:var(--knot-k)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) :is(.lt.sel,.lt[aria-pressed="true"]){--k:var(--knot-k)}}
+
+/* ===== шапка: индиго во всю ширину; знак — только название ===== */
+.top{background:var(--shell);color:var(--shell-ink);border-bottom:0}
+.top .icon-btn{color:var(--shell-mut)}
+.top .icon-btn:hover{background:var(--shell-2);color:var(--shell-ink)}
+.hd-t b{font-weight:600}
+.hd-t small{color:var(--shell-mut)}
+.brand{gap:8px;font:600 21px/1 var(--font-d);letter-spacing:.01em;color:var(--shell-ink)}
+.brand-ar{font:600 19px/1 var(--font-k);color:var(--saf);padding-bottom:4px}
+
+/* ===== шаги урока продолжают шапку: подписаны все, текущий — шафран ===== */
+.steps{display:flex;gap:0;background:var(--shell);padding:2px 6px 12px;box-shadow:0 -6px 0 var(--shell)}
+.stp,.stp.on{flex:1 1 0;min-width:0;flex-direction:column;gap:6px;min-height:44px;padding:6px 2px;font-size:11px;letter-spacing:-.005em;color:var(--shell-mut)}
+@media (min-width:480px){.stp,.stp.on{font-size:13px}}
+.stp i{display:none}
+.stp.on{background:var(--saf);color:var(--saf-ink);box-shadow:none;font-weight:600}
+
+/* ===== нижняя панель: второй конец ковра ===== */
+.nav{background:var(--shell);border-top:0}
+.nav button{color:var(--shell-mut);position:relative}
+.nav button.on{background:var(--shell-2);color:var(--shell-ink)}
+.nav button.on::after{content:"";position:absolute;top:0;left:50%;width:28px;height:3px;margin-left:-14px;background:var(--saf);border-radius:0 0 3px 3px}
+
+/* ===== типографика ===== */
+.h1{font:600 30px/1.15 var(--font-d);letter-spacing:-.01em;margin-top:16px}
+.h2{font:600 22px/1.25 var(--font-d)}
+.h2::before{display:none}
+.sheet h3{font-family:var(--font-d);font-weight:600}
+.lbl,.bookline,.tb-sub{letter-spacing:.08em}
+.mast .ar{font:700 calc(3.1rem*var(--ar-scale))/1.45 var(--font-k);color:var(--accent)}
+/* куфи: заголовок курса, названия уроков, список уроков; Naskh — текст учебника */
+:is(.ltitle .ar,.resume .t-ar){font-family:var(--font-k);font-weight:600;line-height:1.75;text-wrap:balance}
+.ltitle .ar{color:var(--accent);font-size:calc(1.85rem*var(--ar-scale))}
+.li .tx > .w{font-family:var(--font-k);font-weight:500;font-size:calc(1.2rem*var(--ar-scale));line-height:1.9}
+.li .tx b .w{color:inherit;font-weight:500}
+.para-h,.qn,.bookline,.tb-sub,.mz-t tr.grp td,.pfx .w,.cg-h .w,.wk-step .tg,.resume .go span{color:var(--mad-tx)}
+.bookline::after{background:color-mix(in srgb,var(--mad-tx) 35%,transparent)}
+.rtable th{border-bottom-color:var(--accent);unicode-bidi:plaintext}
+
+/* ===== кнопки ===== */
+.btn{background:var(--mad);color:#fff;font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-strong)}
+.btn[disabled],.fn-nav .btn[disabled]{opacity:1;background:var(--surface-2);color:var(--muted);border-color:transparent}
+.btn:active{transform:none;filter:brightness(.92)}
+.disc,.linkbtn,a{color:var(--accent)}
+
+/* ===== углы как в iPhone; плитки — радиус около 0,3 стороны ===== */
+.card,.run,.resume,.fold,.callout,.passport,.wk-res,.wk-step,.sample,.ex-eg,.ex-txt,.q .ans,.form{border-radius:var(--r-card)}
+.btn,.icon-btn,.seg,.inrow input{border-radius:var(--r-btn)}
+.chip,.chipb,.rchip,.opt,.kin,.pill,.cell,.lt-row .ck,.seg button,.stp,.fold > button .ico,.disc,.sample-ar,.pfx div,.nav button,.tw,.term{border-radius:var(--r-chip)}
+.lt{border-radius:14px}
+.core span{border-radius:17px}
+.fn,.fn-n,.rv .qm,.gut span{border-radius:var(--r-fn)}
+.dia::before{border-radius:var(--r-num);transform:none;inset:1px;border-color:var(--line-strong)}
+@supports (corner-shape:squircle){
+  :is(.card,.run,.resume,.fold,.medal,.callout,.passport,.form,.wk-step,.wk-res,.sample,.ex-eg,.q .ans){corner-shape:squircle;border-radius:calc(var(--r-card) * 1.6)}
+  :is(.btn,.core span){corner-shape:squircle;border-radius:calc(var(--r-btn) * 1.6)}
+  .sheet{corner-shape:squircle;border-radius:calc(var(--r-sheet) * 1.6) calc(var(--r-sheet) * 1.6) 0 0}
+}
+
+/* ===== главная: номер урока — узел; в списке пройденные и текущий — такие же узлы ===== */
+.resume{border:1px solid var(--line);background:var(--surface);padding:18px}
+.resume .lbl,.resume::after{display:none}
+.medal{position:relative;overflow:hidden;width:78px;height:78px;border-radius:24px;background-color:var(--shell);color:var(--saf);
+  background-image:repeating-linear-gradient(90deg,transparent 0 5px,var(--knot-w) 5px 6px)}
+/* номер урока — станок: до начала видна только основа (вертикальные нити), пройденные шаги ткут ряды узлов снизу вверх */
+.medal::before{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--p,1) * 100%);height:round(down,calc(var(--p,1) * 100%),6px);
+  background-color:var(--shell-2);transition:height .5s var(--ease-out,ease);
+  background-image:repeating-linear-gradient(0deg,transparent 0 5px,var(--knot-w) 5px 6px),repeating-linear-gradient(90deg,transparent 0 5px,var(--knot-w) 5px 6px)}
+.medal b{position:relative;z-index:1}
+.medal svg{display:none}
+.medal b{color:var(--saf);font:600 32px/1 var(--font-ui);font-variant-numeric:tabular-nums;padding:0}
+.pips{gap:4px} .pips i{width:13px;height:4px;border-radius:2px;border:0;background:var(--line)} .pips i.on{background:var(--mad)}
+.thread::before{background:var(--line-strong);opacity:.5}
+.li .node{width:28px;height:28px;margin:6px;border-radius:9px;border:1.4px solid var(--line-strong);background-color:var(--bg)}
+.li .node svg{display:none}
+.li .node b{font:600 13px/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--muted)}
+.li.done .node{background-color:var(--shell);border-color:var(--shell)}
+.li.done .node b{color:var(--saf)}
+.li.cur .node{background-color:var(--mad);border-color:var(--mad)}
+.li.cur .node b{color:#fff}
+.li .st.ok{color:var(--muted)}
+.li:not(.soon):hover .tx b{color:var(--mad-tx)}
+
+/* ===== урок ===== */
+.card{border-color:var(--line)}
+.fn{position:relative;background:var(--mad);color:#fff;border-radius:var(--r-fn);padding:.16em .4em}
+.fn::after{content:"";position:absolute;inset:-11px -10px}
+.fn:hover,.fn:focus-visible{background:var(--shell);color:var(--saf)}
+.fn-lbl{display:flex;align-items:center;gap:10px}
+.fn-lbl::before{content:attr(data-n);display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:var(--r-fn);background:var(--mad);color:#fff;font:600 13px/1 var(--font-ui);letter-spacing:0}
+.term{border-bottom-color:color-mix(in srgb,var(--accent) 70%,transparent)}
+.tw:hover,.tw:active,.term:hover{background:var(--accent-soft)}
+.fold > button .ico{background:var(--accent-soft);color:var(--accent)}
+.callout,.sample,.passport,.wk-res{background:var(--accent-soft)}
+.q .ans{background:var(--surface-2)}
+.rv[aria-expanded="true"] .qm{background:var(--saf);color:var(--saf-ink)}
+
+/* ===== подпись мира: корень — цветные узлы ===== */
+.core span{color:#fff}
+.fc1{background-color:var(--mad)} .fc2{background-color:var(--r2-tile)} .fc3{background-color:var(--saf);color:var(--saf-ink)!important}
+.core span.fc1,.core span.fc2{color:#fff}
+.legend i{border-radius:50%;transform:none}
+.c1{background:var(--r1)} .c3{background:var(--r3)}
+.gut span{background:var(--accent-soft)}
+.wk-step.ok{background:var(--ok-soft)}
+
+/* ===== выбор: «где я» — шафран (шаг, вкладка), «что выбрано» — индиго (переключатели, чипы, буквы) ===== */
+.chip:not([disabled]):hover,.rchip:hover{border-color:var(--accent);color:var(--accent)}
+.rchip{min-height:44px}
+.rchip.on{background:var(--accent-soft);color:var(--ink);border:2px solid var(--accent)}
+.lt.sel:not([disabled]),.lt[aria-pressed="true"]:not([disabled]){background-color:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+/* корень «завязан»: после верного ответа корневые буквы становятся плитками цветов ف ع ل, по очереди */
+:root{--r4-tile:#7A2E8E}
+.lt:is(.rt1,.rt2,.rt3,.rt4){color:#fff;opacity:1;animation:tie .45s var(--ease-out,ease) both}
+.lt.rt1{background-color:var(--mad);border-color:var(--mad)}
+.lt.rt2{background-color:var(--r2-tile);border-color:var(--r2-tile);animation-delay:.09s}
+.lt.rt3{background-color:var(--saf);border-color:var(--saf);color:var(--saf-ink);animation-delay:.18s}
+.lt.rt4{background-color:var(--r4-tile);border-color:var(--r4-tile);animation-delay:.27s}
+@keyframes tie{from{background-color:var(--accent-soft);color:var(--ink);border-color:var(--line);transform:scale(.9)}}
+.seg{background:var(--surface-2)}
+.seg button.on{background:var(--accent);color:var(--accent-ink);box-shadow:none}
+.li:not(.soon):active,.fold > button:active,.chip:not([disabled]):active,.rchip:active{background-color:var(--accent-soft)}
+
+/* ===== «Тасриф 2.0»: умения урока — круглые метки, видимые в обеих темах ===== */
+.sd{width:10px;height:10px;transform:none;border-radius:50%;border-color:var(--line-strong)}
+.sd.kept{background:var(--saf);border-color:var(--saf)}
+.sd.solo{background:var(--accent);border-color:var(--accent)}
+.sd.hint{background:var(--accent-soft);border-color:var(--accent)}
+
+/* ===== шторка ===== */
+.scrim{background:rgba(10,13,34,.62)}
+.sheet{border-radius:var(--r-sheet) var(--r-sheet) 0 0;box-shadow:none;border-top:0}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--saf)}
+.arsize input{accent-color:var(--mad)}
 </style>
 </head>
 <body>
@@ -4594,7 +4879,7 @@ const NS = STEPS.length;
 const TOTAL = 36;
 const lessonBy = n => LESSONS.find(L => L.n === n);
 const toAr = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
-const NODE = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle class="fill" cx="12" cy="12" r="10.5" stroke="currentColor" stroke-width="1.4"/></svg>';
+const NODE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="fill" x="1.5" y="1.5" width="21" height="21" rx="7" stroke="currentColor" stroke-width="1.4"/></svg>';
 const MEDAL = '<svg viewBox="0 0 24 10" aria-hidden="true"><circle cx="4" cy="5" r="3.4" fill="var(--r1)"/><circle cx="12" cy="5" r="3.4" fill="var(--r2)"/><circle cx="20" cy="5" r="3.4" fill="var(--r3)"/></svg>';
 Object.assign(I, {
   arrow: ic('<path d="M5 12h14M13 6l6 6-6 6"/>'),
@@ -4621,7 +4906,7 @@ function render() {
 function header() {
   const set = `<button class="icon-btn push" data-act="settings" aria-label="Настройки">${I.sliders}</button>`;
   if (R === 'lesson') { const L = lessonBy(CUR); return `<button class="icon-btn" data-go="home" aria-label="Назад к урокам" style="margin-left:-10px">${I.back}</button><div class="hd-t"><b>Урок ${L.n}</b><small>${L.short}</small></div>${set}`; }
-  return `<div class="brand">${STAR.replace('<svg', '<svg class="star"')}Мизан</div>${set}`;
+  return `<div class="brand">Мизан<span class="brand-ar" lang="ar" dir="rtl">ميزان</span></div>${set}`;
 }
 
 /* ============ HOME ============ */
@@ -4638,7 +4923,7 @@ function vHome() {
     <p>Сарф по учебнику на основе «العزي». Текст автора, объяснения, вопросы и задания каждого урока.</p>
   </section>
   <button class="resume" data-lesson="${L.n}">
-    <span class="medal">${MEDAL}<b>${toAr(L.n)}</b></span>
+    <span class="medal" style="--p:${progressOf(L.n) / NS}" aria-label="Урок ${L.n}, пройдено шагов: ${progressOf(L.n)} из ${NS}"><b>${L.n}</b></span>
     <span class="tx"><span class="lbl">${done ? 'Пройден' : started ? 'Вы остановились здесь' : 'Следующий урок'}</span><span class="t-ar" lang="ar">${L.ar}</span><span class="t-ru">${L.ru}</span></span>
     <span class="go"><span>${started && !done ? 'Продолжить' : 'Открыть урок'}${I.arrow}</span>${pips(progressOf(heroN))}</span>
   </button>
@@ -4809,6 +5094,7 @@ function pickBody(key, e) {
       const missing = need.slice();
       for (let i = Ls.length - 1; i >= 0 && missing.length; i--) { const k = missing.indexOf(Ls[i]); if (!sel.includes(i) && k >= 0) { cls[i] = 'miss'; missing.splice(k, 1); } }
       ok = cls.every(c => c !== 'bad' && c !== 'miss');
+      if (ok) { let r = 0; cls = cls.map((c, i) => sel.includes(i) ? c : 'rt' + (++r)); }   /* корень «завязан» */
     } else cls = Ls.map((_, i) => sel.includes(i) ? 'sel' : '');
     const tiles = Ls.map((c, i) => `<button class="lt ${cls[i]}" data-act="pk" data-k="${key}" data-j="${j}" data-v="${i}" ${chk ? 'disabled' : ''} aria-pressed="${sel.includes(i)}">${c}</button>`).join('');
     return `<div class="lt-row"><div class="lts">${ar(w)}${tiles}</div>${chk ? `<div class="why ${ok ? '' : 'bad'}"><b>${ok ? 'Верно.' : 'Не совсем.'}</b> ${mix(why)}</div>` : `<button class="ck" data-act="pk-check" data-k="${key}" data-j="${j}" ${sel.length ? '' : 'disabled'}>Проверить</button>`}</div>`;
@@ -4904,7 +5190,7 @@ function openFn(k) {
   const all = (BOOK[CUR] && BOOK[CUR].fn || []).length; if (!fnOf(CUR, k)) return;
   FNK = k;
   const nav = `<div class="fn-nav"><button class="btn ghost" data-act="fn" data-v="${k - 1}" ${k > 1 ? '' : 'disabled'} aria-label="Предыдущее примечание">${I.back}</button><button class="btn ghost" data-act="close">Понятно</button><button class="btn ghost" data-act="fn" data-v="${k + 1}" ${k < all ? '' : 'disabled'} aria-label="Следующее примечание">${I.chev}</button></div>`;
-  openSheet(`<div class="fn-sh"><span class="lbl">Примечание ${k} из ${all}</span>${fnBody(CUR, k)}</div>${nav}`);
+  openSheet(`<div class="fn-sh"><span class="lbl fn-lbl" data-n="${k}">Примечание ${k} из ${all}</span>${fnBody(CUR, k)}</div>${nav}`);
 }
 
 /* ============ история: системная кнопка «Назад» закрывает шторку и возвращает к списку уроков ============ */
@@ -5066,6 +5352,191 @@ function arTerms(root) {
 }
 arTerms(document.body);
 new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(arTerms))).observe(document.body, { childList: true, subtree: true });
+
+/* ============ ИКОНКИ: Phosphor Duotone (MIT, phosphoricons.com) — общий файл обоих курсов ============ */
+Object.assign(I, {"course": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><g fill=\"currentColor\"><path d=\"M232 56v144h-72a32 32 0 0 0-32 32V88a32 32 0 0 1 32-32Z\" opacity=\".2\"/><path d=\"M232 48h-72a40 40 0 0 0-32 16a40 40 0 0 0-32-16H24a8 8 0 0 0-8 8v144a8 8 0 0 0 8 8h72a24 24 0 0 1 24 24a8 8 0 0 0 16 0a24 24 0 0 1 24-24h72a8 8 0 0 0 8-8V56a8 8 0 0 0-8-8M96 192H32V64h64a24 24 0 0 1 24 24v112a39.8 39.8 0 0 0-24-8m128 0h-64a39.8 39.8 0 0 0-24 8V88a24 24 0 0 1 24-24h64ZM160 88h40a8 8 0 0 1 0 16h-40a8 8 0 0 1 0-16m48 40a8 8 0 0 1-8 8h-40a8 8 0 0 1 0-16h40a8 8 0 0 1 8 8m0 32a8 8 0 0 1-8 8h-40a8 8 0 0 1 0-16h40a8 8 0 0 1 8 8\"/></g></svg>", "skills": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><g fill=\"currentColor\"><path d=\"m229.06 108.79l-48.7 42l14.88 62.79a8.4 8.4 0 0 1-12.52 9.17L128 189.09l-54.72 33.65a8.4 8.4 0 0 1-12.52-9.17l14.88-62.79l-48.7-42A8.46 8.46 0 0 1 31.73 94l63.91-5.2l24.62-59.6a8.36 8.36 0 0 1 15.48 0l24.62 59.6l63.91 5.2a8.46 8.46 0 0 1 4.79 14.79\" opacity=\".2\"/><path d=\"M239.18 97.26A16.38 16.38 0 0 0 224.92 86l-59-4.76l-22.78-55.09a16.36 16.36 0 0 0-30.27 0L90.11 81.23L31.08 86a16.46 16.46 0 0 0-9.37 28.86l45 38.83L53 211.75a16.38 16.38 0 0 0 24.5 17.82l50.5-31.08l50.53 31.08A16.4 16.4 0 0 0 203 211.75l-13.76-58.07l45-38.83a16.43 16.43 0 0 0 4.94-17.59m-15.34 5.47l-48.7 42a8 8 0 0 0-2.56 7.91l14.88 62.8a.37.37 0 0 1-.17.48c-.18.14-.23.11-.38 0l-54.72-33.65a8 8 0 0 0-8.38 0l-54.72 33.67c-.15.09-.19.12-.38 0a.37.37 0 0 1-.17-.48l14.88-62.8a8 8 0 0 0-2.56-7.91l-48.7-42c-.12-.1-.23-.19-.13-.5s.18-.27.33-.29l63.92-5.16a8 8 0 0 0 6.72-4.94l24.62-59.61c.08-.17.11-.25.35-.25s.27.08.35.25L153 91.86a8 8 0 0 0 6.75 4.92l63.92 5.16c.15 0 .24 0 .33.29s0 .4-.16.5\"/></g></svg>", "ref": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><g fill=\"currentColor\"><path d=\"M48 72h64v112H48Zm142.64-33.61a8 8 0 0 0-9.5-6.21l-46.81 10a8.07 8.07 0 0 0-6.15 9.57L139.79 107l62.46-13.42Z\" opacity=\".2\"/><path d=\"m231.65 194.55l-33.19-157.8a16 16 0 0 0-19-12.39l-46.81 10.06a16.08 16.08 0 0 0-12.3 19l33.19 157.8A16 16 0 0 0 169.16 224a16.3 16.3 0 0 0 3.38-.36l46.81-10.06a16.09 16.09 0 0 0 12.3-19.03M136 50.15v-.09l46.8-10l3.33 15.87L139.33 66Zm6.62 31.47l46.82-10.05l3.34 15.9L146 97.53Zm6.64 31.57l46.82-10.06l13.3 63.24l-46.82 10.06ZM216 197.94l-46.8 10l-3.33-15.87l46.8-10.07l3.33 15.85zM104 32H56a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16M56 48h48v16H56Zm0 32h48v96H56Zm48 128H56v-16h48z\"/></g></svg>", "sliders": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><g fill=\"currentColor\"><path d=\"M128 80a24 24 0 1 1-24-24a24 24 0 0 1 24 24m40 72a24 24 0 1 0 24 24a24 24 0 0 0-24-24\" opacity=\".2\"/><path d=\"M40 88h33a32 32 0 0 0 62 0h81a8 8 0 0 0 0-16h-81a32 32 0 0 0-62 0H40a8 8 0 0 0 0 16m64-24a16 16 0 1 1-16 16a16 16 0 0 1 16-16m112 104h-17a32 32 0 0 0-62 0H40a8 8 0 0 0 0 16h97a32 32 0 0 0 62 0h17a8 8 0 0 0 0-16m-48 24a16 16 0 1 1 16-16a16 16 0 0 1-16 16\"/></g></svg>", "back": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><path fill=\"currentColor\" d=\"M168.49 199.51a12 12 0 0 1-17 17l-80-80a12 12 0 0 1 0-17l80-80a12 12 0 0 1 17 17L97 128Z\"/></svg>", "chev": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><path fill=\"currentColor\" d=\"m184.49 136.49l-80 80a12 12 0 0 1-17-17L159 128L87.51 56.49a12 12 0 1 1 17-17l80 80a12 12 0 0 1-.02 17\"/></svg>", "check": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><path fill=\"currentColor\" d=\"m232.49 80.49l-128 128a12 12 0 0 1-17 0l-56-56a12 12 0 1 1 17-17L96 183L215.51 63.51a12 12 0 0 1 17 17Z\"/></svg>", "arrow": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><path fill=\"currentColor\" d=\"m224.49 136.49l-72 72a12 12 0 0 1-17-17L187 140H40a12 12 0 0 1 0-24h147l-51.49-51.52a12 12 0 0 1 17-17l72 72a12 12 0 0 1-.02 17.01\"/></svg>", "table": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><g fill=\"currentColor\"><path d=\"M88 104v96H32v-96Z\" opacity=\".2\"/><path d=\"M224 48H32a8 8 0 0 0-8 8v136a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8M40 112h40v32H40Zm56 0h120v32H96Zm120-48v32H40V64ZM40 160h40v32H40Zm176 32H96v-32h120z\"/></g></svg>", "q": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><g fill=\"currentColor\"><path d=\"M224 128a96 96 0 1 1-96-96a96 96 0 0 1 96 96\" opacity=\".2\"/><path d=\"M140 180a12 12 0 1 1-12-12a12 12 0 0 1 12 12M128 72c-22.06 0-40 16.15-40 36v4a8 8 0 0 0 16 0v-4c0-11 10.77-20 24-20s24 9 24 20s-10.77 20-24 20a8 8 0 0 0-8 8v8a8 8 0 0 0 16 0v-.72c18.24-3.35 32-17.9 32-35.28c0-19.85-17.94-36-40-36m104 56A104 104 0 1 1 128 24a104.11 104.11 0 0 1 104 104m-16 0a88 88 0 1 0-88 88a88.1 88.1 0 0 0 88-88\"/></g></svg>", "review": "<svg aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><g fill=\"currentColor\"><path d=\"M216 128a88 88 0 1 1-88-88a88 88 0 0 1 88 88\" opacity=\".2\"/><path d=\"M224 48v48a8 8 0 0 1-8 8h-48a8 8 0 0 1 0-16h28.69l-14.63-14.63a79.56 79.56 0 0 0-56.13-23.43h-.45a79.52 79.52 0 0 0-55.89 22.77a8 8 0 0 1-11.18-11.44a96 96 0 0 1 135 .79L208 76.69V48a8 8 0 0 1 16 0m-37.59 135.29a80 80 0 0 1-112.47-.66L59.31 168H88a8 8 0 0 0 0-16H40a8 8 0 0 0-8 8v48a8 8 0 0 0 16 0v-28.69l14.63 14.63A95.43 95.43 0 0 0 130 222.06h.53a95.36 95.36 0 0 0 67.07-27.33a8 8 0 0 0-11.18-11.44Z\"/></g></svg>"});
+render();
+
+/* ============ ДВИЖЕНИЕ, ЖЕСТЫ, ВИБРАЦИЯ (общий файл обоих курсов) ============
+   Переходы между экранами и шагами, свайп между шагами урока, шторка смахивается вниз,
+   блоки раскрываются плавно, короткая вибрация на ответ. При «уменьшить движение» всё мгновенно. */
+const RMQ = matchMedia('(prefers-reduced-motion: reduce)');
+const calm = () => RMQ.matches;
+
+/* ---- вибрация: Android — vibrate, iPhone (iOS 18+) — системный отклик переключателя ---- */
+const IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.platform));
+const CAN_HAP = !!navigator.vibrate || IOS;
+let HAP_L = null;
+function hapIos() {
+  if (!HAP_L) {
+    HAP_L = document.createElement('label'); HAP_L.setAttribute('aria-hidden', 'true');
+    HAP_L.style.cssText = 'position:fixed;left:-20px;top:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden';
+    HAP_L.innerHTML = '<input type="checkbox" switch tabindex="-1">'; document.body.append(HAP_L);
+  }
+  HAP_L.click();
+}
+function hap(kind) {
+  if (S.hap === false || !CAN_HAP) return;
+  try {
+    if (navigator.vibrate) navigator.vibrate({ tap: 8, step: 6, ok: 14, bad: [28, 70, 28] }[kind] || 8);
+    else { hapIos(); if (kind === 'bad') setTimeout(hapIos, 110); }
+  } catch (e) {}
+}
+
+/* ---- переходы (View Transitions): вперёд — сдвиг влево, назад — вправо, разделы — наплыв ---- */
+const HAS_VT = !!document.startViewTransition;
+if (HAS_VT) document.documentElement.classList.add('vt');
+function vt(dir, fn) {
+  if (!HAS_VT || calm() || document.hidden) return fn();
+  const h = document.documentElement; h.dataset.vt = dir;
+  let ran = false;
+  const run = () => { ran = true; fn(); };
+  try {
+    const t = document.startViewTransition(run);
+    t.finished.finally(() => { if (h.dataset.vt === dir) delete h.dataset.vt; });
+    setTimeout(() => { if (!ran) t.skipTransition(); }, 250);   /* страница не рисуется (фон, экономия) — без анимации */
+  } catch (e) { delete h.dataset.vt; if (!ran) fn(); }
+}
+const go0 = go;
+go = v => { if (v === R) return go0(v); vt(v === 'lesson' ? 'fwd' : R === 'lesson' ? 'back' : 'tab', () => go0(v)); };
+const step0 = ACT.step;
+ACT.step = (el, e) => { const v = +el.dataset.v, cur = stepOf(); if (v === cur) return step0(el, e); vt(v > cur ? 'fwd' : 'back', () => step0(el, e)); };
+if (ACT.finish) { const finish0 = ACT.finish; ACT.finish = (el, e) => { hap('ok'); finish0(el, e); }; }
+
+/* ---- свайп между шагами урока ---- */
+let SW = null;
+function xScrolls(t) {
+  for (let n = t; n && n !== document.body; n = n.parentElement) {
+    if (n.scrollWidth > n.clientWidth + 2) { const o = getComputedStyle(n).overflowX; if (o === 'auto' || o === 'scroll') return true; }
+  }
+  return false;
+}
+const swView = () => $('#view');
+addEventListener('touchstart', e => {
+  SW = null;
+  if (R !== 'lesson' || sheetOpen() || e.touches.length > 1) return;
+  const p = e.touches[0];
+  if (p.clientX < 24 || p.clientX > innerWidth - 24) return;           /* края экрана — системный жест «назад» */
+  if (e.target.closest('input,textarea,select,.steps,.lnav') || xScrolls(e.target)) return;
+  SW = { x: p.clientX, y: p.clientY, t: Date.now(), lock: 0, dx: 0 };
+}, { passive: true });
+addEventListener('touchmove', e => {
+  if (!SW) return;
+  const p = e.touches[0], dx = p.clientX - SW.x, dy = p.clientY - SW.y;
+  if (!SW.lock && (Math.abs(dx) > 12 || Math.abs(dy) > 12)) {
+    SW.lock = Math.abs(dx) > Math.abs(dy) * 1.6 && !String(getSelection()) ? 1 : -1;
+    if (SW.lock === 1) swView().classList.add('swiping');
+  }
+  if (SW.lock !== 1) return;
+  const cur = stepOf(), edge = (dx > 0 && cur === 0) || (dx < 0 && cur === NS - 1);
+  SW.dx = dx; swView().style.setProperty('--sw', (edge ? dx * .12 : dx * .35) + 'px');
+}, { passive: true });
+function swEnd(e) {
+  if (!SW) return;
+  const s = SW, v = swView(); SW = null;
+  if (s.lock !== 1) return;
+  v.classList.remove('swiping'); v.classList.add('sw-back'); v.style.removeProperty('--sw');
+  setTimeout(() => v.classList.remove('sw-back'), 220);
+  if (!e || e.type === 'touchcancel') return;
+  const dt = Date.now() - s.t, far = Math.abs(s.dx) > 70 || (Math.abs(s.dx) > 35 && dt < 260);
+  if (!far) return;
+  const nx = stepOf() + (s.dx < 0 ? 1 : -1);
+  const b = document.querySelector(`.stp[data-v="${nx}"]`); if (!b) return;
+  v.classList.remove('sw-back'); hap('step'); ACT.step(b);
+}
+addEventListener('touchend', swEnd, { passive: true });
+addEventListener('touchcancel', swEnd, { passive: true });
+
+/* ---- шторка: выезжает снизу, смахивается вниз, при закрытии уезжает ---- */
+function sheetGhost(off) {
+  const s = $('#sheet'), sc = $('#scrim');
+  if (calm() || s.hidden) return;
+  const g = s.cloneNode(true); g.removeAttribute('id'); g.querySelectorAll('[id]').forEach(x => x.removeAttribute('id'));
+  g.classList.add('sh-ghost'); g.setAttribute('aria-hidden', 'true'); g.inert = true; g.style.transform = `translateY(${off || 0}px)`;
+  const gs = sc.cloneNode(); gs.removeAttribute('id'); gs.classList.add('sh-ghost'); gs.style.opacity = getComputedStyle(sc).opacity;
+  document.body.append(gs, g); g.scrollTop = s.scrollTop;
+  const dur = 200, ease = 'cubic-bezier(.4,0,1,1)';
+  g.animate([{ transform: `translateY(${off || 0}px)` }, { transform: 'translateY(105%)' }], { duration: dur, easing: ease, fill: 'forwards' }).finished.finally(() => g.remove());
+  gs.animate([{ opacity: gs.style.opacity }, { opacity: 0 }], { duration: dur, fill: 'forwards' }).finished.finally(() => gs.remove());
+  setTimeout(() => { g.remove(); gs.remove(); }, dur + 200);
+}
+const close0 = closeSheet;
+closeSheet = () => { if (sheetOpen()) sheetGhost(SD && SD.dy); close0(); };
+{
+  const sh = $('#sheet');
+  var SD = null;
+  sh.addEventListener('touchstart', e => {
+    SD = null;
+    if (e.touches.length > 1 || e.target.closest('input[type=range],textarea') || xScrolls(e.target)) return;
+    SD = { y: e.touches[0].clientY, t: Date.now(), dy: 0, on: false, top: sh.scrollTop <= 0 };
+  }, { passive: true });
+  sh.addEventListener('touchmove', e => {
+    if (!SD) return;
+    const dy = e.touches[0].clientY - SD.y;
+    if (!SD.on) {
+      if (dy > 8 && SD.top && sh.scrollTop <= 0) { SD.on = true; SD.y += 8; sh.classList.add('drag'); }
+      else if (Math.abs(dy) > 8) { SD = null; return; }
+      else return;
+    }
+    SD.dy = Math.max(0, dy - 8);
+    sh.style.transform = `translateY(${SD.dy}px)`;
+    $('#scrim').style.opacity = String(Math.max(0, 1 - SD.dy / sh.offsetHeight));
+    if (e.cancelable) e.preventDefault();
+  }, { passive: false });
+  const end = () => {
+    if (!SD || !SD.on) { SD = null; return; }
+    const v = SD.dy / Math.max(1, Date.now() - SD.t);
+    sh.classList.remove('drag');
+    if (SD.dy > Math.min(140, sh.offsetHeight * .33) || (v > .5 && SD.dy > 30)) { hap('tap'); closeSheet(); sh.style.transform = ''; $('#scrim').style.opacity = ''; SD = null; return; }
+    SD = null; sh.classList.add('snap'); sh.style.transform = ''; $('#scrim').style.opacity = '';
+    setTimeout(() => sh.classList.remove('snap'), 260);
+  };
+  sh.addEventListener('touchend', end); sh.addEventListener('touchcancel', end);
+}
+
+/* ---- плавное раскрытие: свёрнутые блоки, ответы, перевод ---- */
+const tgl0 = ACT.tgl;
+ACT.tgl = (el, e) => {
+  const p = document.getElementById(el.dataset.t);
+  if (!p || calm() || !p.animate) return tgl0(el, e);
+  if (p._a && p._closing) { p._closing = false; p._a.cancel(); el.setAttribute('aria-expanded', 'true'); return; }   /* передумали закрывать */
+  if (p._a) p._a.finish();
+  const opening = p.hidden;
+  if (opening) tgl0(el, e); else { el.setAttribute('aria-expanded', 'false'); p._closing = true; }
+  const cs = getComputedStyle(p), h = p.offsetHeight, pt = cs.paddingTop, pb = cs.paddingBottom;
+  const shut = { height: '0px', paddingTop: '0px', paddingBottom: '0px', opacity: 0 }, open = { height: h + 'px', paddingTop: pt, paddingBottom: pb, opacity: 1 };
+  const dur = Math.min(300, 150 + h / 8);
+  p.style.overflow = 'hidden'; p.style.boxSizing = 'border-box';
+  p._a = p.animate(opening ? [shut, open] : [open, shut], { duration: opening ? dur : dur * .7, easing: opening ? 'cubic-bezier(.2,.8,.2,1)' : 'cubic-bezier(.4,0,1,1)' });
+  const a = p._a; setTimeout(() => { if (p._a === a) a.finish(); }, dur + 150);
+  p._a.finished.catch(() => {}).finally(() => { p.style.overflow = ''; p.style.boxSizing = ''; p._a = null; if (!opening && p._closing) { p._closing = false; tgl0(el, e); } });
+};
+
+/* ---- отклик на ответ: верно — короткий импульс, неверно — двойной ---- */
+const VSEL = '.fb.ok,.fb.bad,.chip.ok,.chip.bad,.opt.ok,.opt.bad,.lt.ok,.lt.bad,.wk-step.ok,.wk-step.bad,.why';
+const vsig = () => [...document.querySelectorAll(VSEL)].map(x => x.className + ':' + x.textContent.length);
+function answered(fn) {
+  return (...a) => {
+    const before = vsig(), r = fn(...a), after = vsig(), cnt = {};
+    before.forEach(k => cnt[k] = (cnt[k] || 0) + 1);
+    const fresh = after.filter(k => cnt[k] ? (cnt[k]--, false) : true);
+    if (fresh.length) hap(fresh.some(k => /\bbad\b/.test(k.split(':')[0])) ? 'bad' : 'ok');
+    return r;
+  };
+}
+['wk-opt', 'so', 'pk-check', 'r-pick', 'r-check', 'r-tap'].forEach(k => {
+  if (ACT[k]) ACT[k] = answered(ACT[k]);
+  if (typeof RACT !== 'undefined' && RACT[k]) RACT[k] = answered(RACT[k]);
+});
+
+/* ---- настройка «Вибрация» ---- */
+if (CAN_HAP) {
+  const set0 = settingsHtml;
+  settingsHtml = () => set0().replace('<button class="btn ghost block" data-act="close">',
+    `<span class="lbl">Вибрация при ответе</span><div class="seg">${[[1, 'Включена'], [0, 'Выключена']].map(([v, n]) => `<button class="${(S.hap !== false) === !!v ? 'on' : ''}" data-act="hap" data-v="${v}">${n}</button>`).join('')}</div>
+  <button class="btn ghost block" data-act="close">`);
+  ACT.hap = el => { S.hap = el.dataset.v === '1'; persist(); hap('ok'); $('#sheet').innerHTML = '<div class="grab"></div>' + settingsHtml(); };
+}
 </script>
 </body>
 </html>
