@@ -5861,7 +5861,7 @@ function zWidget(z, id, st, it) {
   if (z.m === 'ai') {
     const open = st.akb;
     return `<div class="zai"><textarea id="ztxt" class="zta" dir="auto" rows="4" placeholder="Ответьте своими словами — напишите или продиктуйте. Во время диктовки текст появляется здесь" ${st.done || st.busy ? 'disabled' : ''}>${esc(st.txt || '')}</textarea>
-      ${st.done ? '' : `<div class="zrow"><button class="btn ghost zmic ${st.rec ? 'rec' : ''}" data-act="z-mic" ${st.busy ? 'disabled' : ''}>${st.rec ? '■ Стоп' : '● Голосом'}</button><button class="btn ghost" data-act="z-akb">${open ? 'Скрыть буквы' : 'Арабские буквы'}</button></div>${open ? zKeys('txt', null) : ''}${st.micErr ? `<p class="err">${st.micErr}</p>` : ''}`}</div>`;
+      ${st.done ? '' : `<div class="zrow"><button class="btn ghost zmic ${st.rec ? 'rec' : ''}" data-act="z-mic" ${st.busy ? 'disabled' : ''}>${st.rec ? '■ Стоп' : st.micWait ? 'Включаю…' : '● Голосом'}</button><button class="btn ghost" data-act="z-akb">${open ? 'Скрыть буквы' : 'Арабские буквы'}</button></div>${open ? zKeys('txt', null) : ''}${st.micErr ? `<p class="err">${st.micErr}</p>` : ''}`}</div>`;
   }
   if (z.m === 'letters') { const sel = st.sel[id] || [], want = st.done ? z.ans : null; return `<div class="zabc" dir="rtl">${[...'ءابتثجحخدذرزسشصضطظعغفقكلمنهوي'].map(ch => `<button class="lt ${sel.includes(ch) ? 'sel' : ''} ${want ? (want.includes(ch) ? (sel.includes(ch) ? 'ok' : 'miss') : sel.includes(ch) ? 'bad' : '') : ''}" data-act="z-let" data-v="${ch}" ${st.done ? 'disabled' : ''}>${ch}</button>`).join('')}</div>`; }
   if (z.m === 'choice') return `<div class="chips wide">${z.o.map((o, k) => `<button class="chip ru ${st.f[id] === k ? 'on' : ''} ${st.done ? (k === z.ans ? 'ok' : st.f[id] === k ? 'bad' : '') : ''}" data-act="z-c" data-id="${id}" data-v="${k}" ${st.done ? 'disabled' : ''}>${o}</button>`).join('')}</div>`;
@@ -6014,31 +6014,43 @@ async function zAskForms(c, e, asks) {
    Записи на прослойку не отправляем: из России большие запросы к Cloudflare обрываются. */
 let ZREC = null;
 const zSR = () => typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
-function zMic() {
+const zIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+/* браузер запоминает «Запретить» и больше не спрашивает — объясняем, где включить снова */
+const zMicHelp = () => zIOS()
+  ? 'Доступ к микрофону запрещён. Включите его: в Safari нажмите «аА» слева от адреса → «Настройки веб-сайта» → «Микрофон» → «Разрешить» (для приложения на экране «Домой»: Настройки iPhone → Safari → Микрофон). Потом нажмите «Голосом» ещё раз. Или продиктуйте через микрофон на клавиатуре телефона.'
+  : 'Доступ к микрофону запрещён. Включите его: нажмите на значок слева от адреса сайта → «Разрешения» → «Микрофон» → «Разрешить» и обновите страницу. Или продиктуйте через микрофон на клавиатуре телефона.';
+async function zMic() {
   const st = zState();
-  if (st.rec) { try { ZREC.stop(); } catch (e) {} return; }
+  if (st.rec || st.micWait) { try { ZREC && ZREC.stop(); } catch (e) {} st.rec = false; st.micWait = false; return zUpd(); }
   st.micErr = '';
   const SR = zSR();
   if (!SR) { st.micErr = 'В этом браузере нет распознавания речи. Нажмите на поле ответа и продиктуйте через микрофон на клавиатуре телефона.'; return zUpd(); }
+  try { if (navigator.permissions && navigator.permissions.query) { const p = await navigator.permissions.query({ name: 'microphone' }); if (p.state === 'denied') { st.micErr = zMicHelp(); return zUpd(); } } } catch (e) { /* браузер не умеет спрашивать о разрешении — просто пробуем */ }
   const rec = new SR(), base = (st.txt || '').trim();
   rec.lang = 'ru-RU'; rec.interimResults = true; rec.continuous = true; rec.maxAlternatives = 1;
-  let said = '';
+  let said = '', started = false;
+  /* кнопка «Стоп» — только когда микрофон действительно включился */
+  rec.onstart = () => { started = true; st.micWait = false; st.rec = true; zUpd(); };
   rec.onresult = ev => {
     let fin = '', mid = '';
     for (let i = 0; i < ev.results.length; i++) { const t = ev.results[i][0].transcript; if (ev.results[i].isFinal) fin += t; else mid += t; }
     said = (fin + ' ' + mid).replace(/\s+/g, ' ').trim();
     st.txt = (base ? base + ' ' : '') + said;
     const ta = document.getElementById('ztxt'); if (ta) ta.value = st.txt;
+    const btn = document.querySelector('[data-act="z-check"]'); if (btn) btn.disabled = !zReady(zCur(), st) || !!st.busy;
   };
   rec.onerror = ev => {
-    st.micErr = ev.error === 'not-allowed' || ev.error === 'service-not-allowed' ? 'Нет доступа к микрофону. Разрешите его в настройках браузера.'
-      : ev.error === 'no-speech' ? 'Ничего не слышно. Нажмите ещё раз и говорите.'
+    st.micErr = ev.error === 'not-allowed' || ev.error === 'service-not-allowed' ? zMicHelp()
+      : ev.error === 'no-speech' ? 'Ничего не слышно. Нажмите «Голосом» ещё раз и говорите.'
+      : ev.error === 'audio-capture' ? 'Микрофон не найден или занят другим приложением.'
       : ev.error === 'network' ? 'Распознаванию нужен интернет. Можно продиктовать через микрофон на клавиатуре телефона.'
       : ev.error === 'aborted' ? '' : 'Не получилось распознать. Попробуйте ещё раз или продиктуйте через клавиатуру телефона.';
   };
-  rec.onend = () => { st.rec = false; ZREC = null; zUpd(); };
-  ZREC = rec; st.rec = true; zUpd();
-  try { rec.start(); } catch (e) { st.rec = false; st.micErr = 'Не получилось включить микрофон.'; zUpd(); }
+  rec.onend = () => { st.rec = false; st.micWait = false; if (ZREC === rec) ZREC = null; zUpd(); };
+  ZREC = rec; st.micWait = true; zUpd();
+  try { rec.start(); } catch (e) { st.micWait = false; st.micErr = 'Не получилось включить микрофон. Попробуйте ещё раз.'; return zUpd(); }
+  /* если за 8 секунд микрофон так и не включился (окно разрешения закрыли, ничего не выбрав) — возвращаем кнопку */
+  setTimeout(() => { if (!started && ZREC === rec) { try { rec.abort(); } catch (e) {} st.micWait = false; st.rec = false; ZREC = null; if (!st.micErr) st.micErr = 'Микрофон не включился. Нажмите «Голосом» ещё раз и разрешите доступ.'; zUpd(); } }, 8000);
 }
 
 /* ---------- обновление экрана ---------- */
