@@ -5603,7 +5603,7 @@ const ZT = {
    Данные: ZQ (zq.js) — как отвечать на вопросы, ZT (zt.js) — на задания, ZSTAR (zstar.js) — что требует примечаний.
    Проверка: формы — arCompare (archeck.js) с полной огласовкой; ответы своими словами — ИИ через прослойку (ZAI_URL),
    без сети или прослойки — самооценка по образцу. Состояние зачёта — S.z (в браузере ученика). */
-const ZAI_URL = 'https://mizan-zachet.isnotionyat.workers.dev';   /* адрес прослойки (Cloudflare Worker). Пусто — проверка ИИ выключена, остаётся самооценка */
+const ZAI_URL = 'https://functions.yandexcloud.net/d4ec7j60e4ug20jmil2j';   /* адрес прослойки (Yandex Cloud Functions, код — .work-zachet/yandex/index.js). Пусто — проверка ИИ выключена, остаётся самооценка */
 const zaiUrl = () => { try { return localStorage.getItem('mizan.zai') || ZAI_URL; } catch (e) { return ZAI_URL; } };
 S.z = Object.assign({ from: 1, to: 1, mode: 'all', skipStar: true, run: null, hist: [] }, S.z || {});
 
@@ -5863,7 +5863,7 @@ function zWidget(z, id, st, it) {
   if (z.m === 'ai') {
     const open = st.akb;
     return `<div class="zai"><textarea id="ztxt" class="zta" dir="auto" rows="4" placeholder="Ответьте своими словами — напишите или продиктуйте. Во время диктовки текст появляется здесь" ${st.done || st.busy || st.self ? 'disabled' : ''}>${esc(st.txt || '')}</textarea>
-      ${st.done || st.self ? '' : `<div class="zrow"><button class="btn ghost zmic ${st.rec ? 'rec' : ''}" data-act="z-mic" ${st.busy ? 'disabled' : ''}>${st.rec ? '■ Стоп' : st.micWait ? 'Включаю…' : '● Голосом'}</button><button class="btn ghost" data-act="z-akb">${open ? 'Скрыть буквы' : 'Арабские буквы'}</button></div>${open ? zKeys('txt', null) : ''}${st.micErr ? `<p class="err">${st.micErr}</p>` : ''}`}</div>`;
+      ${st.done || st.self ? '' : `<div class="zrow"><button class="btn ghost zmic ${st.rec ? 'rec' : ''}" data-act="z-mic" ${st.busy || st.stt ? 'disabled' : ''}>${st.rec ? '■ Стоп' : st.micWait ? 'Включаю…' : st.stt ? 'Распознаю…' : '● Голосом'}</button><button class="btn ghost" data-act="z-akb">${open ? 'Скрыть буквы' : 'Арабские буквы'}</button></div>${open ? zKeys('txt', null) : ''}${st.micErr ? `<p class="err">${st.micErr}</p>` : ''}`}</div>`;
   }
   if (z.m === 'letters') { const sel = st.sel[id] || [], want = st.done ? z.ans : null; return `<div class="zabc" dir="rtl">${[...'ءابتثجحخدذرزسشصضطظعغفقكلمنهوي'].map(ch => `<button class="lt ${sel.includes(ch) ? 'sel' : ''} ${want ? (want.includes(ch) ? (sel.includes(ch) ? 'ok' : 'miss') : sel.includes(ch) ? 'bad' : '') : ''}" data-act="z-let" data-v="${ch}" ${(st.done || st.self) ? 'disabled' : ''}>${ch}</button>`).join('')}</div>`; }
   if (z.m === 'choice') return `<div class="chips wide zltr">${z.o.map((o, k) => `<button class="chip ru ${st.f[id] === k ? 'on' : ''} ${st.done ? (k === z.ans ? 'ok' : st.f[id] === k ? 'bad' : '') : ''}" data-act="z-c" data-id="${id}" data-v="${k}" ${(st.done || st.self) ? 'disabled' : ''}>${o}</button>`).join('')}</div>`;
@@ -5965,12 +5965,12 @@ function zCardSnapshot(c, st) {
 }
 
 /* ---------- ИИ: ответ своими словами ---------- */
-/* соединение с прослойкой иногда обрывается (провайдеры режут долгие соединения с Cloudflare) — тогда пробуем ещё раз */
+/* соединение с прослойкой иногда обрывается — тогда пробуем ещё раз */
 async function zPost(body) {
   let last;
-  for (let t = 0; t < 3; t++) {
+  for (let t = 0; t < 2; t++) {
     const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
-    const tm = setTimeout(() => ctl && ctl.abort(), 45000);
+    const tm = setTimeout(() => ctl && ctl.abort(), body.kind === 'stt' ? 60000 : 25000);
     try {
       const r = await fetch(zaiUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctl && ctl.signal });
       if (!r.ok) throw Object.assign(new Error('http ' + r.status), { http: r.status });
@@ -6015,8 +6015,8 @@ async function zAskForms(c, e, asks) {
 }
 
 /* ---------- голос ---------- */
-/* Распознаёт сам браузер телефона (Chrome на Android, Safari на iPhone), по-русски.
-   Записи на прослойку не отправляем: из России большие запросы к Cloudflare обрываются. */
+/* Основной путь: записываем звук и отправляем в прослойку — Gemini распознаёт русскую речь вместе с арабскими терминами.
+   Если браузер не умеет записывать звук — распознавание самого браузера (арабские слова оно путает). */
 let ZREC = null;
 const zSR = () => typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
 const zIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -6024,10 +6024,40 @@ const zIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.pl
 const zMicHelp = () => zIOS()
   ? 'Доступ к микрофону запрещён. Включите его: в Safari нажмите «аА» слева от адреса → «Настройки веб-сайта» → «Микрофон» → «Разрешить» (для приложения на экране «Домой»: Настройки iPhone → Safari → Микрофон). Потом нажмите «Голосом» ещё раз. Или продиктуйте через микрофон на клавиатуре телефона.'
   : 'Доступ к микрофону запрещён. Включите его: нажмите на значок слева от адреса сайта → «Разрешения» → «Микрофон» → «Разрешить» и обновите страницу. Или продиктуйте через микрофон на клавиатуре телефона.';
+async function zMicRecord(st) {
+  let stream;
+  st.micWait = true; zUpd();
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true } }); }
+  catch (e) { st.micWait = false; st.micErr = e && (e.name === 'NotAllowedError' || e.name === 'SecurityError') ? zMicHelp() : 'Микрофон не найден или занят другим приложением.'; return zUpd(); }
+  const mime = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm', 'audio/ogg;codecs=opus'].find(m => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || '';
+  let rec;
+  try { rec = new MediaRecorder(stream, mime ? { mimeType: mime, audioBitsPerSecond: 32000 } : undefined); } catch (e) { rec = new MediaRecorder(stream); }
+  const chunks = [], t0 = Date.now();
+  ZREC = rec; st.micWait = false; st.rec = true; zUpd();
+  const stopT = setTimeout(() => { try { rec.stop(); } catch (e) {} }, 120000);
+  rec.ondataavailable = ev => { if (ev.data && ev.data.size) chunks.push(ev.data); };
+  rec.onstop = async () => {
+    clearTimeout(stopT); stream.getTracks().forEach(t => t.stop());
+    ZREC = null; st.rec = false;
+    if (Date.now() - t0 < 700 || !chunks.length) { st.micErr = 'Запись слишком короткая. Нажмите «Голосом», говорите, затем «Стоп».'; return zUpd(); }
+    st.stt = true; zUpd();
+    try {
+      const blob = new Blob(chunks, { type: rec.mimeType || mime || 'audio/webm' });
+      const b64 = await new Promise((ok, no) => { const fr = new FileReader(); fr.onload = () => ok(String(fr.result).split(',')[1]); fr.onerror = no; fr.readAsDataURL(blob); });
+      const r = await zPost({ kind: 'stt', mime: blob.type, audio: b64 });
+      const t = (r.text || '').trim();
+      if (t) { st.txt = (st.txt ? st.txt.trim() + ' ' : '') + t; } else st.micErr = 'Не удалось разобрать запись. Попробуйте ещё раз, ближе к телефону.';
+    } catch (e) { st.micErr = 'Не удалось распознать запись: нет связи с проверкой. Можно продиктовать через микрофон на клавиатуре телефона.'; }
+    st.stt = false; zUpd();
+  };
+  rec.start(1000);
+}
+const zCanRecord = () => typeof window !== 'undefined' && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder) && !!zaiUrl();
 async function zMic() {
   const st = zState();
-  if (st.rec || st.micWait) { try { ZREC && ZREC.stop(); } catch (e) {} st.rec = false; st.micWait = false; return zUpd(); }
+  if (st.rec || st.micWait) { try { ZREC && ZREC.stop(); } catch (e) {} if (!ZREC || !ZREC.state) { st.rec = false; st.micWait = false; return zUpd(); } return; }
   st.micErr = '';
+  if (zCanRecord()) return zMicRecord(st);
   const SR = zSR();
   if (!SR) { st.micErr = 'В этом браузере нет распознавания речи. Нажмите на поле ответа и продиктуйте через микрофон на клавиатуре телефона.'; return zUpd(); }
   try { if (navigator.permissions && navigator.permissions.query) { const p = await navigator.permissions.query({ name: 'microphone' }); if (p.state === 'denied') { st.micErr = zMicHelp(); return zUpd(); } } } catch (e) { /* браузер не умеет спрашивать о разрешении — просто пробуем */ }
