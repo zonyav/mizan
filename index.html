@@ -944,6 +944,8 @@ body{font-family:var(--font-ui);font-size:16.5px}
 .zerr{margin-top:10px}
 .zerr summary{cursor:pointer;font:600 14.5px var(--font-ui)}
 .zerr[open] summary{margin-bottom:10px}
+
+.chips.zltr{direction:ltr;justify-content:flex-start}
 </style>
 </head>
 <body>
@@ -5608,7 +5610,7 @@ S.z = Object.assign({ from: 1, to: 1, mode: 'all', skipStar: true, run: null, hi
 const ZMODES = [['q', 'Вопросы'], ['t', 'Задания'], ['all', 'Всё вместе']];
 const zShuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const zLessons = () => LESSONS.map(L => L.n).filter(n => BOOK[n]);
-const zStar = (n, k, num, items) => (ZSTAR[`${n}:${k}${num}`] || []).filter(e => !e.items || !items || e.items.some(i => items.includes(i + 0) || items.includes(i - 1)));
+const zStar = (n, k, num, items) => (ZSTAR[`${n}:${k}${num}`] || []).filter(e => !e.items || !items || e.items.some(i => items.includes(i - 1)));
 const zSpecT = (n, i) => ZT[`${n}:t${i + 1}`] || { m: BOOK[n].tm[i].t };
 const zPer = z => z.per || (z.m === 'table' || z.m === 'ai' || z.m === 'letters' ? 1 : 3);
 
@@ -5743,13 +5745,13 @@ function zItem(c, e, z, j, st) {
   const it = e.it[j], w = it[0], id = `${j}`;
   if (z.m === 'sort') {
     const p = st.sel[id];
-    return `<div class="zw">${ar(String(w))}</div><div class="chips ${e.wide ? 'wide' : ''}">${e.o.map((o, k) => `<button class="chip ${p === k ? 'on' : ''} ${st.done ? zSortCls(it, k, p) : ''}" data-act="z-sel" data-id="${id}" data-v="${k}" ${st.done ? 'disabled' : ''} lang="ar">${o}</button>`).join('')}</div>`;
+    return `<div class="zw">${ar(String(w))}</div><div class="chips ${e.wide ? 'wide' : ''}">${e.o.map((o, k) => `<button class="chip ${p === k ? 'on' : ''} ${st.done ? zSortCls(it, k, p) : ''}" data-act="z-sel" data-id="${id}" data-v="${k}" ${(st.done || st.self) ? 'disabled' : ''} lang="ar">${o}</button>`).join('')}</div>`;
   }
   if (z.m === 'pick') {
     const Ls = it[1].split(' '), sel = st.sel[id] || [];
-    return `<div class="zw">${ar(w)}</div><div class="lts">${Ls.map((ch, k) => `<button class="lt ${sel.includes(k) ? 'sel' : ''} ${st.done ? zPickCls(it, k, sel) : ''}" data-act="z-pk" data-id="${id}" data-v="${k}" ${st.done ? 'disabled' : ''} aria-pressed="${sel.includes(k)}">${ch}</button>`).join('')}</div>`;
+    return `<div class="zw">${ar(w)}</div><div class="lts">${Ls.map((ch, k) => `<button class="lt ${sel.includes(k) ? 'sel' : ''} ${st.done ? zPickCls(it, k, sel) : ''}" data-act="z-pk" data-id="${id}" data-v="${k}" ${(st.done || st.self) ? 'disabled' : ''} aria-pressed="${sel.includes(k)}">${ch}</button>`).join('')}</div>`;
   }
-  if (z.m === 'table') return `<div class="zw">${ar(w)}${it[1] && !hasAr(it[1]) ? `<span class="zru">${it[1]}</span>` : ''}</div>${zTable(c, it, j, st)}${z.also ? zField(z.also, `${j}.also`, st, it) : ''}`;
+  if (z.m === 'table') return `<div class="zw">${ar(w)}${it[1] && !hasAr(it[1]) && !z.also ? `<span class="zru">${it[1]}</span>` : ''}</div>${zTable(c, it, j, st)}${z.also ? zField(z.also, `${j}.also`, st, it) : ''}`;
   /* fields */
   const isPhrase = z.f.some(f => f.k === 'word');
   return `<div class="zw">${isPhrase ? '' : ar(String(w))}</div>${z.f.map((f, k) => zField(f, `${j}.${k}`, st, it)).join('')}`;
@@ -5768,17 +5770,17 @@ const zPickCls = (it, k, sel) => zPickMarks(it, sel)[k];
 /* поля ответа */
 function zField(f, id, st, it) {
   const lab = `<span class="zl">${f.l}</span>`;
-  if (f.k === 'c') return `<div class="zf">${lab}<div class="chips wide">${f.o.map(o => `<button class="chip ${st.f[id] === o ? 'on' : ''}" data-act="z-c" data-id="${id}" data-v="${esc(o)}" ${st.done ? 'disabled' : ''} lang="ar">${o}</button>`).join('')}</div></div>`;
+  if (f.k === 'c') return `<div class="zf">${lab}<div class="chips wide">${f.o.map(o => `<button class="chip ${hasAr(o) ? '' : 'ru'} ${st.f[id] === o ? 'on' : ''}" data-act="z-c" data-id="${id}" data-v="${esc(o)}" ${(st.done || st.self) ? 'disabled' : ''} ${hasAr(o) ? 'lang="ar"' : ''}>${o}</button>`).join('')}</div></div>`;
   if (f.k === 'p') return `<div class="zf">${lab}${zPersonGrid(id, st)}</div>`;
   if (f.k === 'word') {
     const toks = String(it[0]).split(/\s+/), sel = st.sel[id] || [];
-    return `<div class="zf">${lab}<div class="zphr" dir="rtl">${toks.map((t, k) => `<button class="zt ${sel.includes(k) ? 'on' : ''}" data-act="z-word" data-id="${id}" data-v="${k}" ${st.done ? 'disabled' : ''} lang="ar">${t}</button>`).join(' ')}</div></div>`;
+    return `<div class="zf">${lab}<div class="zphr" dir="rtl">${toks.map((t, k) => `<button class="zt ${sel.includes(k) ? 'on' : ''}" data-act="z-word" data-id="${id}" data-v="${k}" ${(st.done || st.self) ? 'disabled' : ''} lang="ar">${t}</button>`).join(' ')}</div></div>`;
   }
   if (f.k === 'h') return `<div class="zf">${lab}${zHar(id, it, st)}</div>`;
   /* w — собрать слово */
   const v = st.f[id] || '', none = v === NONE;
   const canNone = f.opt || [].concat((zFieldsAns(zSpecT(zCur().n, zCur().i), it)[+id.split('.')[1]] || [])).includes(NONE);
-  return `<div class="zf">${lab}<div class="zinrow"><input class="zin ${st.active === id ? 'act' : ''}" data-act="z-in" data-id="${id}" dir="rtl" lang="ar" inputmode="none" autocomplete="off" spellcheck="false" value="${none ? '' : esc(v)}" placeholder="${none ? 'формы нет' : ''}" ${st.done ? 'disabled' : ''}>${canNone && !st.done ? `<button class="chip ru ${none ? 'on' : ''}" data-act="z-none" data-id="${id}">Формы нет</button>` : ''}</div>${!st.done && st.active === id ? zKeys(id, it) : ''}</div>`;
+  return `<div class="zf">${lab}<div class="zinrow"><input class="zin ${st.active === id ? 'act' : ''}" data-act="z-in" data-id="${id}" dir="rtl" lang="ar" inputmode="none" autocomplete="off" spellcheck="false" value="${none ? '' : esc(v)}" placeholder="${none ? 'формы нет' : ''}" ${(st.done || st.self) ? 'disabled' : ''}>${canNone && !st.done ? `<button class="chip ru ${none ? 'on' : ''}" data-act="z-none" data-id="${id}">Формы нет</button>` : ''}</div>${!st.done && !st.self && st.active === id ? zKeys(id, it) : ''}</div>`;
 }
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const ZABC = [...'ءآأإؤئابةتثجحخدذرزسشصضطظعغفقكلمنهوىي'];
@@ -5794,14 +5796,14 @@ function zKeys(id, it) {
 /* сетка лиц */
 function zPersonGrid(id, st) {
   const v = st.f[id];
-  const cell = k => `<button class="zpc ${v === k ? 'on' : ''}" data-act="z-pers" data-id="${id}" data-v="${k}" ${st.done ? 'disabled' : ''}>${ar(PRON[k][0])}<small>${PRON[k][1]}</small></button>`;
+  const cell = k => `<button class="zpc ${v === k ? 'on' : ''}" data-act="z-pers" data-id="${id}" data-v="${k}" ${(st.done || st.self) ? 'disabled' : ''}>${ar(PRON[k][0])}<small>${PRON[k][1]}</small></button>`;
   return `<div class="zpg">${GROUPS.map(g => g.rows.map(r => `<div class="cgrid">${r.map(cell).join('')}</div>`).join('')).join('')}</div>`;
 }
 /* харакаты на готовых буквах */
 function zHar(id, it, st) {
   const units = st.h[id] || (st.h[id] = { u: [...zNoMarks(String(it[0]))].filter(c => c !== ' ').map(l => ({ l, v: '', sh: false })), sel: 0 });
-  const tiles = units.u.map((x, k) => `<button class="lt zh ${units.sel === k ? 'sel' : ''}" data-act="zh-sel" data-id="${id}" data-v="${k}" ${st.done ? 'disabled' : ''}>${x.l}${x.sh ? 'ّ' : ''}${x.v}</button>`).join('');
-  return `<div class="lts" dir="rtl">${tiles}</div>${st.done ? '' : `<div class="zkm">${ZMARK.map(([m, n]) => `<button class="zk mk" data-act="zh-mark" data-id="${id}" data-v="${m}" aria-label="${n}"><span lang="ar">ـ${m}</span></button>`).join('')}<button class="zk" data-act="zh-mark" data-id="${id}" data-v="" aria-label="Убрать огласовку">×</button></div><p class="note">Нажмите на букву, затем на огласовку.</p>`}`;
+  const tiles = units.u.map((x, k) => `<button class="lt zh ${units.sel === k ? 'sel' : ''}" data-act="zh-sel" data-id="${id}" data-v="${k}" ${(st.done || st.self) ? 'disabled' : ''}>${x.l}${x.sh ? 'ّ' : ''}${x.v}</button>`).join('');
+  return `<div class="lts" dir="rtl">${tiles}</div>${st.done || st.self ? '' : `<div class="zkm">${ZMARK.map(([m, n]) => `<button class="zk mk" data-act="zh-mark" data-id="${id}" data-v="${m}" aria-label="${n}"><span lang="ar">ـ${m}</span></button>`).join('')}<button class="zk" data-act="zh-mark" data-id="${id}" data-v="" aria-label="Убрать огласовку">×</button></div><p class="note">Нажмите на букву, затем на огласовку.</p>`}`;
 }
 const zHarStr = h => h.u.map(x => x.l + (x.sh ? 'ّ' : '') + x.v).join('').normalize('NFC');
 /* таблица спряжения / склонения */
@@ -5814,12 +5816,12 @@ function zTblCells(it) {
 function zTable(c, it, j, st) {
   const cells = zTblCells(it), t = st.tbl[j] || (st.tbl[j] = {});
   const res = st.done && st.tres && st.tres[j];
-  const cell = x => { const v = t[x.k] || []; const cls = res ? (res[x.k] ? 'ok' : 'bad') : ''; return `<button class="zcell ${cls}" data-act="z-cell" data-j="${j}" data-v="${x.k}" ${st.done ? 'disabled' : ''}><span class="w" dir="rtl" lang="ar">${v.filter(Boolean).join(' · ') || '<i>…</i>'}</span><small>${x.ar ? ar(x.ar) + ' · ' : ''}${x.lbl}</small>${res && !res[x.k] ? `<span class="zcor" dir="rtl" lang="ar">${x.ans.join(' · ')}</span>` : ''}</button>`; };
+  const cell = x => { const v = t[x.k] || []; const cls = res ? (res[x.k] ? 'ok' : 'bad') : ''; return `<button class="zcell ${cls}" data-act="z-cell" data-j="${j}" data-v="${x.k}" ${(st.done || st.self) ? 'disabled' : ''}><span class="w" dir="rtl" lang="ar">${v.filter(Boolean).join(' · ') || '<i>…</i>'}</span><small>${x.ar ? ar(x.ar) + ' · ' : ''}${x.lbl}</small>${res && !res[x.k] ? `<span class="zcor" dir="rtl" lang="ar">${x.ans.join(' · ')}</span>` : ''}</button>`; };
   const filled = cells.filter(x => (t[x.k] || []).filter(Boolean).length === x.ans.length).length;
   const pf = it[3];
-  if (Array.isArray(pf.f)) return `<div class="cgrid">${cells.slice(0, 3).map(cell).join('')}</div><div class="cgrid">${cells.slice(3).map(cell).join('')}</div>${st.done ? '' : `<p class="note">Заполнено ${filled} из ${cells.length}. Нажмите на клетку.</p>`}`;
+  if (Array.isArray(pf.f)) return `<div class="cgrid">${cells.slice(0, 3).map(cell).join('')}</div><div class="cgrid">${cells.slice(3).map(cell).join('')}</div>${st.done || st.self ? '' : `<p class="note">Заполнено ${filled} из ${cells.length}. Нажмите на клетку.</p>`}`;
   const by = Object.fromEntries(cells.map(x => [x.k, x]));
-  return `${(pf.g === 'amr' ? G2 : GROUPS).map(g => g.rows.filter(r => r.some(k => by[k])).map(r => `<div class="cgrid">${r.filter(k => by[k]).map(k => cell(by[k])).join('')}</div>`).join('')).join('')}${st.done ? '' : `<p class="note">Заполнено ${filled} из ${cells.length}. Нажмите на клетку.</p>`}`;
+  return `${(pf.g === 'amr' ? G2 : GROUPS).map(g => g.rows.filter(r => r.some(k => by[k])).map(r => `<div class="cgrid">${r.filter(k => by[k]).map(k => cell(by[k])).join('')}</div>`).join('')).join('')}${st.done || st.self ? '' : `<p class="note">Заполнено ${filled} из ${cells.length}. Нажмите на клетку.</p>`}`;
 }
 function zCellSheet(j, k) {
   const c = zCur(), e = BOOK[c.n].tm[c.i], it = e.it[j], st = zState(), x = zTblCells(it).find(y => y.k === k), t = st.tbl[j];
@@ -5860,12 +5862,12 @@ function zReadyW(z, id, st) {
 function zWidget(z, id, st, it) {
   if (z.m === 'ai') {
     const open = st.akb;
-    return `<div class="zai"><textarea id="ztxt" class="zta" dir="auto" rows="4" placeholder="Ответьте своими словами — напишите или продиктуйте. Во время диктовки текст появляется здесь" ${st.done || st.busy ? 'disabled' : ''}>${esc(st.txt || '')}</textarea>
-      ${st.done ? '' : `<div class="zrow"><button class="btn ghost zmic ${st.rec ? 'rec' : ''}" data-act="z-mic" ${st.busy ? 'disabled' : ''}>${st.rec ? '■ Стоп' : st.micWait ? 'Включаю…' : '● Голосом'}</button><button class="btn ghost" data-act="z-akb">${open ? 'Скрыть буквы' : 'Арабские буквы'}</button></div>${open ? zKeys('txt', null) : ''}${st.micErr ? `<p class="err">${st.micErr}</p>` : ''}`}</div>`;
+    return `<div class="zai"><textarea id="ztxt" class="zta" dir="auto" rows="4" placeholder="Ответьте своими словами — напишите или продиктуйте. Во время диктовки текст появляется здесь" ${st.done || st.busy || st.self ? 'disabled' : ''}>${esc(st.txt || '')}</textarea>
+      ${st.done || st.self ? '' : `<div class="zrow"><button class="btn ghost zmic ${st.rec ? 'rec' : ''}" data-act="z-mic" ${st.busy ? 'disabled' : ''}>${st.rec ? '■ Стоп' : st.micWait ? 'Включаю…' : '● Голосом'}</button><button class="btn ghost" data-act="z-akb">${open ? 'Скрыть буквы' : 'Арабские буквы'}</button></div>${open ? zKeys('txt', null) : ''}${st.micErr ? `<p class="err">${st.micErr}</p>` : ''}`}</div>`;
   }
-  if (z.m === 'letters') { const sel = st.sel[id] || [], want = st.done ? z.ans : null; return `<div class="zabc" dir="rtl">${[...'ءابتثجحخدذرزسشصضطظعغفقكلمنهوي'].map(ch => `<button class="lt ${sel.includes(ch) ? 'sel' : ''} ${want ? (want.includes(ch) ? (sel.includes(ch) ? 'ok' : 'miss') : sel.includes(ch) ? 'bad' : '') : ''}" data-act="z-let" data-v="${ch}" ${st.done ? 'disabled' : ''}>${ch}</button>`).join('')}</div>`; }
-  if (z.m === 'choice') return `<div class="chips wide">${z.o.map((o, k) => `<button class="chip ru ${st.f[id] === k ? 'on' : ''} ${st.done ? (k === z.ans ? 'ok' : st.f[id] === k ? 'bad' : '') : ''}" data-act="z-c" data-id="${id}" data-v="${k}" ${st.done ? 'disabled' : ''}>${o}</button>`).join('')}</div>`;
-  if (z.m === 'sort') return `<div class="rows">${z.o.map(([w, g], k) => { const p = st.sel[`${id}${k}`]; const opts = [...z.g.map((t, i) => [i, t]), [-1, 'ни то, ни другое']]; return `<div class="srow">${ar(w)}<div class="chips">${opts.map(([v, t]) => `<button class="chip ru ${p === v ? 'on' : ''} ${st.done ? (v === g ? 'ok' : p === v ? 'bad' : '') : ''}" data-act="z-sel" data-id="${id}${k}" data-v="${v}" ${st.done ? 'disabled' : ''}>${t}</button>`).join('')}</div></div>`; }).join('')}</div>`;
+  if (z.m === 'letters') { const sel = st.sel[id] || [], want = st.done ? z.ans : null; return `<div class="zabc" dir="rtl">${[...'ءابتثجحخدذرزسشصضطظعغفقكلمنهوي'].map(ch => `<button class="lt ${sel.includes(ch) ? 'sel' : ''} ${want ? (want.includes(ch) ? (sel.includes(ch) ? 'ok' : 'miss') : sel.includes(ch) ? 'bad' : '') : ''}" data-act="z-let" data-v="${ch}" ${(st.done || st.self) ? 'disabled' : ''}>${ch}</button>`).join('')}</div>`; }
+  if (z.m === 'choice') return `<div class="chips wide zltr">${z.o.map((o, k) => `<button class="chip ru ${st.f[id] === k ? 'on' : ''} ${st.done ? (k === z.ans ? 'ok' : st.f[id] === k ? 'bad' : '') : ''}" data-act="z-c" data-id="${id}" data-v="${k}" ${(st.done || st.self) ? 'disabled' : ''}>${o}</button>`).join('')}</div>`;
+  if (z.m === 'sort') return `<div class="rows">${z.o.map(([w, g], k) => { const p = st.sel[`${id}${k}`]; const opts = [...z.g.map((t, i) => [i, t]), [-1, 'ни то, ни другое']]; return `<div class="srow">${ar(w)}<div class="chips">${opts.map(([v, t]) => `<button class="chip ru ${p === v ? 'on' : ''} ${st.done ? (v === g ? 'ok' : p === v ? 'bad' : '') : ''}" data-act="z-sel" data-id="${id}${k}" data-v="${v}" ${(st.done || st.self) ? 'disabled' : ''}>${t}</button>`).join('')}</div></div>`; }).join('')}</div>`;
   return '';
 }
 
@@ -5882,9 +5884,9 @@ async function zCheck(idk) {
   if (z.m === 'ai') return zCheckAi(c, z, st, idk);
   let ok = true, fb = '';
   const e = c.k === 't' ? BOOK[c.n].tm[c.i] : null;
-  if (z.m === 'letters') { const sel = st.sel[c.k] || []; ok = !idk && sel.length === z.ans.length && z.ans.every(x => sel.includes(x)); fb = `<div class="zref"><span class="lbl">Ответ</span><div>${a(z.ans.join(' '))}</div></div>`; }
-  else if (z.m === 'choice') { ok = !idk && st.f.q === z.ans; fb = c.k === 'q' ? zRefQ(c) : ''; }
-  else if (c.k === 'q' && z.m === 'sort') { ok = !idk && z.o.every(([, g], k) => st.sel[`q${k}`] === g); fb = zRefQ(c); }
+  if (z.m === 'letters') { const sel = st.sel[c.k] || []; ok = !idk && sel.length === z.ans.length && z.ans.every(x => sel.includes(x)); fb = `${sel.length && !ok ? `<p>Вы выбрали: ${a(sel.join(' '))}</p>` : ''}<div class="zref"><span class="lbl">Ответ</span><div>${a(z.ans.join(' '))}</div></div>`; }
+  else if (z.m === 'choice') { ok = !idk && st.f.q === z.ans; fb = `${st.f.q !== undefined && !ok ? `<p>Ваш ответ: ${z.o[st.f.q]}. Верно: ${z.o[z.ans]}.</p>` : ''}${c.k === 'q' ? zRefQ(c) : ''}`; }
+  else if (c.k === 'q' && z.m === 'sort') { const gn = g => g < 0 ? 'ни то, ни другое' : z.g[g]; const wrong = z.o.map(([w, g], k) => [w, g, st.sel[`q${k}`]]).filter(([, g, p]) => p !== g); ok = !idk && !wrong.length; fb = `${!idk && wrong.length ? `<ul class="zmust">${wrong.map(([w, g, p]) => `<li>${a(w)}: ${p === undefined ? '—' : `<span class="zmine">${gn(p)}</span>`} верно: ${gn(g)}</li>`).join('')}</ul>` : ''}${zRefQ(c)}`; }
   else {
     st.listAsk = [];
     const per = c.items.map(j => zCheckItem(c, e, z, j, st, idk));
@@ -5896,17 +5898,20 @@ async function zCheck(idk) {
       ok = false;
       if (zaiUrl() && navigator.onLine !== false) {
         st.busy = true; zUpd();
-        ok = await zAskForms(c, e, st.listAsk);
+        const r = await zAskForms(c, e, st.listAsk);
         st.busy = false;
+        if (r === null) return zSelf(c, st, fb, 'Этой формы нет в ответе учебника, а связаться с ИИ не удалось.');
+        ok = r;
         fb += `<p class="note">${ok ? 'Этой формы нет в ответе учебника, но ИИ подтвердил, что она образована верно.' : 'Этой формы нет в ответе учебника, и ИИ не подтвердил, что она верна.'}</p>`;
-      } else fb += `<p class="note">Этой формы нет в ответе учебника. Проверить её без сети нельзя.</p>`;
+        if (ok) fb = fb.replace('<div class="zfi "><b class="zic">?</b>', '<div class="zfi ok"><b class="zic">✓</b>');
+      } else return zSelf(c, st, fb, 'Этой формы нет в ответе учебника, а без сети ИИ не может её проверить.');
     }
   }
   zFinish(idk ? 'idk' : ok ? 'ok' : 'bad', fb);
 }
 function zCheckItem(c, e, z, j, st, idk) {
   const it = e.it[j], w = String(it[0]);
-  if (z.m === 'sort') { const p = st.sel[j], want = [].concat(it[1]); const ok = !idk && want.includes(p); return { ok, html: zFi(ok, `${a(w)} — ${a(e.o[want[0]])}${!ok && p !== undefined ? ` <span class="zmine">${a(e.o[p])}</span>` : ''}`, it[2] && mix(it[2])) }; }
+  if (z.m === 'sort') { const p = st.sel[j], want = [].concat(it[1]); const ok = !idk && want.includes(p); return { ok, html: zFi(ok, ok || p === undefined ? `${a(w)} — ${a(e.o[want[0]])}` : `${a(w)} — <span class="zmine">${a(e.o[p])}</span> <span class="zarr">верно:</span> ${a(e.o[want[0]])}`, it[2] && mix(it[2])) }; }
   if (z.m === 'pick') { const cls = zPickMarks(it, st.sel[j] || []); const ok = !idk && cls.every(x => x !== 'bad' && x !== 'miss'); return { ok, html: zFi(ok, `${a(w)} — добавочные: ${a(it[2])}`, it[3] && mix(it[3])) }; }
   if (z.m === 'table') {
     const t = st.tbl[j] || {}, res = {}; let n = 0;
@@ -5915,7 +5920,8 @@ function zCheckItem(c, e, z, j, st, idk) {
     (st.tres || (st.tres = {}))[j] = res;
     let ok = n === cells.length, also = '';
     if (z.also) { const want = z.also.p(String(it[1])); const okA = !idk && st.f[`${j}.also`] === want; ok = ok && okA; also = ` · ${want}`; }
-    return { ok, html: zFi(ok, `${a(w)} — верно ${n} из ${cells.length} ${plural(cells.length, ['клетки', 'клеток', 'клеток'])}${also}`, ok ? '' : 'Верные формы — зелёным в клетках с ошибкой.') };
+    const bad = cells.filter(x => !res[x.k] && !idk).map(x => `<div class="zfr bad"><span class="zl">${x.ar ? PRON[x.k][0] + ' · ' : ''}${x.lbl}</span><span class="zmine">${a((t[x.k] || []).filter(Boolean).join(' · ') || '—')}</span><span class="zarr">верно:</span>${a(x.ans.join(' · '))}</div>`).join('');
+    return { ok, html: zFi(ok, `${a(w)} — верно ${n} из ${cells.length} ${plural(cells.length, ['клетки', 'клеток', 'клеток'])}${also}${bad}`) };
   }
   /* fields */
   const ans = zFieldsAns(z, it); let ok = true, pend = false;
@@ -5925,7 +5931,7 @@ function zCheckItem(c, e, z, j, st, idk) {
     if (f.k === 'c') { good = st.f[id] === want; mine = st.f[id] ? a(st.f[id]) : '—'; right = a(want); }
     else if (f.k === 'p') { const need = zPerson(want); good = need.includes(st.f[id]); mine = st.f[id] !== undefined ? `${a(PRON[st.f[id]][0])} ${PRON[st.f[id]][1]}` : '—'; right = `${a(PRON[need[0]][0])} ${PRON[need[0]][1]} · ${a(want)}`; }
     else if (f.k === 'word') { const toks = String(it[0]).split(/\s+/), sel = (st.sel[id] || []).map(i => zNoMarks(toks[i])).sort(), need = [].concat(want).map(zNoMarks).sort(); good = sel.length === need.length && sel.every((x, i) => x === need[i] || x.endsWith(need[i])); mine = (st.sel[id] || []).map(i => a(toks[i])).join(' ') || '—'; right = [].concat(want).map(a).join(' '); }
-    else if (f.k === 'h') { const v = zHarStr(st.h[id]); const r = zBest(v, want); good = r.ok; mine = r.B ? arEcho(r) : a(v); right = [].concat(want).map(a).join(' · '); }
+    else if (f.k === 'h') { const v = st.h[id] ? zHarStr(st.h[id]) : ''; const r = zBest(v, want); good = r.ok; mine = r.B ? arEcho(r) : a(v); right = [].concat(want).map(a).join(' · '); }
     else { /* w */
       const v = st.f[id] === undefined ? '' : st.f[id], list = [].concat(want);
       const r = zBest(v, list); good = !idk && r.ok;
@@ -5947,7 +5953,6 @@ function zFinish(v, fb) {
   const c = zCur(), st = zState();
   st.done = true; st.v = v;
   st.fb = zFbBox(v, fb);
-  const html = document.getElementById('zcard') ? '' : '';
   zRun().res[zRun().i] = { v, html: zCardSnapshot(c, st) };
   persist(); zUpd();
   if (typeof navigator !== 'undefined' && navigator.vibrate && S.hap) try { navigator.vibrate(v === 'ok' ? 12 : [10, 40, 10]); } catch (e) {}
@@ -5995,7 +6000,7 @@ async function zCheckAi(c, z, st, idk) {
   }
 }
 function zSelf(c, st, ref, why) {
-  st.self = true;
+  st.self = true; st.selfRef = ref;
   st.fb = `<div class="zfb info"><b>${why} Сравните свой ответ с ответом учебника.</b>${ref}<div class="zrow"><button class="btn ghost" data-act="z-self" data-v="bad">Не засчитывать</button><button class="btn" data-act="z-self" data-v="ok">Засчитать себе</button></div></div>`;
   zUpd();
 }
@@ -6006,7 +6011,7 @@ async function zAskForms(c, e, asks) {
       if (r.v !== 'верно') return false;
     }
     return true;
-  } catch (e) { return false; }
+  } catch (e) { return null; }   /* ИИ недоступен — решает ученик */
 }
 
 /* ---------- голос ---------- */
@@ -6084,8 +6089,8 @@ const ZACT = {
   'z-next': () => { const r = zRun(); r.i++; ZS = null; persist(); zUpd(); window.scrollTo(0, 0); },
   'z-check': () => zCheck(false),
   'z-idk': () => zCheck(true),
-  'z-self': el => { const st = zState(); st.self = false; zFinish(el.dataset.v === 'ok' ? 'self-ok' : 'self-bad', st.fb.replace(/<div class="zrow">[\s\S]*?<\/div><\/div>$/, '</div>').replace(/^<div class="zfb info"><b>[^<]*<\/b>/, '')); },
-  'z-appeal': () => { const st = zState(), r = zRun(); st.done = false; st.self = true; const c = zCur(); const ref = c.k === 'q' ? zRefQ(c) : zRefT(c); st.fb = `<div class="zfb info"><b>Сравните свой ответ с ответом учебника и решите сами. Такой ответ будет отмечен «по самооценке».</b>${ref}<div class="zrow"><button class="btn ghost" data-act="z-self" data-v="bad">Не засчитывать</button><button class="btn" data-act="z-self" data-v="ok">Засчитать себе</button></div></div>`; delete r.res[r.i]; zUpd(); },
+  'z-self': el => { const st = zState(); st.self = false; zFinish(el.dataset.v === 'ok' ? 'self-ok' : 'self-bad', st.selfRef || ''); },
+  'z-appeal': () => { const st = zState(), r = zRun(), c = zCur(); st.done = false; delete r.res[r.i]; zSelf(c, st, c.k === 'q' ? zRefQ(c) : zRefT(c), 'Решите сами — такой ответ будет отмечен «по самооценке».'); },
   'z-sel': el => { const st = zState(), id = el.dataset.id; st.sel[id] = +el.dataset.v; zUpd(); },
   'z-pk': el => { const st = zState(), id = el.dataset.id, v = +el.dataset.v, s = st.sel[id] || (st.sel[id] = []); const x = s.indexOf(v); x < 0 ? s.push(v) : s.splice(x, 1); zUpd(); },
   'z-let': el => { const st = zState(), id = zCur().k, s = st.sel[id] || (st.sel[id] = []), v = el.dataset.v; const x = s.indexOf(v); x < 0 ? s.push(v) : s.splice(x, 1); zUpd(); },

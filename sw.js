@@ -12,7 +12,8 @@ self.addEventListener('activate', e => {
 const isPage = u => u.origin === location.origin && (u.pathname.endsWith('/') || u.pathname.endsWith('/index.html'));
 async function page(req) {
   const c = await caches.open(V);
-  const net = fetch(req).then(res => { if (res.ok) c.put('./', res.clone()); return res; });
+  /* no-cache: спросить сервер, не изменилась ли страница (без этого браузер до 10 минут отдаёт старую из своего кэша) */
+  const net = fetch(req.url, { cache: 'no-cache', credentials: 'same-origin' }).then(res => { if (res.ok) c.put('./', res.clone()); return res; });
   const cached = await c.match('./');
   if (!cached) return net;
   /* сеть успела за 3 секунды — свежая версия, нет — сохранённая; свежая всё равно ляжет в кэш */
