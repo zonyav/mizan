@@ -946,6 +946,99 @@ body{font-family:var(--font-ui);font-size:16.5px}
 .zerr[open] summary{margin-bottom:10px}
 
 .chips.zltr{direction:ltr;justify-content:flex-start}
+
+/* ============ САЙФУМАЛИК ============ */
+#saif{position:fixed;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:45;display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
+#saif.in-lesson{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+#saif[hidden]{display:none}
+#saif > *{pointer-events:auto}
+.app.focus{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+canvas.sf-face{image-rendering:pixelated;image-rendering:crisp-edges;display:block}
+.sf-ava{width:58px;height:58px;border-radius:50%;padding:0;border:2px solid var(--surface);background:var(--shell,#1E2559);overflow:hidden;cursor:pointer;
+  box-shadow:0 8px 22px -8px rgba(15,18,41,.55);transition:transform .15s ease}
+.sf-ava canvas{width:100%;height:100%;transform:translateY(3px)}
+.sf-ava:active{transform:scale(.94)}
+.sf-ava[aria-expanded="true"]{border-color:var(--saf,#E2A33B)}
+.sf-ava.busy canvas{animation:sf-bob .6s ease-in-out infinite alternate}
+@keyframes sf-bob{to{transform:translateY(1px)}}
+.sf-ava:focus-visible{outline:3px solid var(--saf,#E2A33B);outline-offset:2px}
+
+.sf-bubble{width:min(300px,calc(100vw - 28px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px 18px 6px 18px;
+  padding:12px 14px;box-shadow:0 14px 36px -14px rgba(15,18,41,.45);display:grid;gap:9px;animation:sf-in .18s ease;font-size:15px;line-height:1.45}
+.sf-bubble[hidden]{display:none}
+@keyframes sf-in{from{opacity:0;transform:translateY(8px) scale(.98)}}
+.sf-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sf-head b{font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.01em}
+.sf-x{border:0;background:none;color:var(--muted);font-size:22px;line-height:1;width:32px;height:32px;margin:-8px -8px -8px 0;border-radius:50%;cursor:pointer}
+.sf-x:hover{background:var(--surface-2)}
+.sf-txt .ar,.sf-mb .ar,.sf-m .ar{font-size:1.15em;unicode-bidi:isolate}
+.sf-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.sf-more{border:0;background:none;padding:0;font:600 14px var(--font-ui,inherit);color:var(--accent);cursor:pointer}
+.sf-src{display:inline-flex;align-items:center;gap:4px;border:0;background:var(--surface-2);color:var(--muted);border-radius:999px;padding:3px 9px;font-size:12px;cursor:pointer}
+.sf-src svg{width:13px;height:13px}
+.sf-chips{display:flex;flex-wrap:wrap;gap:6px}
+.sf-chips button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 11px;font:500 13.5px var(--font-ui,inherit);cursor:pointer}
+.sf-chips button:hover{background:var(--surface-2)}
+.sf-ask{display:flex;gap:6px}
+.sf-ask input{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:9px 11px;font:inherit;font-size:15px}
+.sf-ask input:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
+.sf-ask button{flex:none;width:40px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;cursor:pointer}
+.sf-ask button svg{width:18px;height:18px}
+.sf-dots{display:flex;gap:5px;padding:6px 0}
+.sf-dots i{width:7px;height:7px;border-radius:50%;background:var(--muted);opacity:.35;animation:sf-dot 1s infinite}
+.sf-dots i:nth-child(2){animation-delay:.15s}.sf-dots i:nth-child(3){animation-delay:.3s}
+@keyframes sf-dot{40%{opacity:1;transform:translateY(-2px)}}
+
+/* шторка с разговором */
+.sf-sheet{display:grid;gap:12px}
+.sf-sh-h{display:flex;align-items:center;gap:12px}
+.sf-sh-h h3{margin:0;font-size:22px}
+.sf-sh-h small{color:var(--muted);font-size:13px}
+canvas.sf-face.md{width:52px;height:52px;border-radius:50%;background:var(--shell,#1E2559);flex:none}
+canvas.sf-face.sm{width:30px;height:30px;border-radius:50%;background:var(--shell,#1E2559);flex:none}
+canvas.sf-face.xs{width:24px;height:24px;border-radius:50%;background:var(--shell,#1E2559);flex:none}
+.sf-note{margin:0;font-size:13px;color:var(--muted);background:var(--surface-2);border-radius:10px;padding:7px 10px}
+.sf-log{display:grid;gap:10px;max-height:46vh;overflow:auto;padding-right:2px}
+.sf-m{max-width:88%;font-size:15px;line-height:1.5}
+.sf-m.me{justify-self:end;background:var(--accent);color:var(--accent-ink);border-radius:16px 16px 4px 16px;padding:8px 12px}
+.sf-m.bot{display:flex;gap:8px;align-items:flex-end}
+.sf-mb{background:var(--surface-2);border-radius:16px 16px 16px 4px;padding:9px 12px;display:grid;gap:6px}
+.sf-mb p,.sf-mb ul{margin:0}.sf-mb ul{padding-left:18px}
+.sf-mb .sf-src{justify-self:start;background:var(--surface)}
+.sf-ctx{font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding-left:8px}
+.sf-dim{margin:0;font-size:12px;color:var(--muted)}
+.sf-wbtn{display:flex;align-items:center;justify-content:center;gap:8px;border-color:var(--accent);color:var(--accent)}
+/* вложение: абзац или слово */
+.sf-att{display:flex;align-items:center;gap:8px;background:var(--surface-2);border-radius:12px;padding:6px 6px 6px 10px;min-width:0}
+.sf-att-l{flex:none;font-size:12px;font-weight:600;color:var(--muted)}
+.sf-att .ar{flex:1;min-width:0;font-size:1.05em;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-align:right}
+.sf-att-x{flex:none;border:0;background:none;color:var(--muted);width:28px;height:28px;border-radius:50%;font-size:18px;line-height:1;cursor:pointer}
+.sf-att-x:hover{background:var(--surface)}
+.sf-q{font-size:12px;opacity:.8;margin-bottom:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.sf-q .ar{unicode-bidi:isolate}
+/* кнопка у абзаца */
+.sf-prow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sf-prow .disc{flex:1;min-width:0;white-space:nowrap;text-align:left;justify-content:flex-start}
+.sf-prow .disc > :not(svg){overflow:hidden;text-overflow:ellipsis}
+.sf-pbtn{flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--accent);border-radius:999px;padding:3px 11px 3px 3px;font:600 13px var(--font-ui,inherit);cursor:pointer;min-height:34px}
+.sf-pbtn:hover{background:var(--surface-2)}
+.sf-pbtn canvas.sf-face.xs{width:26px;height:26px}
+.card.para.sf-flash{box-shadow:0 0 0 3px var(--saf,#E2A33B);transition:box-shadow .3s}
+@media (prefers-reduced-motion:reduce){.sf-bubble,.sf-ava.busy canvas,.sf-dots i{animation:none}}
+/* оформление полного ответа */
+.sf-mb .sf-steps{list-style:none;counter-reset:sf;padding:0;margin:0;display:grid;gap:8px}
+.sf-mb .sf-steps li{counter-increment:sf;display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start}
+.sf-mb .sf-steps li::before{content:counter(sf);width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 12.5px var(--font-ui,inherit);margin-top:1px}
+.sf-mb ul{display:grid;gap:4px}
+.sf-ex{font-size:1.45em;line-height:1.9;text-align:center;background:var(--surface);border-radius:12px;padding:6px 10px;font-family:var(--font-ar,inherit)}
+.sf-tip{background:var(--accent-soft);border-left:3px solid var(--saf,#E2A33B);border-radius:4px 10px 10px 4px;padding:7px 10px;font-size:14.5px}
+.sf-h{margin:4px 0 0;font:700 14px var(--font-ui,inherit);color:var(--muted);text-transform:none}
+.sf-tw{overflow-x:auto;margin:0 -2px}
+.sf-tbl{border-collapse:separate;border-spacing:0;width:100%;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.sf-tbl th,.sf-tbl td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.sf-tbl tr:last-child td{border-bottom:0}
+.sf-tbl th{background:var(--surface-2);font-weight:600;font-size:12.5px;color:var(--muted)}
+.sf-tbl .ar{text-align:right;font-size:1.25em;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -6846,6 +6939,332 @@ if (CAN_HAP) {
   <button class="btn ghost block" data-act="close">`);
   ACT.hap = el => { S.hap = el.dataset.v === '1'; persist(); hap('ok'); $('#sheet').innerHTML = '<div class="grab"></div>' + settingsHtml(); };
 }
+
+/* ============ САЙФУМАЛИК — примерочная интерфейса (ответы заготовлены, без ИИ) ============ */
+const SAIF_PX = {"base": ["................................", "................................", "...........KKKKKKKKKK...........", ".........KKHHhHHHHhHHKK.........", "........KHHHHHhHHHHHhHHK........", ".......KHHhHHHHHHHHHHHhHK.......", ".......KHHHHHHHHHHHHHHHHK.......", ".......KHHSSSSSSSSSSSSHHK.......", ".......KHSSSSSSSSSSSSSSHK.......", ".......KSSSSSSSSSSSSSSSSK.......", ".......KSSSSSSSSSSSSSSSSK.......", ".......KSBBBBBSSSSBBBBBSK.......", "....KKKKSSSSBBSSSSBBSSSSKKKK....", "....KeSKSSSSSSSSSSSSSSSSKSeK....", "....KeSKSSKKKKSSSSKKKKSSKSeK....", "....KeSKSSWEEWSlsSWEEWSSKSeK....", "....KeSKSSSssSSlsSSssSSSKSeK....", "....KeSKSSSSSSSlsSSSSSSSKSeK....", ".....KKKSSSSSSslssSSSSSSKKK.....", ".......KSSSSSsdssdsSSSSSK.......", ".......KsSSSSSssssSSSSSsK.......", ".......KsSSSSsMMMMsSSSSsK.......", "........KgSSSmmmmmmSSSgK........", "........KgSSSSMMMMSSSSgK........", "........KgSSSSSGGSSSSSgK........", ".........KgSSGGGGGGSSgK.........", "..........KgGGGGGGGGgK..........", "............KGGGGGGK............", "............KsSSSSsK............", "......KTTTTTKsSSSSsKTTTTTK......", "...KTTTTTTTTTccccccTTTTTTTTTK...", "..KXXXXXXXXXXXXXXXXXXXXXXXXXXK.."], "moods": {"спокойный": {}, "ухмылка": {"21": ".......KsSSSSsMMMMsmSSSsK.......", "22": "........KgSSSmmmmmmmSSgK........"}, "сарказм": {"10": ".......KSSSSSSSSSSBBBBBSK.......", "11": ".......KSBBBBBSSSSSSSSSSK.......", "12": "....KKKKSSSSBBSSSSSSSSSSKKKK....", "14": "....KeSKSSSSSSSSSSKKKKSSKSeK....", "15": "....KeSKSSKKKKSlsSWEEWSSKSeK....", "22": "........KgSSSSmmmmmSSSgK........"}, "объясняет": {"10": ".......KSBBBBBSSSSBBBBBSK.......", "11": ".......KSSSSBBSSSSBBSSSSK.......", "12": "....KKKKSSSSSSSSSSSSSSSSKKKK....", "22": "........KgSSSmmEEmmSSSgK........", "23": "........KgSSSSMMMMSSSSgK........"}, "львигр!": {"14": "....KeSKSSSKKSSSSSSKKSSSKSeK....", "15": "....KeSKSSKSSKSlsSKSSKSSKSeK....", "21": ".......KsSSSSmmmmmmSSSSsK.......", "22": "........KgSSmWWWWWWmSSgK........", "23": "........KgSSSmMMMMmSSSgK........"}}, "pal": {"S": "#efc1a2", "s": "#dba083", "d": "#bf7f66", "l": "#f9dcc6", "e": "#d08e74", "W": "#f4ece6", "E": "#2a1912", "B": "#2a1c16", "M": "#cf8078", "m": "#8f4a44", "G": "#35261f", "g": "#9b7a66", "K": "#24170f", "H": "#2f231d", "h": "#4d3c32", "T": "#1d2444", "c": "#151a33", "X": "#eef1f6"}};
+const SAIF_LIMIT = 50;
+const SF = { open: false, busy: false, mood: 'спокойный', log: [], last: null, timer: 0, att: null };
+
+function saifRows(m) { const o = SAIF_PX.moods[m] || {}; return SAIF_PX.base.map((r, i) => o[i] || r); }
+function saifDraw(c, m) {
+  const x = c.getContext('2d'); x.clearRect(0, 0, 32, 32);
+  saifRows(m).forEach((r, y) => [...r].forEach((ch, xx) => { if (ch !== '.') { x.fillStyle = SAIF_PX.pal[ch] || '#f0f'; x.fillRect(xx, y, 1, 1); } }));
+}
+const saifFace = (m, cls) => `<canvas class="sf-face ${cls || ''}" width="32" height="32" data-mood="${m}" aria-hidden="true"></canvas>`;
+function saifPaint(root) { (root || document).querySelectorAll('canvas.sf-face').forEach(c => saifDraw(c, c.dataset.mood)); }
+
+/* счётчик вопросов на день (на устройстве; на сервере будет свой) */
+function saifLeft() {
+  let d = {}; try { d = JSON.parse(localStorage.getItem('mizan.saif.day') || '{}'); } catch (e) {}
+  const today = new Date().toISOString().slice(0, 10);
+  return d.day === today ? Math.max(0, SAIF_LIMIT - d.n) : SAIF_LIMIT;
+}
+function saifSpend() {
+  const today = new Date().toISOString().slice(0, 10), used = SAIF_LIMIT - saifLeft() + 1;
+  try { localStorage.setItem('mizan.saif.day', JSON.stringify({ day: today, n: used })); } catch (e) {}
+}
+
+/* где сейчас студент */
+function saifWhere() {
+  if (R === 'lesson') { const L = lessonBy(CUR), s = stepOf(); return { L, s, step: STEPS[s], label: `урок ${L.n} · ${STEPS[s]}` }; }
+  if (R === 'ref') return { label: 'Справочник' };
+  return { label: 'Уроки' };
+}
+const saifVisible = () => !(R === 'zachet' || zFocus());
+
+/* ---------- заготовленные ответы (потом их заменит ИИ) ---------- */
+const sfAr = s => `<bdi class="ar" lang="ar" dir="rtl">${s}</bdi>`;
+const sfCut = (t, n) => { t = String(t || '').replace(/\s+/g, ' ').trim(); if (t.length <= n) return t; const k = t.lastIndexOf(' ', n); return t.slice(0, k > 40 ? k : n) + '…'; };
+const sfFirst = t => { const m = String(t || '').match(/^.+?[.!?;:](\s|$)/); return m ? m[0].trim() : sfCut(t, 120); };
+const sfEsc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+function saifGloss(L, k) {
+  const all = []; (L.text || []).forEach(p => (p.gl || []).forEach(g => all.push(g)));
+  const out = [], step = Math.max(1, Math.floor(all.length / k));
+  for (let i = 0; i < all.length && out.length < k; i += step) out.push(all[i]);
+  return out;
+}
+
+function saifAnswer(kind, arg) {
+  arg = arg || {};
+  const w = saifWhere(), L = w.L, at = arg.att;
+  if (kind === 'hello') {
+    if (at && at.kind === 'para') return { mood: 'спокойный', short: `${at.label}. Что в нём непонятно, вацок? Выбери или спроси своими словами.`, src: null };
+    if (at && at.kind === 'word') return { mood: 'спокойный', short: `${sfAr(at.ar)}. Что про него рассказать, вацок?`, src: null };
+    if (!L) return { mood: 'спокойный', short: R === 'ref' ? 'Справочник листаешь? Если что-то в таблице непонятно, спрашивай, вацок.' : 'Открой урок, и я буду в теме, о чём ты. Или спрашивай про сарф прямо отсюда.', src: null };
+    if (w.s === 4) return { mood: 'сарказм', short: 'Задания решаешь? Тут я не подсказываю, вацок, сам. Но правило из урока объясню, если надо.', src: null };
+    return { mood: 'спокойный', short: `Урок ${L.n}, «${STEPS[w.s].toLowerCase()}». Чё, вацок, застрял? Нажми «Спросить» у абзаца или пиши сюда.`, src: null };
+  }
+  /* по абзацу */
+  if (at && at.kind === 'para') {
+    if (kind === 'p-simple') return { mood: 'объясняет',
+      short: `Если по-простому, вацок: ${mix(sfCut(at.tr, 150))}`,
+      full: `<p>Если по-простому: ${mix(at.tr)}</p><p class="sf-dim">Здесь ИИ перескажет абзац своими словами: короче и проще перевода, с примером.</p>`, src: at.src };
+    if (kind === 'p-tr') return { mood: 'спокойный',
+      short: `Перевод: ${mix(sfCut(at.tr, 150))}`,
+      full: `<p>${mix(at.tr)}</p>${at.gl && at.gl.length ? `<ul>${at.gl.map(([a, r]) => `<li>${sfAr(a)} — ${mix(r)}</li>`).join('')}</ul>` : ''}`, src: at.src };
+    if (kind === 'p-core') return { mood: 'ухмылка',
+      short: `Суть, братишка: ${mix(sfFirst(at.tr))}`,
+      full: `<p>Суть: ${mix(sfFirst(at.tr))}</p><p class="sf-dim">Здесь ИИ выделит главное в 1–2 пунктах и скажет, что из этого понадобится дальше.</p>`, src: at.src };
+  }
+  /* по слову */
+  if (at && at.kind === 'word') {
+    const i = wordInfo(at.w), c = i ? (wCtx(i.base) || wCtx(at.w)) : wCtx(at.ar), g = i ? i.g : c;
+    const parts = i ? i.parts.map(([a, t]) => `${sfAr(a)} ${t}`).concat(i.suf ? [`${sfAr('ـ' + i.suf[0])} ${i.suf[1]}`] : []) : [];
+    if (kind === 'w-mean') {
+      const sh = g ? `${sfAr(at.ar)} — это «${mix(g)}»${parts.length ? `. Тут ещё ${parts.join(', ')}` : ''}. Этажи просто, вацок.` : `${sfAr(at.ar)}: перевода в курсе пока нет, тут подключится ИИ.`;
+      return { mood: 'спокойный', short: sh, full: `<p>${sh}</p>`, src: at.src };
+    }
+    if (kind === 'w-form') return { mood: 'объясняет',
+      short: parts.length ? `Разбираем ${sfAr(at.ar)}: ${parts.join(', ')}, основа ${sfAr(i.base)}. (Корень и вазн добавит ИИ.)` : `Разбор ${sfAr(at.ar)}: корень, вазн, баб и харакат разберёт ИИ.`,
+      full: `<p>Здесь ИИ разберёт ${sfAr(at.ar)}: корень, вазн (${sfAr('وَزْن')}), баб, почему такая харака, и сошлётся на урок, где это правило.</p>`, src: at.src };
+    if (kind === 'w-sent') return { mood: 'объясняет',
+      short: at.tr ? `Всё предложение: ${mix(sfCut(at.tr, 150))}` : 'Предложение целиком объяснит ИИ.',
+      full: at.tr ? `<p>${mix(at.tr)}</p><p class="sf-dim">Здесь ИИ покажет, какую роль в предложении играет ${sfAr(at.ar)}.</p>` : '', src: at.src };
+  }
+  if (kind === 'simple') {
+    if (!L) return { mood: 'сарказм', short: 'Да нет да, сначала открой урок, а потом проси объяснить попроще.', src: null };
+    return { mood: 'объясняет',
+      short: `Короче, вацок: урок ${L.n} — «${mix(L.short)}». Теперь не спеши, разберём по шагам.`,
+      full: `<p>Короче, вацок: урок ${L.n} — «${mix(L.short)}».</p><p>Здесь ИИ объяснит шаг «${w.step}» простыми словами: в 2–3 пунктах, без лишних терминов, с примером из текста урока.</p>`,
+      src: { n: L.n, s: 1, t: `урок ${L.n} · Объяснение` } };
+  }
+  if (kind === 'examples') {
+    if (!L) return { mood: 'сарказм', short: 'Примеры к чему, братишка? Открой урок, и накидаю.', src: null };
+    const g = saifGloss(L, 3), list = g.map(([a, r]) => `${sfAr(a)} — ${mix(r)}`);
+    return { mood: 'ухмылка',
+      short: g.length ? `Держи пару, вацок: ${list.slice(0, 2).join('; ')}.` : 'Держи примеры, вацок.',
+      full: `<p>Примеры из текста урока ${L.n}:</p><ul>${list.map(x => `<li>${x}</li>`).join('')}</ul><p class="sf-dim">Новые примеры, которых нет в учебнике, ИИ пометит «доп.».</p>`,
+      src: { n: L.n, s: 0, t: `урок ${L.n} · Текст` } };
+  }
+  if (kind === 'got') return { mood: 'львигр!', short: 'Ты что за львигр, уцы! Идём дальше.', src: null };
+  /* свободный вопрос */
+  const q = arg.q || '';
+  if (/погод|футбол|музык|фильм|игр/i.test(q)) return { mood: 'сарказм', short: 'Внатуре лишканул, братишка. Я по сарфу, а не по этому. Давай про урок.', src: null };
+  const about = at ? (at.kind === 'para' ? `про ${at.label.toLowerCase()}` : `про слово ${sfAr(at.ar)}`) : (L ? `по уроку ${L.n}, шаг «${w.step}»` : '');
+  return { mood: 'объясняет',
+    short: `Хороший вопрос${about ? `, отвечаю ${about}` : ''}. (Тут будет ответ ИИ.)`,
+    full: `<p>Здесь ИИ ответит на вопрос «${sfEsc(q)}»${about ? ` ${about}` : ''}.</p><p>Он знает весь курс и видит, где ты сейчас: ${w.label}. В конце ответа ссылка, откуда это взято.</p>`,
+    src: at ? at.src : (L ? { n: L.n, s: w.s, t: w.label } : null) };
+}
+
+/* ---------- вложение: абзац или слово ---------- */
+function saifParaAtt(i) {
+  const L = lessonBy(CUR), p = L.text[i], card = document.querySelectorAll('#view .card.para')[i];
+  const src = card ? card.querySelector('.ar.src').cloneNode(true) : null; if (src) src.querySelectorAll('sup').forEach(x => x.remove());
+  return { kind: 'para', n: L.n, i, ar: src ? src.textContent.replace(/\s+/g, ' ').trim() : '', tr: p.tr, gl: glAll(p), label: `Абзац ${i + 1}`,
+    src: { n: L.n, s: 0, i, t: `урок ${L.n} · Текст, абзац ${i + 1}` } };
+}
+function saifAttach(att) {
+  SF.att = att; SF.last = null; SF.open = true; saifRender();
+  const inp = $('#saif .sf-ask input'); if (inp && matchMedia('(pointer:fine)').matches) inp.focus({ preventScroll: true });
+}
+const saifAttHtml = att => att ? `<div class="sf-att"><span class="sf-att-l">${att.kind === 'para' ? att.label : 'Слово'}</span><bdi class="ar" lang="ar" dir="rtl">${sfEsc(att.ar)}</bdi><button class="sf-att-x" data-sf="att-x" aria-label="Убрать">×</button></div>` : '';
+const saifPh = () => SF.att ? (SF.att.kind === 'para' ? 'Спросить про этот абзац…' : 'Спросить про это слово…') : 'Спросить…';
+const saifForm = () => `<form class="sf-ask" data-sf-form><input name="q" autocomplete="off" placeholder="${saifPh()}" aria-label="Вопрос Сайфумалику"><button aria-label="Отправить">${I.arrow}</button></form>`;
+
+/* ---------- ИИ: функция Сайфумалика (пусто = заготовленные ответы) ---------- */
+const SAIF_URL = (() => { try { return localStorage.getItem('mizan.saif.url') || ''; } catch (e) { return ''; } })() || "https://functions.yandexcloud.net/d4e13p9fp5t0i1tr0g1b";  /* функция Сайфумалика в Yandex Cloud */
+function saifDev() {
+  try { let d = localStorage.getItem('mizan.saif.dev'); if (!d) { d = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mizan.saif.dev', d); } return d; } catch (e) { return 'x'; }
+}
+const sfPlain = h => { const d = document.createElement('div'); d.innerHTML = h; return d.textContent.trim(); };
+/* текст модели → безопасный HTML.
+   Понимает: абзацы; «1. » шаги; «- » пункты; таблицы «| a | b |»; строку из одного арабского (пример) — крупно;
+   «> » — «запомни»; «### » — подзаголовок; **жирный**. Всё остальное экранируется. */
+const SF_AR_RUN = /[؀-ۿ][؀-ۿً-ٰٟ\s،؛ـ]*[؀-ۿً-ٰٟ]|[؀-ۿ]/g;
+const sfIsAr = s => /[؀-ۿ]/.test(s) && !/[A-Za-zА-Яа-яЁё]/.test(s);
+function sfInl(s) { return sfEsc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(SF_AR_RUN, m => sfAr(m.trim())); }
+function sfFmt(t, block) {
+  if (!block) return sfInl(String(t || '').replace(/\n+/g, ' '));
+  const lines = String(t || '').replace(/\r/g, '').split('\n'), out = [];
+  let i = 0;
+  const take = rx => { const a = []; while (i < lines.length && rx.test(lines[i])) a.push(lines[i++]); return a; };
+  while (i < lines.length) {
+    const ln = lines[i];
+    if (!ln.trim()) { i++; continue; }
+    if (/^\s*\|/.test(ln)) {                                   // таблица
+      const rows = take(/^\s*\|/).filter(r => !/^\s*\|?[\s:|-]+\|?\s*$/.test(r))
+        .map(r => r.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim()));
+      const cell = (c, tag) => `<${tag}${sfIsAr(c) ? ' class="ar" lang="ar" dir="rtl"' : ''}>${sfIsAr(c) ? sfEsc(c) : sfInl(c)}</${tag}>`;
+      if (rows.length) out.push(`<div class="sf-tw"><table class="sf-tbl"><thead><tr>${rows[0].map(c => cell(c, 'th')).join('')}</tr></thead><tbody>${rows.slice(1).map(r => `<tr>${r.map(c => cell(c, 'td')).join('')}</tr>`).join('')}</tbody></table></div>`);
+      continue;
+    }
+    if (/^\s*\d+[.)]\s/.test(ln)) { out.push(`<ol class="sf-steps">${take(/^\s*\d+[.)]\s/).map(x => `<li><span>${sfInl(x.replace(/^\s*\d+[.)]\s/, ''))}</span></li>`).join('')}</ol>`); continue; }
+    if (/^\s*[-•*]\s/.test(ln)) { out.push(`<ul>${take(/^\s*[-•*]\s/).map(x => `<li>${sfInl(x.replace(/^\s*[-•*]\s/, ''))}</li>`).join('')}</ul>`); continue; }
+    if (/^\s*>\s?/.test(ln)) { out.push(`<p class="sf-tip">${take(/^\s*>\s?/).map(x => sfInl(x.replace(/^\s*>\s?/, ''))).join('<br>')}</p>`); continue; }
+    if (/^\s*#{1,4}\s/.test(ln)) { out.push(`<h4 class="sf-h">${sfInl(ln.replace(/^\s*#{1,4}\s/, ''))}</h4>`); i++; continue; }
+    if (sfIsAr(ln)) { out.push(`<div class="sf-ex" lang="ar" dir="rtl">${take({ test: x => x.trim() && sfIsAr(x) }).map(x => sfEsc(x.trim().replace(/→/g, '←'))).join('<br>')}</div>`); continue; }
+    const par = take({ test: x => x.trim() && !/^\s*(\||\d+[.)]\s|[-•*]\s|>|#{1,4}\s)/.test(x) && !sfIsAr(x) });
+    out.push(`<p>${par.map(sfInl).join('<br>')}</p>`);
+  }
+  return out.join('');
+}
+function sfSrcMap(s) {
+  if (!s || !s.lesson) return null;
+  const k = Math.max(0, STEPS.indexOf(s.step));
+  return { n: s.lesson, s: s.note ? 0 : k, i: s.para ? s.para - 1 : undefined, note: s.note || undefined,
+    t: `урок ${s.lesson} · ${s.note ? `примечание ${s.note}` : STEPS[k] + (s.para ? `, абзац ${s.para}` : '')}` };
+}
+async function saifRemote(kind, arg, att) {
+  const hist = []; for (let k = 0; k + 1 < SF.log.length; k++) if (SF.log[k].who === 'me' && SF.log[k + 1].who === 'bot') hist.push({ me: SF.log[k].plain, bot: SF.log[k + 1].plainShort });
+  const body = { kind: 'chat', lesson: R === 'lesson' ? CUR : 0, step: R === 'lesson' ? stepOf() : 0, dev: saifDev(), hist: hist.slice(-4),
+    att: att ? (att.kind === 'para' ? { kind: 'para', i: att.i } : { kind: 'word', w: att.ar, i: att.src && att.src.i !== undefined ? att.src.i : -1 }) : null,
+    act: kind !== 'free' ? kind : undefined, q: kind === 'free' ? arg.q : undefined };
+  const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 30000);
+  try {
+    const r = await fetch(SAIF_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctl.signal });
+    const j = await r.json(); if (!r.ok || !j.short) throw new Error(j.error || r.status);
+    return { mood: j.mood, short: sfFmt(j.short), full: j.full ? sfFmt(j.full, true) : '', src: sfSrcMap(j.src), plainShort: j.short };
+  } finally { clearTimeout(to); }
+}
+
+/* ---------- разговор ---------- */
+function saifAsk(kind, arg, userText) {
+  if (SF.busy) return;
+  if (!saifLeft()) { SF.last = { mood: 'сарказм', short: 'На сегодня всё, вацок, 50 вопросов. Отдохни, завтра продолжим.', src: null }; SF.open = true; return saifRender(); }
+  saifSpend();
+  const att = SF.att;
+  SF.log.push({ who: 'me', html: userText, att, plain: sfPlain(userText) });
+  SF.busy = true; SF.open = !(sheetOpen() && $('#sheet .sf-sheet')); SF.mood = 'объясняет'; saifRender(); saifSheetUpdate();
+  const done = a => {
+    SF.busy = false; SF.last = a; SF.mood = a.mood;
+    SF.log.push({ who: 'bot', html: a.full || `<p>${a.short}</p>`, src: a.src, mood: a.mood, plainShort: a.plainShort || sfPlain(a.short) });
+    saifRender(); saifSheetUpdate();
+  };
+  if (SAIF_URL) {
+    saifRemote(kind, arg || {}, att).then(done).catch(() => { SF.log.pop(); done({ mood: 'сарказм', short: 'Связь пропала, вацок. Попробуй ещё раз чуть позже.', src: null }); SF.log.pop(); });
+    return;
+  }
+  clearTimeout(SF.timer);
+  SF.timer = setTimeout(() => done(saifAnswer(kind, Object.assign({}, arg, { att }))), 900);
+}
+const sfChip = (k, t) => `<button data-sf="q" data-k="${k}">${t}</button>`;
+function saifChipList() {
+  const w = saifWhere(), at = SF.att;
+  if (at && at.kind === 'para') return sfChip('p-simple', 'Объясни проще') + sfChip('p-tr', 'Переведи') + sfChip('p-core', 'В чём суть?');
+  if (at && at.kind === 'word') return sfChip('w-mean', 'Что значит?') + sfChip('w-form', 'Разбери форму') + (at.tr ? sfChip('w-sent', 'Всё предложение') : '');
+  if (w.L && w.s === 4) return '';
+  return sfChip('simple', 'Объясни проще') + sfChip('examples', 'Дай ещё примеры');
+}
+const saifChips = (extra) => { const h = (extra || '') + saifChipList(); return h ? `<div class="sf-chips">${h}</div>` : ''; };
+const saifSrc = s => s ? `<button class="sf-src" data-sf="src" data-n="${s.n}" data-s="${s.s}" ${s.i !== undefined ? `data-i="${s.i}"` : ''} ${s.note ? `data-note="${s.note}"` : ''}>${I.arrow}${s.t}</button>` : '';
+
+function saifBubble() {
+  if (SF.busy) return `<div class="sf-head"><b>Сайфумалик</b></div><div class="sf-dots" aria-label="Сайфумалик пишет"><i></i><i></i><i></i></div>`;
+  const a = SF.last || saifAnswer('hello', { att: SF.att });
+  const answered = !!SF.last;
+  return `<div class="sf-head"><b>Сайфумалик</b><button class="sf-x" data-sf="x" aria-label="Закрыть">×</button></div>
+    <div class="sf-txt" aria-live="polite">${a.short}</div>
+    ${answered ? `<div class="sf-row">${a.full || SF.log.length > 2 ? `<button class="sf-more" data-sf="more">Подробнее ›</button>` : ''}${saifSrc(a.src)}</div>` : ''}
+    ${saifChips(answered && a.mood !== 'львигр!' && a.mood !== 'сарказм' ? sfChip('got', 'Понял') : '')}
+    ${saifAttHtml(SF.att)}${saifForm()}`;
+}
+
+function saifRender() {
+  let box = $('#saif');
+  if (!box) {
+    box = document.createElement('div'); box.id = 'saif';
+    box.innerHTML = `<div class="sf-bubble" role="dialog" aria-label="Сайфумалик" hidden></div><button class="sf-ava" data-sf="ava" aria-label="Спросить Сайфумалика" aria-expanded="false">${saifFace('спокойный')}</button>`;
+    document.body.append(box);
+  }
+  box.hidden = !saifVisible();
+  box.classList.toggle('in-lesson', R === 'lesson');
+  const b = box.querySelector('.sf-bubble'), ava = box.querySelector('.sf-ava');
+  b.hidden = !SF.open; ava.setAttribute('aria-expanded', String(SF.open));
+  if (SF.open) b.innerHTML = saifBubble();
+  ava.querySelector('canvas').dataset.mood = SF.busy ? 'объясняет' : SF.mood;
+  ava.classList.toggle('busy', SF.busy);
+  saifPaint(box);
+}
+
+/* полный разговор: шторка */
+function saifSheetHtml() {
+  const msgs = SF.log.map(m => m.who === 'me'
+    ? `<div class="sf-m me">${m.att ? `<div class="sf-q">${m.att.kind === 'para' ? m.att.label : 'Слово'} · <bdi class="ar" lang="ar" dir="rtl">${sfEsc(sfCut(m.att.ar, 60))}</bdi></div>` : ''}${m.html}</div>`
+    : `<div class="sf-m bot">${saifFace(m.mood || 'спокойный', 'sm')}<div class="sf-mb">${m.html}${saifSrc(m.src)}</div></div>`).join('');
+  return `<div class="sf-sheet"><div class="sf-sh-h">${saifFace(SF.busy ? 'объясняет' : SF.mood, 'md')}<div><h3>Сайфумалик</h3><small>${saifWhere().label} · осталось ${saifLeft()} из ${SAIF_LIMIT} сегодня</small></div></div>
+    ${SAIF_URL ? '' : '<p class="sf-note">Примерочная: ответы заготовлены, ИИ подключим позже.</p>'}
+    <div class="sf-log">${msgs}${SF.busy ? `<div class="sf-m bot">${saifFace('объясняет', 'sm')}<div class="sf-mb"><div class="sf-dots"><i></i><i></i><i></i></div></div></div>` : ''}</div>
+    ${saifChips()}${saifAttHtml(SF.att)}${saifForm()}
+    <p class="sf-dim">Вопросы без имён помогают улучшать курс.</p></div>`;
+}
+function saifSheetUpdate() {
+  const sh = $('#sheet'); if (!sheetOpen() || !sh.querySelector('.sf-sheet')) return;
+  sh.innerHTML = '<div class="grab"></div>' + saifSheetHtml(); saifPaint(sh);
+  const log = sh.querySelector('.sf-log'); if (log && log.lastElementChild) log.lastElementChild.scrollIntoView({ block: 'nearest' });
+}
+function saifOpenSheet() { SF.open = false; saifRender(); openSheet(saifSheetHtml()); saifPaint($('#sheet')); saifSheetUpdate(); }
+function saifGoSrc(b) {
+  closeSheet(); SF.open = false; const n = +b.dataset.n, s = +b.dataset.s, i = b.dataset.i;
+  S.at[n] = s; S.max[n] = Math.max(S.max[n] || 0, s); persist();
+  if (n !== CUR || R !== 'lesson') openLesson(n); else { render(); window.scrollTo(0, 0); }
+  if (b.dataset.note) return setTimeout(() => openFn(+b.dataset.note), 380);
+  if (i !== undefined) setTimeout(() => {
+    const c = document.querySelectorAll('#view .card.para')[+i]; if (!c) return;
+    c.scrollIntoView({ block: 'center', behavior: 'smooth' }); c.classList.add('sf-flash'); setTimeout(() => c.classList.remove('sf-flash'), 1400);
+  }, 380);
+}
+
+/* клики и отправка */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-sf]');
+  if (!b) { if (SF.open && !e.target.closest('#saif')) { SF.open = false; saifRender(); } return; }
+  e.stopPropagation();
+  const k = b.dataset.sf;
+  if (k === 'ava') { SF.open = !SF.open; if (SF.open && !SF.log.length) SF.last = null; saifRender(); if (SF.open) { const i = $('#saif .sf-ask input'); if (i && matchMedia('(pointer:fine)').matches) i.focus({ preventScroll: true }); } return; }
+  if (k === 'x') { SF.open = false; return saifRender(); }
+  if (k === 'att-x') { SF.att = null; SF.last = null; saifRender(); return saifSheetUpdate(); }
+  if (k === 'more') return saifOpenSheet();
+  if (k === 'q') return saifAsk(b.dataset.k, null, b.textContent);
+  if (k === 'src') return saifGoSrc(b);
+  if (k === 'para') return saifAttach(saifParaAtt(+b.dataset.i));
+  if (k === 'word') {
+    closeSheet();
+    const L = R === 'lesson' ? lessonBy(CUR) : null, i = b.dataset.i;
+    return saifAttach({ kind: 'word', w: b.dataset.w, ar: W_CLEAN(b.dataset.w), n: L ? L.n : 0, tr: L && i !== undefined ? L.text[+i].tr : '',
+      src: L ? (i !== undefined ? { n: L.n, s: 0, i: +i, t: `урок ${L.n} · Текст, абзац ${+i + 1}` } : { n: L.n, s: stepOf(), t: saifWhere().label }) : null });
+  }
+}, true);
+document.addEventListener('submit', e => {
+  const f = e.target.closest('[data-sf-form]'); if (!f) return;
+  e.preventDefault(); const q = f.q.value.trim(); if (!q) return;
+  saifAsk('free', { q }, sfEsc(q));
+});
+
+/* карточка слова: «Спросить Сайфумалика» прикрепляет слово к вопросу */
+const _saifOpenWord = sheetOpenWord;
+sheetOpenWord = function (el) {
+  _saifOpenWord(el);
+  if (!saifVisible() || (R === 'lesson' && stepOf() === 4)) return;
+  const btn = document.createElement('button'); btn.className = 'btn ghost block sf-wbtn'; btn.dataset.sf = 'word'; btn.dataset.w = el.textContent;
+  const card = el.closest('#view .card.para'); if (card && R === 'lesson' && stepOf() === 0) btn.dataset.i = [...document.querySelectorAll('#view .card.para')].indexOf(card);
+  btn.innerHTML = `${saifFace('спокойный', 'xs')}Спросить Сайфумалика`;
+  const sh = $('#sheet'), last = sh.querySelector('.btn.ghost.block:last-child'); sh.insertBefore(btn, last || null); saifPaint(btn);
+};
+
+/* кнопка «Спросить» у каждого абзаца текста урока */
+function saifDecorate() {
+  if (R !== 'lesson' || stepOf() !== 0 || !saifVisible()) return;
+  document.querySelectorAll('#view .card.para').forEach((card, i) => {
+    if (card.querySelector('.sf-pbtn')) return;
+    const disc = card.querySelector(':scope > .disc'); if (!disc) return;
+    const row = document.createElement('div'); row.className = 'sf-prow'; disc.before(row); row.append(disc);
+    const b = document.createElement('button'); b.className = 'sf-pbtn'; b.dataset.sf = 'para'; b.dataset.i = i;
+    b.setAttribute('aria-label', `Спросить Сайфумалика про абзац ${i + 1}`);
+    b.innerHTML = `${saifFace('спокойный', 'xs')}<span>Спросить</span>`; row.append(b); saifPaint(b);
+  });
+}
+new MutationObserver(saifDecorate).observe($('#view'), { childList: true, subtree: true });
+
+/* показывать / прятать вместе с экранами; вне урока (или в другом уроке) вложение сбрасывается */
+const _saifRender = render;
+render = function () {
+  _saifRender();
+  SF.open = SF.open && saifVisible();
+  if (SF.att && (R !== 'lesson' || (SF.att.n && CUR !== SF.att.n))) { SF.att = null; SF.last = null; }
+  saifRender(); saifDecorate();
+};
+saifRender();
 </script>
 </body>
 </html>
