@@ -954,13 +954,13 @@ body{font-family:var(--font-ui);font-size:16.5px}
 #saif > *{pointer-events:auto}
 .app.focus{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 canvas.sf-face{image-rendering:pixelated;image-rendering:crisp-edges;display:block}
-.sf-ava{width:58px;height:58px;border-radius:50%;padding:0;border:2px solid var(--surface);background:var(--shell,#1E2559);overflow:hidden;cursor:pointer;
+.sf-ava{width:64px;height:64px;border-radius:50%;padding:0;border:0;display:grid;place-items:center;outline:2px solid var(--surface);outline-offset:-1px;background:var(--shell,#1E2559);overflow:hidden;cursor:pointer;
   box-shadow:0 8px 22px -8px rgba(15,18,41,.55);transition:transform .15s ease}
-.sf-ava canvas{width:100%;height:100%;transform:translateY(3px)}
+.sf-ava canvas{display:block}
 .sf-ava:active{transform:scale(.94)}
-.sf-ava[aria-expanded="true"]{border-color:var(--saf,#E2A33B)}
+.sf-ava[aria-expanded="true"]{outline-color:var(--saf,#E2A33B)}
 .sf-ava.busy canvas{animation:sf-bob .6s ease-in-out infinite alternate}
-@keyframes sf-bob{to{transform:translateY(1px)}}
+@keyframes sf-bob{to{transform:translateY(2px)}}
 .sf-ava:focus-visible{outline:3px solid var(--saf,#E2A33B);outline-offset:2px}
 
 .sf-bubble{width:min(300px,calc(100vw - 28px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px 18px 6px 18px;
@@ -994,9 +994,9 @@ canvas.sf-face{image-rendering:pixelated;image-rendering:crisp-edges;display:blo
 .sf-sh-h{display:flex;align-items:center;gap:12px}
 .sf-sh-h h3{margin:0;font-size:22px}
 .sf-sh-h small{color:var(--muted);font-size:13px}
-canvas.sf-face.md{width:52px;height:52px;border-radius:50%;background:var(--shell,#1E2559);flex:none}
-canvas.sf-face.sm{width:30px;height:30px;border-radius:50%;background:var(--shell,#1E2559);flex:none}
-canvas.sf-face.xs{width:24px;height:24px;border-radius:50%;background:var(--shell,#1E2559);flex:none}
+canvas.sf-face.md{border-radius:50%;background:var(--shell,#1E2559);flex:none}
+canvas.sf-face.sm{border-radius:50%;background:var(--shell,#1E2559);flex:none}
+canvas.sf-face.xs{border-radius:50%;background:var(--shell,#1E2559);flex:none}
 .sf-note{margin:0;font-size:13px;color:var(--muted);background:var(--surface-2);border-radius:10px;padding:7px 10px}
 .sf-log{display:grid;gap:10px;max-height:46vh;overflow:auto;padding-right:2px}
 .sf-m{max-width:88%;font-size:15px;line-height:1.5}
@@ -1022,7 +1022,7 @@ canvas.sf-face.xs{width:24px;height:24px;border-radius:50%;background:var(--shel
 .sf-prow .disc > :not(svg){overflow:hidden;text-overflow:ellipsis}
 .sf-pbtn{flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--accent);border-radius:999px;padding:3px 11px 3px 3px;font:600 13px var(--font-ui,inherit);cursor:pointer;min-height:34px}
 .sf-pbtn:hover{background:var(--surface-2)}
-.sf-pbtn canvas.sf-face.xs{width:26px;height:26px}
+.sf-pbtn{padding-left:2px}
 .card.para.sf-flash{box-shadow:0 0 0 3px var(--saf,#E2A33B);transition:box-shadow .3s}
 @media (prefers-reduced-motion:reduce){.sf-bubble,.sf-ava.busy canvas,.sf-dots i{animation:none}}
 /* оформление полного ответа */
@@ -1047,6 +1047,14 @@ canvas.sf-face.xs{width:24px;height:24px;border-radius:50%;background:var(--shel
   box-shadow:0 8px 24px -10px rgba(15,18,41,.5);cursor:pointer;max-width:calc(100vw - 32px);animation:sf-in .2s ease}
 #sf-back svg{width:18px;height:18px;flex:none}
 #sf-back span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* голосовой ввод */
+.sf-ask .sf-mic{flex:none;width:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--accent);display:grid;place-items:center;cursor:pointer}
+.sf-ask .sf-mic svg{width:19px;height:19px}
+.sf-ask .sf-mic.rec{background:var(--mad,#B3261E);border-color:var(--mad,#B3261E);color:#fff;animation:sf-pulse 1.2s ease-in-out infinite}
+.sf-ask .sf-mic.busy{opacity:.6;cursor:progress}
+@keyframes sf-pulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--mad,#B3261E) 25%,transparent)}}
+.sf-mic-err{margin:-2px 0 0;font-size:12.5px;color:var(--bad,#B3261E);line-height:1.4}
+@media (prefers-reduced-motion:reduce){.sf-ask .sf-mic.rec{animation:none}}
 </style>
 </head>
 <body>
@@ -6949,16 +6957,23 @@ if (CAN_HAP) {
 }
 
 /* ============ САЙФУМАЛИК — примерочная интерфейса (ответы заготовлены, без ИИ) ============ */
-const SAIF_PX = {"base": ["................................", "................................", "...........KKKKKKKKKK...........", ".........KKHHhHHHHhHHKK.........", "........KHHHHHhHHHHHhHHK........", ".......KHHhHHHHHHHHHHHhHK.......", ".......KHHHHHHHHHHHHHHHHK.......", ".......KHHSSSSSSSSSSSSHHK.......", ".......KHSSSSSSSSSSSSSSHK.......", ".......KSSSSSSSSSSSSSSSSK.......", ".......KSSSSSSSSSSSSSSSSK.......", ".......KSBBBBBSSSSBBBBBSK.......", "....KKKKSSSSBBSSSSBBSSSSKKKK....", "....KeSKSSSSSSSSSSSSSSSSKSeK....", "....KeSKSSKKKKSSSSKKKKSSKSeK....", "....KeSKSSWEEWSlsSWEEWSSKSeK....", "....KeSKSSSssSSlsSSssSSSKSeK....", "....KeSKSSSSSSSlsSSSSSSSKSeK....", ".....KKKSSSSSSslssSSSSSSKKK.....", ".......KSSSSSsdssdsSSSSSK.......", ".......KsSSSSSssssSSSSSsK.......", ".......KsSSSSsMMMMsSSSSsK.......", "........KgSSSmmmmmmSSSgK........", "........KgSSSSMMMMSSSSgK........", "........KgSSSSSGGSSSSSgK........", ".........KgSSGGGGGGSSgK.........", "..........KgGGGGGGGGgK..........", "............KGGGGGGK............", "............KsSSSSsK............", "......KTTTTTKsSSSSsKTTTTTK......", "...KTTTTTTTTTccccccTTTTTTTTTK...", "..KXXXXXXXXXXXXXXXXXXXXXXXXXXK.."], "moods": {"спокойный": {}, "ухмылка": {"21": ".......KsSSSSsMMMMsmSSSsK.......", "22": "........KgSSSmmmmmmmSSgK........"}, "сарказм": {"10": ".......KSSSSSSSSSSBBBBBSK.......", "11": ".......KSBBBBBSSSSSSSSSSK.......", "12": "....KKKKSSSSBBSSSSSSSSSSKKKK....", "14": "....KeSKSSSSSSSSSSKKKKSSKSeK....", "15": "....KeSKSSKKKKSlsSWEEWSSKSeK....", "22": "........KgSSSSmmmmmSSSgK........"}, "объясняет": {"10": ".......KSBBBBBSSSSBBBBBSK.......", "11": ".......KSSSSBBSSSSBBSSSSK.......", "12": "....KKKKSSSSSSSSSSSSSSSSKKKK....", "22": "........KgSSSmmEEmmSSSgK........", "23": "........KgSSSSMMMMSSSSgK........"}, "львигр!": {"14": "....KeSKSSSKKSSSSSSKKSSSKSeK....", "15": "....KeSKSSKSSKSlsSKSSKSSKSeK....", "21": ".......KsSSSSmmmmmmSSSSsK.......", "22": "........KgSSmWWWWWWmSSgK........", "23": "........KgSSSmMMMMmSSSgK........"}}, "pal": {"S": "#efc1a2", "s": "#dba083", "d": "#bf7f66", "l": "#f9dcc6", "e": "#d08e74", "W": "#f4ece6", "E": "#2a1912", "B": "#2a1c16", "M": "#cf8078", "m": "#8f4a44", "G": "#35261f", "g": "#9b7a66", "K": "#24170f", "H": "#2f231d", "h": "#4d3c32", "T": "#1d2444", "c": "#151a33", "X": "#eef1f6"}};
+const SAIF_PX = {"base": ["................................", "................................", "...........KKKKKKKKKK...........", ".........KKHHhHHHHhHHKK.........", "........KHHHHHhHHHHHhHHK........", ".......KHHhHHHHHHHHHHHhHK.......", ".......KHHHHHHHHHHHHHHHHK.......", ".......KHHSSSSSSSSSSSSHHK.......", ".......KHSSSSSSSSSSSSSSHK.......", ".......KSSSSSSSSSSSSSSSSK.......", ".......KSSSSSSSSSSSSSSSSK.......", ".......KSBBBBBSSSSBBBBBSK.......", "....KKKKSSSSBBSSSSBBSSSSKKKK....", "....KeSKSSSSSSSSSSSSSSSSKSeK....", "....KeSKSSKKKKSSSSKKKKSSKSeK....", "....KeSKSSWEEWSlsSWEEWSSKSeK....", "....KeSKSSSssSSlsSSssSSSKSeK....", "....KeSKSSSSSSSlsSSSSSSSKSeK....", ".....KKKSSSSSSslssSSSSSSKKK.....", ".......KSSSSSsdssdsSSSSSK.......", ".......KsSSSSSssssSSSSSsK.......", ".......KsSSSSsMMMMsSSSSsK.......", "........KgSSSmmmmmmSSSgK........", "........KgSSSSMMMMSSSSgK........", "........KgSSSSSGGSSSSSgK........", ".........KgSSGGGGGGSSgK.........", "..........KgGGGGGGGGgK..........", "............KGGGGGGK............", "............KsSSSSsK............", "......KTTTTTKsSSSSsKTTTTTK......", "...KTTTTTTTTTccccccTTTTTTTTTK...", "..KXXXXXXXXXXXXXXXXXXXXXXXXXXK.."], "moods": {"спокойный": {}, "ухмылка": {"21": ".......KsSSSSsMMMMsmSSSsK.......", "22": "........KgSSSmmmmmmmSSgK........"}, "сарказм": {"10": ".......KSSSSSSSSSSBBBBBSK.......", "11": ".......KSBBBBBSSSSSSSSSSK.......", "12": "....KKKKSSSSBBSSSSSSSSSSKKKK....", "14": "....KeSKSSSSSSSSSSKKKKSSKSeK....", "15": "....KeSKSSKKKKSlsSWEEWSSKSeK....", "22": "........KgSSSSmmmmmSSSgK........"}, "объясняет": {"10": ".......KSBBBBBSSSSBBBBBSK.......", "11": ".......KSSSSBBSSSSBBSSSSK.......", "12": "....KKKKSSSSSSSSSSSSSSSSKKKK....", "22": "........KgSSSmmEEmmSSSgK........", "23": "........KgSSSSMMMMSSSSgK........"}, "львигр!": {"14": "....KeSKSSSKKSSSSSSKKSSSKSeK....", "15": "....KeSKSSKSSKSlsSKSSKSSKSeK....", "21": ".......KsSSSSmmmmmmSSSSsK.......", "22": "........KgSSmWWWWWWmSSgK........", "23": "........KgSSSmMMMMmSSSgK........"}}, "pal": {"S": "#efc1a2", "s": "#dba083", "d": "#bf7f66", "l": "#f9dcc6", "e": "#d08e74", "W": "#f4ece6", "E": "#3a2219", "B": "#3a2820", "M": "#cf8078", "m": "#8f4a44", "G": "#35261f", "g": "#9b7a66", "K": "#7a4b39", "H": "#c79f88", "h": "#a9836e", "T": "#1d2444", "c": "#151a33", "X": "#eef1f6"}};
 const SAIF_LIMIT = 50;
-const SF = { open: false, busy: false, mood: 'спокойный', log: [], last: null, timer: 0, att: null };
+const SF = { open: false, busy: false, mood: 'спокойный', log: [], last: null, timer: 0, att: null, draft: '', mic: { rec: false, wait: false, stt: false, err: '' } };
 
 function saifRows(m) { const o = SAIF_PX.moods[m] || {}; return SAIF_PX.base.map((r, i) => o[i] || r); }
+/* маскот рисуется только целыми пикселями: каждая клетка 32×32 = k×k точек экрана (с учётом плотности экрана),
+   без сжатия браузером — иначе линии лица искажаются. Размеры: big 64, md 64, sm 32, xs 32 (css px, примерно) */
+const SF_SIZE = { big: 64, md: 64, sm: 32, xs: 32 };
 function saifDraw(c, m) {
-  const x = c.getContext('2d'); x.clearRect(0, 0, 32, 32);
-  saifRows(m).forEach((r, y) => [...r].forEach((ch, xx) => { if (ch !== '.') { x.fillStyle = SAIF_PX.pal[ch] || '#f0f'; x.fillRect(xx, y, 1, 1); } }));
+  const want = SF_SIZE[c.dataset.size] || 64, dpr = window.devicePixelRatio || 1;
+  const k = Math.max(1, Math.floor(want * dpr / 32)), side = 32 * k;
+  if (c.width !== side) { c.width = side; c.height = side; }
+  c.style.width = c.style.height = (side / dpr) + 'px';
+  const x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.clearRect(0, 0, side, side);
+  saifRows(m).forEach((r, y) => [...r].forEach((ch, xx) => { if (ch !== '.') { x.fillStyle = SAIF_PX.pal[ch] || '#f0f'; x.fillRect(xx * k, y * k, k, k); } }));
 }
-const saifFace = (m, cls) => `<canvas class="sf-face ${cls || ''}" width="32" height="32" data-mood="${m}" aria-hidden="true"></canvas>`;
+const saifFace = (m, cls) => `<canvas class="sf-face ${cls || ''}" data-size="${cls || 'big'}" width="32" height="32" data-mood="${m}" aria-hidden="true"></canvas>`;
 function saifPaint(root) { (root || document).querySelectorAll('canvas.sf-face').forEach(c => saifDraw(c, c.dataset.mood)); }
 
 /* счётчик вопросов на день (на устройстве; на сервере будет свой) */
@@ -7073,7 +7088,73 @@ function saifAttach(att) {
 }
 const saifAttHtml = att => att ? `<div class="sf-att"><span class="sf-att-l">${att.kind === 'para' ? att.label : 'Слово'}</span><bdi class="ar" lang="ar" dir="rtl">${sfEsc(att.ar)}</bdi><button class="sf-att-x" data-sf="att-x" aria-label="Убрать">×</button></div>` : '';
 const saifPh = () => SF.att ? (SF.att.kind === 'para' ? 'Спросить про этот абзац…' : 'Спросить про это слово…') : 'Спросить…';
-const saifForm = () => `<form class="sf-ask" data-sf-form><input name="q" autocomplete="off" placeholder="${saifPh()}" aria-label="Вопрос Сайфумалику"><button aria-label="Отправить">${I.arrow}</button></form>`;
+const SF_MIC_ICO = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const SF_STOP_ICO = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg>';
+function saifMicBtn() {
+  const m = SF.mic;
+  const lbl = m.rec ? 'Остановить запись' : m.stt ? 'Распознаю…' : m.wait ? 'Включаю микрофон…' : 'Сказать голосом';
+  return `<button type="button" class="sf-mic ${m.rec ? 'rec' : ''} ${m.stt || m.wait ? 'busy' : ''}" data-sf="mic" aria-label="${lbl}" title="${lbl}" ${m.stt ? 'disabled' : ''}>${m.rec ? SF_STOP_ICO : SF_MIC_ICO}</button>`;
+}
+const saifForm = () => `<form class="sf-ask" data-sf-form><input name="q" autocomplete="off" placeholder="${SF.mic.rec ? 'Говори… потом нажми ■' : SF.mic.stt ? 'Распознаю голос…' : saifPh()}" value="${sfEsc(SF.draft).replace(/"/g, '&quot;')}" aria-label="Вопрос Сайфумалику">${saifMicBtn()}<button aria-label="Отправить">${I.arrow}</button></form>${SF.mic.err ? `<p class="sf-mic-err">${SF.mic.err}</p>` : ''}`;
+
+/* ---------- голос: как в «Зачёте» — запись → распознавание в функции зачёта (арабские термины арабскими буквами);
+   если браузер не умеет записывать — распознавание самого браузера ---------- */
+function saifMicUpd() { saifRender(); saifSheetUpdate(); }
+function saifMicDone(text) {
+  if (text) SF.draft = (SF.draft ? SF.draft.trim() + ' ' : '') + text.trim();
+  saifMicUpd();
+  const inp = document.querySelector(sheetOpen() && $('#sheet .sf-sheet') ? '#sheet .sf-ask input' : '#saif .sf-ask input');
+  if (inp && text) { inp.focus({ preventScroll: true }); inp.setSelectionRange(inp.value.length, inp.value.length); }
+}
+let SF_REC = null;
+async function saifMic() {
+  const m = SF.mic;
+  if (m.rec || m.wait) { try { SF_REC && SF_REC.stop(); } catch (e) {} if (!SF_REC) { m.rec = m.wait = false; saifMicUpd(); } return; }
+  m.err = '';
+  if (zCanRecord()) {
+    let stream;
+    m.wait = true; saifMicUpd();
+    try { stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true } }); }
+    catch (e) { m.wait = false; m.err = e && (e.name === 'NotAllowedError' || e.name === 'SecurityError') ? zMicHelp() : 'Микрофон не найден или занят другим приложением.'; return saifMicUpd(); }
+    const mime = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm', 'audio/ogg;codecs=opus'].find(x => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(x)) || '';
+    let rec; try { rec = new MediaRecorder(stream, mime ? { mimeType: mime, audioBitsPerSecond: 32000 } : undefined); } catch (e) { rec = new MediaRecorder(stream); }
+    const chunks = [], t0 = Date.now();
+    SF_REC = rec; m.wait = false; m.rec = true; saifMicUpd();
+    const stopT = setTimeout(() => { try { rec.stop(); } catch (e) {} }, 60000);
+    rec.ondataavailable = ev => { if (ev.data && ev.data.size) chunks.push(ev.data); };
+    rec.onstop = async () => {
+      clearTimeout(stopT); stream.getTracks().forEach(t => t.stop()); SF_REC = null; m.rec = false;
+      if (Date.now() - t0 < 700 || !chunks.length) { m.err = 'Запись слишком короткая. Нажми микрофон, говори, потом ■.'; return saifMicUpd(); }
+      m.stt = true; saifMicUpd();
+      let text = '';
+      try {
+        const blob = new Blob(chunks, { type: rec.mimeType || mime || 'audio/webm' });
+        const b64 = await new Promise((ok, no) => { const fr = new FileReader(); fr.onload = () => ok(String(fr.result).split(',')[1]); fr.onerror = no; fr.readAsDataURL(blob); });
+        const r = await zPost({ kind: 'stt', mime: blob.type, audio: b64 });
+        text = (r.text || '').trim(); if (!text) m.err = 'Не удалось разобрать запись. Попробуй ещё раз, ближе к телефону.';
+      } catch (e) { m.err = 'Не удалось распознать: нет связи. Можно продиктовать через микрофон на клавиатуре телефона.'; }
+      m.stt = false; saifMicDone(text);
+    };
+    rec.start(1000);
+    return;
+  }
+  const SR = zSR();
+  if (!SR) { m.err = 'В этом браузере нет распознавания речи. Продиктуй через микрофон на клавиатуре телефона.'; return saifMicUpd(); }
+  const rec = new SR(), base = (SF.draft || '').trim();
+  rec.lang = 'ru-RU'; rec.interimResults = true; rec.continuous = true;
+  let started = false;
+  rec.onstart = () => { started = true; m.wait = false; m.rec = true; saifMicUpd(); };
+  rec.onresult = ev => {
+    let t = ''; for (let i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript;
+    SF.draft = (base ? base + ' ' : '') + t.replace(/\s+/g, ' ').trim();
+    document.querySelectorAll('.sf-ask input').forEach(x => { x.value = SF.draft; });
+  };
+  rec.onerror = ev => { m.err = ev.error === 'not-allowed' || ev.error === 'service-not-allowed' ? zMicHelp() : ev.error === 'no-speech' ? 'Ничего не слышно. Нажми микрофон ещё раз и говори.' : ev.error === 'aborted' ? '' : 'Не получилось распознать. Попробуй ещё раз.'; };
+  rec.onend = () => { m.rec = m.wait = false; if (SF_REC === rec) SF_REC = null; saifMicDone(''); };
+  SF_REC = rec; m.wait = true; saifMicUpd();
+  try { rec.start(); } catch (e) { m.wait = false; m.err = 'Не получилось включить микрофон.'; return saifMicUpd(); }
+  setTimeout(() => { if (!started && SF_REC === rec) { try { rec.abort(); } catch (e) {} m.wait = m.rec = false; SF_REC = null; if (!m.err) m.err = 'Микрофон не включился. Нажми ещё раз и разреши доступ.'; saifMicUpd(); } }, 8000);
+}
 
 /* ---------- ИИ: функция Сайфумалика (пусто = заготовленные ответы) ---------- */
 const SAIF_URL = (() => { try { return localStorage.getItem('mizan.saif.url') || ''; } catch (e) { return ''; } })() || "https://functions.yandexcloud.net/d4e13p9fp5t0i1tr0g1b";  /* функция Сайфумалика в Yandex Cloud */
@@ -7266,6 +7347,7 @@ document.addEventListener('click', e => {
   if (k === 'qq') return saifAsk('free', { q: b.dataset.q }, sfEsc(b.textContent));
   if (k === 'fill') { const f = b.closest('.sf-bubble, .sf-sheet'), inp = f && f.querySelector('.sf-ask input'); if (inp) { inp.value = b.dataset.q; inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); } return; }
   if (k === 'back') return saifBack();
+  if (k === 'mic') return saifMic();
   if (k === 'src') return saifGoSrc(b);
   if (k === 'para') return saifAttach(saifParaAtt(+b.dataset.i));
   if (k === 'word') {
@@ -7278,8 +7360,12 @@ document.addEventListener('click', e => {
 document.addEventListener('submit', e => {
   const f = e.target.closest('[data-sf-form]'); if (!f) return;
   e.preventDefault(); const q = f.q.value.trim(); if (!q) return;
+  if (SF.mic.rec) { try { SF_REC && SF_REC.stop(); } catch (er) {} }
+  SF.draft = ''; SF.mic.err = '';
   saifAsk('free', { q }, sfEsc(q));
 });
+/* недописанный вопрос не теряется, когда пузырь или шторка перерисовываются */
+document.addEventListener('input', e => { if (e.target.closest && e.target.closest('[data-sf-form]')) SF.draft = e.target.value; });
 
 /* карточка слова: «Спросить Сайфумалика» прикрепляет слово к вопросу */
 const _saifOpenWord = sheetOpenWord;
