@@ -1028,7 +1028,7 @@ canvas.sf-face.xs{border-radius:50%;background:var(--shell,#1E2559);flex:none}
 /* оформление полного ответа */
 .sf-mb .sf-steps{list-style:none;counter-reset:sf;padding:0;margin:0;display:grid;gap:8px}
 .sf-mb .sf-steps li{counter-increment:sf;display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start}
-.sf-mb .sf-steps li::before{content:counter(sf);width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 12.5px var(--font-ui,inherit);margin-top:1px}
+.sf-mb .sf-steps li::before{content:attr(data-n);width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 12.5px var(--font-ui,inherit);margin-top:1px}
 .sf-mb ul{display:grid;gap:4px}
 .sf-ex{font-size:1.45em;line-height:1.9;text-align:center;background:var(--surface);border-radius:12px;padding:6px 10px;font-family:var(--font-ar,inherit)}
 .sf-tip{background:var(--accent-soft);border-left:3px solid var(--saf,#E2A33B);border-radius:4px 10px 10px 4px;padding:7px 10px;font-size:14.5px}
@@ -1062,6 +1062,10 @@ canvas.sf-face.xs{border-radius:50%;background:var(--shell,#1E2559);flex:none}
 /* хвостик пузыря смотрит на маскота (центр аватара — 32px от правого края) */
 .sf-bubble::after{content:'';position:absolute;right:22px;bottom:-8px;width:14px;height:14px;background:var(--surface);
   border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-bottom-right-radius:3px;transform:rotate(45deg)}
+/* прокрутка разговора не передаётся шторке (на iPhone иначе шторку подбрасывает) */
+.sf-log{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+/* короткая арабская фраза в русском тексте не разрывается переносом (иначе слова визуально меняются местами) */
+bdi.ar.nw{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -6923,14 +6927,17 @@ closeSheet = () => { if (sheetOpen()) sheetGhost(SD && SD.dy); close0(); };
   sh.addEventListener('touchstart', e => {
     SD = null;
     if (e.touches.length > 1 || e.target.closest('input[type=range],textarea') || xScrolls(e.target)) return;
+    /* разговор с Сайфумаликом: тянуть только за верх (полоска и заголовок), внутри — обычная прокрутка */
+    if (sh.querySelector('.sf-sheet') && !e.target.closest('.grab, .sf-sh-h')) return;
     SD = { y: e.touches[0].clientY, t: Date.now(), dy: 0, on: false, top: sh.scrollTop <= 0 && !innerScrolled(e.target), el: e.target };
   }, { passive: true });
   sh.addEventListener('touchmove', e => {
     if (!SD) return;
     const dy = e.touches[0].clientY - SD.y;
     if (!SD.on) {
-      if (dy > 8 && SD.top && sh.scrollTop <= 0 && !innerScrolled(SD.el)) { SD.on = true; SD.y += 8; sh.classList.add('drag'); }
-      else if (Math.abs(dy) > 8) { SD = null; return; }
+      const TH = sh.querySelector('.sf-sheet') ? 18 : 8;
+      if (dy > TH && SD.top && sh.scrollTop <= 0 && !innerScrolled(SD.el)) { SD.on = true; SD.y += TH; sh.classList.add('drag'); }
+      else if (dy < -8 || dy > TH) { SD = null; return; }
       else return;
     }
     SD.dy = Math.max(0, dy - 8);
@@ -7033,7 +7040,7 @@ function saifWhere() {
 const saifVisible = () => !(R === 'zachet' || zFocus());
 
 /* ---------- заготовленные ответы (потом их заменит ИИ) ---------- */
-const sfAr = s => `<bdi class="ar" lang="ar" dir="rtl">${s}</bdi>`;
+const sfAr = (s, nw) => `<bdi class="ar${nw ? ' nw' : ''}" lang="ar" dir="rtl">${s}</bdi>`;
 const sfCut = (t, n) => { t = String(t || '').replace(/\s+/g, ' ').trim(); if (t.length <= n) return t; const k = t.lastIndexOf(' ', n); return t.slice(0, k > 40 ? k : n) + '…'; };
 const sfFirst = t => { const m = String(t || '').match(/^.+?[.!?;:](\s|$)/); return m ? m[0].trim() : sfCut(t, 120); };
 const sfEsc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
@@ -7144,6 +7151,16 @@ function saifMicDone(text) {
   if (inp && text) { inp.focus({ preventScroll: true }); inp.setSelectionRange(inp.value.length, inp.value.length); }
 }
 let SF_REC = null;
+/* распознавание — в функции Сайфумалика: там словарь произношений терминов, сленг и слова текущего урока */
+async function saifSTT(p) {
+  const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 70000);
+  try {
+    const r = await fetch(SAIF_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal,
+      body: JSON.stringify({ ...p, kind: 'stt', lesson: R === 'lesson' ? CUR : 0, dev: saifDev() }) });
+    if (!r.ok) throw Object.assign(new Error('http ' + r.status), { http: r.status });
+    return await r.json();
+  } finally { clearTimeout(to); }
+}
 async function saifMic() {
   const m = SF.mic;
   if (m.rec || m.wait) { try { SF_REC && SF_REC.stop(); } catch (e) {} if (!SF_REC) { m.rec = m.wait = false; saifMicUpd(); } return; }
@@ -7166,7 +7183,7 @@ async function saifMic() {
       let text = '';
       try {
         const blob = new Blob(chunks, { type: rec.mimeType || mime || 'audio/webm' });
-        const r = await zPost(await zAudioPayload(blob));
+        const r = await saifSTT(await zAudioPayload(blob));
         text = (r.text || '').trim(); if (!text) m.err = 'Не удалось разобрать запись. Попробуй ещё раз, ближе к телефону.';
       } catch (e) { m.err = e && e.http ? 'Не удалось распознать запись. Попробуй ещё раз, говори ближе к телефону.' : 'Не удалось распознать: нет связи. Можно продиктовать через микрофон на клавиатуре телефона.'; }
       m.stt = false; saifMicDone(text);
@@ -7203,7 +7220,8 @@ const sfPlain = h => { const d = document.createElement('div'); d.innerHTML = h;
    «> » — «запомни»; «### » — подзаголовок; **жирный**. Всё остальное экранируется. */
 const SF_AR_RUN = /[؀-ۿ][؀-ۿً-ٰٟ\s،؛ـ]*[؀-ۿً-ٰٟ]|[؀-ۿ]/g;
 const sfIsAr = s => /[؀-ۿ]/.test(s) && !/[A-Za-zА-Яа-яЁё]/.test(s);
-function sfInl(s) { return sfEsc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(SF_AR_RUN, m => sfAr(m.trim())); }
+const sfArRun = m => m.trim().split(/\s*[،,]\s*/).filter(Boolean).map(seg => sfAr(seg, seg.split(/\s+/).length <= 3)).join(', ');
+function sfInl(s) { return sfEsc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(SF_AR_RUN, sfArRun); }
 function sfFmt(t, block) {
   if (!block) return sfInl(String(t || '').replace(/\n+/g, ' '));
   const lines = String(t || '').replace(/\r/g, '').split('\n'), out = [];
@@ -7219,7 +7237,7 @@ function sfFmt(t, block) {
       if (rows.length) out.push(`<div class="sf-tw"><table class="sf-tbl"><thead><tr>${rows[0].map(c => cell(c, 'th')).join('')}</tr></thead><tbody>${rows.slice(1).map(r => `<tr>${r.map(c => cell(c, 'td')).join('')}</tr>`).join('')}</tbody></table></div>`);
       continue;
     }
-    if (/^\s*\d+[.)]\s/.test(ln)) { out.push(`<ol class="sf-steps">${take(/^\s*\d+[.)]\s/).map(x => `<li><span>${sfInl(x.replace(/^\s*\d+[.)]\s/, ''))}</span></li>`).join('')}</ol>`); continue; }
+    if (/^\s*\d+[.)]\s/.test(ln)) { out.push(`<ol class="sf-steps">${take(/^\s*\d+[.)]\s/).map(x => `<li data-n="${x.match(/\d+/)[0]}"><span>${sfInl(x.replace(/^\s*\d+[.)]\s/, ''))}</span></li>`).join('')}</ol>`); continue; }
     if (/^\s*[-•*]\s/.test(ln)) { out.push(`<ul>${take(/^\s*[-•*]\s/).map(x => `<li>${sfInl(x.replace(/^\s*[-•*]\s/, ''))}</li>`).join('')}</ul>`); continue; }
     if (/^\s*>\s?/.test(ln)) { out.push(`<p class="sf-tip">${take(/^\s*>\s?/).map(x => sfInl(x.replace(/^\s*>\s?/, ''))).join('<br>')}</p>`); continue; }
     if (/^\s*#{1,4}\s/.test(ln)) { out.push(`<h4 class="sf-h">${sfInl(ln.replace(/^\s*#{1,4}\s/, ''))}</h4>`); i++; continue; }
@@ -7299,7 +7317,7 @@ function saifBubble() {
   const answered = !!SF.last;
   return `<div class="sf-head"><b>Сайфумалик</b><button class="sf-x" data-sf="x" aria-label="Закрыть">×</button></div>
     <div class="sf-txt" aria-live="polite">${a.short}</div>
-    ${answered ? `<div class="sf-row">${a.full || SF.log.length > 2 ? `<button class="sf-more" data-sf="more">Подробнее ›</button>` : ''}${saifSrc(a.src)}</div>` : ''}
+    ${answered ? `<div class="sf-row"><button class="sf-more" data-sf="more">Подробнее ›</button></div>` : ''}
     ${saifChips(answered && a.mood !== 'львигр!' && a.mood !== 'сарказм' ? sfChip('got', 'Понял') : '')}
     ${saifAttHtml(SF.att)}${saifForm()}`;
 }
@@ -7403,16 +7421,7 @@ document.addEventListener('submit', e => {
 /* недописанный вопрос не теряется, когда пузырь или шторка перерисовываются */
 document.addEventListener('input', e => { if (e.target.closest && e.target.closest('[data-sf-form]')) SF.draft = e.target.value; });
 
-/* карточка слова: «Спросить Сайфумалика» прикрепляет слово к вопросу */
-const _saifOpenWord = sheetOpenWord;
-sheetOpenWord = function (el) {
-  _saifOpenWord(el);
-  if (!saifVisible() || (R === 'lesson' && stepOf() === 4)) return;
-  const btn = document.createElement('button'); btn.className = 'btn ghost block sf-wbtn'; btn.dataset.sf = 'word'; btn.dataset.w = el.textContent;
-  const card = el.closest('#view .card.para'); if (card && R === 'lesson' && stepOf() === 0) btn.dataset.i = [...document.querySelectorAll('#view .card.para')].indexOf(card);
-  btn.innerHTML = `${saifFace('спокойный', 'xs')}Спросить Сайфумалика`;
-  const sh = $('#sheet'), last = sh.querySelector('.btn.ghost.block:last-child'); sh.insertBefore(btn, last || null); saifPaint(btn);
-};
+/* карточка слова — без кнопки Сайфумалика (по решению автора курса хватает «Спросить» у абзаца) */
 
 /* кнопка «Спросить» у каждого абзаца текста урока */
 function saifDecorate() {
