@@ -1039,6 +1039,14 @@ canvas.sf-face.xs{width:24px;height:24px;border-radius:50%;background:var(--shel
 .sf-tbl tr:last-child td{border-bottom:0}
 .sf-tbl th{background:var(--surface-2);font-weight:600;font-size:12.5px;color:var(--muted)}
 .sf-tbl .ar{text-align:right;font-size:1.25em;white-space:nowrap}
+/* поле ввода: 16px, иначе телефон приближает страницу при наборе */
+.sf-ask input{font-size:16px}
+/* «← Вернуться» после перехода по ссылке-источнику */
+#sf-back{position:fixed;left:50%;transform:translateX(-50%);top:calc(var(--top-h,64px) + 10px);z-index:46;display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 14px 8px 10px;font:600 14px var(--font-ui,inherit);
+  box-shadow:0 8px 24px -10px rgba(15,18,41,.5);cursor:pointer;max-width:calc(100vw - 32px);animation:sf-in .2s ease}
+#sf-back svg{width:18px;height:18px;flex:none}
+#sf-back span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -6991,8 +6999,13 @@ function saifAnswer(kind, arg) {
     if (at && at.kind === 'para') return { mood: 'спокойный', short: `${at.label}. Что в нём непонятно, вацок? Выбери или спроси своими словами.`, src: null };
     if (at && at.kind === 'word') return { mood: 'спокойный', short: `${sfAr(at.ar)}. Что про него рассказать, вацок?`, src: null };
     if (!L) return { mood: 'спокойный', short: R === 'ref' ? 'Справочник листаешь? Если что-то в таблице непонятно, спрашивай, вацок.' : 'Открой урок, и я буду в теме, о чём ты. Или спрашивай про сарф прямо отсюда.', src: null };
-    if (w.s === 4) return { mood: 'сарказм', short: 'Задания решаешь? Тут я не подсказываю, вацок, сам. Но правило из урока объясню, если надо.', src: null };
-    return { mood: 'спокойный', short: `Урок ${L.n}, «${STEPS[w.s].toLowerCase()}». Чё, вацок, застрял? Нажми «Спросить» у абзаца или пиши сюда.`, src: null };
+    const HELLO = [
+      `Урок ${L.n}, текст. Нажми «Спросить» у абзаца или на любое слово — разберём. Или пиши сюда.`,
+      `Урок ${L.n}, объяснение. Что не залетает, вацок?`,
+      `Урок ${L.n}, разбор. Покажу ещё пример или объясню, почему так.`,
+      `Урок ${L.n}, вопросы. Ответы открываются в курсе, а я помогу их понять.`,
+      'Задания решаешь? Тут я не подсказываю, вацок, сам. Но правило урока напомню.'];
+    return { mood: w.s === 4 ? 'ухмылка' : 'спокойный', short: HELLO[w.s], src: null };
   }
   /* по абзацу */
   if (at && at.kind === 'para') {
@@ -7102,8 +7115,9 @@ function sfFmt(t, block) {
 function sfSrcMap(s) {
   if (!s || !s.lesson) return null;
   const k = Math.max(0, STEPS.indexOf(s.step));
-  return { n: s.lesson, s: s.note ? 0 : k, i: s.para ? s.para - 1 : undefined, note: s.note || undefined,
-    t: `урок ${s.lesson} · ${s.note ? `примечание ${s.note}` : STEPS[k] + (s.para ? `, абзац ${s.para}` : '')}` };
+  const para = k === 0 && s.para ? s.para : 0;   /* абзацы есть только в «Тексте» */
+  return { n: s.lesson, s: s.note ? 0 : k, i: para ? para - 1 : undefined, note: s.note || undefined,
+    t: `урок ${s.lesson} · ${s.note ? `примечание ${s.note}` : STEPS[k] + (para ? `, абзац ${para}` : '')}` };
 }
 async function saifRemote(kind, arg, att) {
   const hist = []; for (let k = 0; k + 1 < SF.log.length; k++) if (SF.log[k].who === 'me' && SF.log[k + 1].who === 'bot') hist.push({ me: SF.log[k].plain, bot: SF.log[k + 1].plainShort });
@@ -7139,12 +7153,25 @@ function saifAsk(kind, arg, userText) {
   SF.timer = setTimeout(() => done(saifAnswer(kind, Object.assign({}, arg, { att }))), 900);
 }
 const sfChip = (k, t) => `<button data-sf="q" data-k="${k}">${t}</button>`;
+const sfChipQ = (q, t) => `<button data-sf="qq" data-q="${sfEsc(q).replace(/"/g, '&quot;')}">${t}</button>`;
+const sfChipFill = (q, t) => `<button data-sf="fill" data-q="${sfEsc(q).replace(/"/g, '&quot;')}">${t}</button>`;
 function saifChipList() {
   const w = saifWhere(), at = SF.att;
   if (at && at.kind === 'para') return sfChip('p-simple', 'Объясни проще') + sfChip('p-tr', 'Переведи') + sfChip('p-core', 'В чём суть?');
   if (at && at.kind === 'word') return sfChip('w-mean', 'Что значит?') + sfChip('w-form', 'Разбери форму') + (at.tr ? sfChip('w-sent', 'Всё предложение') : '');
-  if (w.L && w.s === 4) return '';
-  return sfChip('simple', 'Объясни проще') + sfChip('examples', 'Дай ещё примеры');
+  if (!w.L) return '';
+  if (w.s === 0) return sfChip('simple', 'Объясни проще') + sfChip('examples', 'Дай ещё примеры');
+  if (w.s === 1) return sfChipQ('Выдели главное правило этого урока в 1–2 предложениях и дай один пример.', 'Главное правило')
+    + sfChipQ('Где в этой теме чаще всего ошибаются? Покажи на примере, как не ошибиться.', 'Где ошибаются?');
+  if (w.s === 2) {
+    const ex = (w.L.wk || [])[W.i] || {};
+    const what = ex.res ? `${String(ex.w || '').replace(/[\[\]\d]/g, '')} → ${ex.res} (${ex.ru})` : 'пример из разбора';
+    return sfChipQ(`Разбери по шагам ещё один похожий пример, как в разборе: ${what}. Возьми другой глагол.`, 'Ещё пример')
+      + sfChipQ(`Почему в разборе получается ${ex.res || 'такая форма'}? Объясни каждый шаг.`, 'Почему так?');
+  }
+  if (w.s === 3) return sfChipQ('Кратко повтори главное из урока, чтобы ответить на вопросы учебника.', 'Повтори главное')
+    + sfChipFill('Проверь мой ответ на вопрос №1: ', 'Проверь мой ответ');
+  return sfChipQ('Напомни правило этого урока, без ответов к заданиям.', 'Напомни правило');
 }
 const saifChips = (extra) => { const h = (extra || '') + saifChipList(); return h ? `<div class="sf-chips">${h}</div>` : ''; };
 const saifSrc = s => s ? `<button class="sf-src" data-sf="src" data-n="${s.n}" data-s="${s.s}" ${s.i !== undefined ? `data-i="${s.i}"` : ''} ${s.note ? `data-note="${s.note}"` : ''}>${I.arrow}${s.t}</button>` : '';
@@ -7194,10 +7221,30 @@ function saifSheetUpdate() {
   const log = sh.querySelector('.sf-log'); if (log && log.lastElementChild) log.lastElementChild.scrollIntoView({ block: 'nearest' });
 }
 function saifOpenSheet() { SF.open = false; saifRender(); openSheet(saifSheetHtml()); saifPaint($('#sheet')); saifSheetUpdate(); }
+let SF_BACK = null;
+function saifBackShow() {
+  let el = $('#sf-back');
+  if (!SF_BACK) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('button'); el.id = 'sf-back'; el.dataset.sf = 'back'; document.body.append(el); }
+  /* под шапкой и вкладками шагов, чтобы ничего не закрывать */
+  setTimeout(() => { const st = document.querySelector('#view .steps'), top = $('#top');
+    const y = Math.max(st ? st.getBoundingClientRect().bottom : 0, top ? top.getBoundingClientRect().bottom : 0);
+    el.style.top = Math.max(8, Math.round(y) + 8) + 'px'; }, 400);
+  const f = SF_BACK;
+  el.innerHTML = `${I.back}<span>Вернуться: ${f.R === 'lesson' ? `урок ${f.CUR} · ${STEPS[f.step]}` : f.R === 'ref' ? 'справочник' : 'список уроков'}</span>`;
+}
+function saifBack() {
+  const f = SF_BACK; SF_BACK = null; saifBackShow(); if (!f) return;
+  if (f.R === 'lesson') { S.at[f.CUR] = f.step; persist(); if (f.CUR !== CUR || R !== 'lesson') openLesson(f.CUR); else render(); }
+  else go(f.R);
+  setTimeout(() => window.scrollTo(0, f.y), 360);
+}
 function saifGoSrc(b) {
+  SF_BACK = { R, CUR, step: R === 'lesson' ? stepOf() : 0, y: window.scrollY };
   closeSheet(); SF.open = false; const n = +b.dataset.n, s = +b.dataset.s, i = b.dataset.i;
   S.at[n] = s; S.max[n] = Math.max(S.max[n] || 0, s); persist();
   if (n !== CUR || R !== 'lesson') openLesson(n); else { render(); window.scrollTo(0, 0); }
+  saifBackShow(); clearTimeout(SF.backT); SF.backT = setTimeout(() => { SF_BACK = null; saifBackShow(); }, 30000);
   if (b.dataset.note) return setTimeout(() => openFn(+b.dataset.note), 380);
   if (i !== undefined) setTimeout(() => {
     const c = document.querySelectorAll('#view .card.para')[+i]; if (!c) return;
@@ -7216,6 +7263,9 @@ document.addEventListener('click', e => {
   if (k === 'att-x') { SF.att = null; SF.last = null; saifRender(); return saifSheetUpdate(); }
   if (k === 'more') return saifOpenSheet();
   if (k === 'q') return saifAsk(b.dataset.k, null, b.textContent);
+  if (k === 'qq') return saifAsk('free', { q: b.dataset.q }, sfEsc(b.textContent));
+  if (k === 'fill') { const f = b.closest('.sf-bubble, .sf-sheet'), inp = f && f.querySelector('.sf-ask input'); if (inp) { inp.value = b.dataset.q; inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); } return; }
+  if (k === 'back') return saifBack();
   if (k === 'src') return saifGoSrc(b);
   if (k === 'para') return saifAttach(saifParaAtt(+b.dataset.i));
   if (k === 'word') {
